@@ -3,4 +3,14 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="transparent">#20000000</color>
+    <color name="transparent_x">#30000000</color>
+    <color name="transparent_xx">#40000000</color>
+    <color name="transparent_xxx">#50000000</color>
+    <color name="transparent_xxxx">#60000000</color>
+    <color name="transparent_xxxxx">#70000000</color>
+    <color name="transparent_xxxxxx">#80000000</color>
+    <color name="title_color">#3F51B5</color>
+    <color name="default_gray">#C2C5CD</color>
 </resources>

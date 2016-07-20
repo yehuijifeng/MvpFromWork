@@ -1,5 +1,47 @@
 <resources>
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="text_size">12sp</dimen>
+    <dimen name="text_size_x">14sp</dimen>
+    <dimen name="text_size_xx">16sp</dimen>
+    <dimen name="text_size_xxx">18sp</dimen>
+    <dimen name="text_size_xxxx">20sp</dimen>
+    <dimen name="text_size_xxxxx">22sp</dimen>
+    <dimen name="text_size_xxxxxx">25sp</dimen>
+
+    <dimen name="default_hour_height">0.5dp</dimen>
+
+    <dimen name="padding_and_margin">3dp</dimen>
+    <dimen name="padding_and_margin_x">5dp</dimen>
+    <dimen name="padding_and_margin_xx">10dp</dimen>
+    <dimen name="padding_and_margin_xxx">15dp</dimen>
+    <dimen name="padding_and_margin_xxxx">20dp</dimen>
+
+    <dimen name="height_width_one">20dp</dimen>
+    <dimen name="height_width_one_x">24dp</dimen>
+    <dimen name="height_width_one_xx">28dp</dimen>
+    <dimen name="height_width_one_xxx">32dp</dimen>
+    <dimen name="height_width_one_xxxx">36dp</dimen>
+    <dimen name="height_width_one_xxxxx">40dp</dimen>
+
+    <dimen name="height_width_tow_x">60dp</dimen>
+    <dimen name="height_width_tow_xx">64dp</dimen>
+    <dimen name="height_width_tow_xxx">68dp</dimen>
+    <dimen name="height_width_tow_xxxx">72dp</dimen>
+    <dimen name="height_width_tow_xxxxx">76dp</dimen>
+    <dimen name="height_width_tow_xxxxxx">80dp</dimen>
+
+    <dimen name="height_width_three_x">100dp</dimen>
+    <dimen name="height_width_three_xx">104dp</dimen>
+    <dimen name="height_width_three_xxx">108dp</dimen>
+    <dimen name="height_width_three_xxxx">112dp</dimen>
+    <dimen name="height_width_three_xxxxx">116dp</dimen>
+    <dimen name="height_width_three_xxxxxx">120dp</dimen>
+
+    <dimen name="button_height">40dp</dimen>
+    <dimen name="button_width">70dp</dimen>
+
+    <dimen name="refresh_icon_height">45dp</dimen>
+
+    <dimen name="default_title_height">48dp</dimen>
+    <dimen name="default_title_ly_height">73dp</dimen>
+    <dimen name="default_title_actionbar_height">25dp</dimen>
 </resources>

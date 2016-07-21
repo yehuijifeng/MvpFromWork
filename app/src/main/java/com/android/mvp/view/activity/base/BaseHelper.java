@@ -36,7 +36,6 @@ public class BaseHelper {
         activityClass = activity.getClass();
         activity.getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
         inflater = activity.getLayoutInflater();
-
     }
 
     public void startActivity(Class<?> cls) {

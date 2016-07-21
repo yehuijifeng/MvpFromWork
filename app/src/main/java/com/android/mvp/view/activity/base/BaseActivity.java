@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -22,6 +23,9 @@ import com.android.mvp.view.baseview.LoadingView;
 import com.android.mvp.view.baseview.MyTitleView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 
@@ -37,9 +41,11 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     //必须传入activity的view
     protected abstract int setContentView();
 
-    public abstract void initView();
+    //初始化view
+    protected abstract void initView();
 
-    public abstract void initData();
+    //初始化数据
+    protected abstract void initData();
 
     //初始化title
     protected abstract String setTitleText();
@@ -92,25 +98,29 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     @Override
     protected void onResume() {
         super.onResume();
-        presenter.onResume();
-        presenter.subscription = presenter.observable
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<ResponseAction>() {
-                    @Override
-                    public void call(ResponseAction responseAction) {
-                        if (responseAction instanceof ResponseSuccessAction) {
-                            onRequestSuccess((ResponseSuccessAction) responseAction);
-                        } else if (responseAction instanceof ResponseFinalAction) {
-                            onRequestFinal((ResponseFinalAction) responseAction);
+        if (presenter != null) {
+            presenter.onResume();
+            presenter.subscription = presenter.observable
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Action1<ResponseAction>() {
+                        @Override
+                        public void call(ResponseAction responseAction) {
+                            if (responseAction instanceof ResponseSuccessAction) {
+                                onRequestSuccess((ResponseSuccessAction) responseAction);
+                            } else if (responseAction instanceof ResponseFinalAction) {
+                                onRequestFinal((ResponseFinalAction) responseAction);
+                            }
                         }
-                    }
-                });
+                    });
+        }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        presenter.onStop();
+        if (presenter != null) {
+            presenter.onStop();
+        }
     }
 
     /**
@@ -142,14 +152,24 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         initLoadingView();
     }
 
+    /**
+     * loading遮罩层的加载
+     */
     private void initLoadingView() {
-        loadingView=new LoadingView(this);
-        //loadingView = (LoadingView) inflater.inflate(R.layout.default_loading, rootGroup, false);
+        loadingView = new LoadingView(this);
         rootGroup.addView(loadingView);
     }
 
     protected void showLoading() {
         loadingView.showLoading("正在加载中……");
+    }
+
+    protected void showLoading(String str) {
+        loadingView.showLoading(str);
+    }
+
+    protected void showError(String str) {
+        loadingView.showErrorPrompt(str);
     }
 
     protected void closeLoading() {
@@ -189,6 +209,11 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     }
 
 
+    /**
+     * 跳转activity
+     *
+     * @param cla
+     */
     protected void startActivity(Class cla) {
         startActivity(cla, null);
     }
@@ -217,6 +242,74 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     protected void startActivityForResult(Class<?> cls, Bundle bundle, int requestCode) {
         baseHelper.startActivityForResult(cls, bundle, requestCode);
     }
+
+
+    /**
+     * 获取上一个Activity传过来的Bundle
+     */
+    protected Bundle getBundle() {
+        return baseHelper.getBundle();
+    }
+
+    /**
+     * 获取上一个Activity传过来的字符串集合
+     */
+    protected List<String> getStringArrayList(String key) {
+        return baseHelper.getStringArrayList(key);
+    }
+
+    /**
+     * 获取上一个Activity传过来的int值
+     *
+     * @param key          键
+     * @param defaultValue 默认值
+     */
+    protected int getInt(String key, int defaultValue) {
+        return baseHelper.getInt(key, defaultValue);
+    }
+
+    /**
+     * 获取上一个Activity传过来的String值
+     */
+    protected String getString(String key, String defaultValue) {
+        return baseHelper.getString(key, defaultValue);
+    }
+
+    /**
+     * 获取上一个Activity传过来的布尔值
+     */
+    protected boolean getBoolean(String key, boolean defaultValue) {
+        return baseHelper.getBoolean(key, defaultValue);
+    }
+
+    /**
+     * 获取上一个Activity传过来的double值
+     */
+    protected double getDouble(String key, double defaultValue) {
+        return baseHelper.getDouble(key, defaultValue);
+    }
+
+    /**
+     * 获取上一个Activity传过来的float值
+     */
+    protected float getFloat(String key, float defaultValue) {
+        return baseHelper.getFloat(key, defaultValue);
+    }
+
+    /**
+     * 获取上一个Activity传过来的实现了Parcelable接口的对象
+     */
+    protected Parcelable getParcelable(String key) {
+        return baseHelper.getParcelable(key);
+    }
+
+    /**
+     * 获取上一个Activity传过来的实现了Parcelable接口的对象的集合
+     */
+    protected ArrayList<? extends Parcelable> getParcelableList(String key) {
+        return baseHelper.getParcelableList(key);
+    }
+
 
     /**
      * Intent intent = new Intent();
@@ -259,9 +352,12 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
     @Override
     protected void onDestroy() {
+        super.onDestroy();
         ActivityCollector.removeActivity(this);
         baseHelper.releaseActivity();
         baseHelper = null;
-        super.onDestroy();
+        if (presenter != null) {
+            presenter.onDestory();
+        }
     }
 }

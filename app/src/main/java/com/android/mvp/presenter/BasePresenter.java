@@ -2,7 +2,7 @@ package com.android.mvp.presenter;
 
 import com.android.mvp.function.RxBus;
 import com.android.mvp.http.response.ResponseAction;
-import com.android.mvp.view.interfaces.IBaseView;
+import com.android.mvp.view.interfaces.base.IBaseView;
 
 import rx.Observable;
 import rx.Subscription;

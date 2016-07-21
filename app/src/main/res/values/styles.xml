@@ -42,4 +42,33 @@
     <style name="AnimActivityTheme">
         <item name="android:windowAnimationStyle">@style/FeelyouWindowAnimTheme</item>
     </style>
+
+    <!--提示框确定按钮样式-->
+    <style name="ok_button">
+        <item name="android:textColor">@color/dialog_ok_color</item>
+        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:background">@drawable/bg_ok_btn</item>
+    </style>
+
+    <!--提示框取消按钮样式-->
+    <style name="cancel_button">
+        <item name="android:textColor">@color/dialog_cancel_color</item>
+        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:background">@drawable/bg_cancel_btn</item>
+    </style>
+
+    <!--默认textview设置-->
+    <style name="default_textview_style">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:layout_margin">@dimen/padding_and_margin</item>
+        <item name="android:padding">@dimen/padding_and_margin</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/bg_default_text</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">@dimen/text_size_x</item>
+    </style>
+
 </resources>

@@ -131,23 +131,47 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
         //到显示状态为true，不可见为false
         isVisible = isVisibleToUser;
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            presenter.onResume();
-            presenter.subscription = presenter.observable
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Action1<ResponseAction>() {
-                        @Override
-                        public void call(ResponseAction responseAction) {
-                            if (responseAction instanceof ResponseSuccessAction) {
-                                onRequestSuccess((ResponseSuccessAction) responseAction);
-                            } else if (responseAction instanceof ResponseFinalAction) {
-                                onRequestFinal((ResponseFinalAction) responseAction);
-                            }
+//        if (isVisibleToUser) {
+//            presenter.onResume();
+//            presenter.subscription = presenter.observable
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe(new Action1<ResponseAction>() {
+//                        @Override
+//                        public void call(ResponseAction responseAction) {
+//                            if (responseAction instanceof ResponseSuccessAction) {
+//                                onRequestSuccess((ResponseSuccessAction) responseAction);
+//                            } else if (responseAction instanceof ResponseFinalAction) {
+//                                onRequestFinal((ResponseFinalAction) responseAction);
+//                            }
+//                        }
+//                    });
+//        } else {
+//            presenter.onStop();
+//        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.onResume();
+        presenter.subscription = presenter.observable
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<ResponseAction>() {
+                    @Override
+                    public void call(ResponseAction responseAction) {
+                        if (responseAction instanceof ResponseSuccessAction) {
+                            onRequestSuccess((ResponseSuccessAction) responseAction);
+                        } else if (responseAction instanceof ResponseFinalAction) {
+                            onRequestFinal((ResponseFinalAction) responseAction);
                         }
-                    });
-        } else {
-            presenter.onStop();
-        }
+                    }
+                });
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        presenter.onStop();
     }
 
     private void initProperties(View parentView) {

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/loading_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="加载dialog" />
+
+    <Button
+        android:id="@+id/tishi_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="提示dialog" />
+
+    <Button
+        android:id="@+id/zidingyi_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="自定义dialog" />
+
+    <Button
+        android:id="@+id/list_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="列表dialog" />
+
+    <Button
+        android:id="@+id/pwd_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="密码dialog" />
+</LinearLayout>

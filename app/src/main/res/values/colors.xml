@@ -13,4 +13,8 @@
     <color name="transparent_xxxxxx">#80000000</color>
     <color name="title_color">#3F51B5</color>
     <color name="default_gray">#C2C5CD</color>
+    <color name="viewpager_tab_text_color_selected">#3F51B5</color>
+    <color name="viewpager_tab_text_color">#000000</color>
+    <color name="dialog_ok_color">#3F51B5</color>
+    <color name="dialog_cancel_color">#FF4081</color>
 </resources>

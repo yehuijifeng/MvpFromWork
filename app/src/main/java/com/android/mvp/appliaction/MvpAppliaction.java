@@ -33,8 +33,6 @@ public class MvpAppliaction extends Application {
     /**
      * 将appliaction设置成单例
      */
-    private MvpAppliaction() {
-    }
 
     public static MvpAppliaction getInstance() {
         return MvpAppliactions.mvpAppliaction;
@@ -61,8 +59,8 @@ public class MvpAppliaction extends Application {
                         /**
                          * 全局捕获异常的代理类
                          */
-                        CrashHandler crashHandler = CrashHandler.getInstance();
-                        crashHandler.init(getApplicationContext());
+//                        CrashHandler crashHandler = CrashHandler.getInstance();
+//                        crashHandler.init(getApplicationContext());
                         /**
                          *创建本地项目文件夹
                          */

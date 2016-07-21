@@ -4,13 +4,14 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
-    <color name="transparent">#20000000</color>
-    <color name="transparent_x">#30000000</color>
-    <color name="transparent_xx">#40000000</color>
-    <color name="transparent_xxx">#50000000</color>
-    <color name="transparent_xxxx">#60000000</color>
-    <color name="transparent_xxxxx">#70000000</color>
-    <color name="transparent_xxxxxx">#80000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="transparent_x">#20000000</color>
+    <color name="transparent_xx">#30000000</color>
+    <color name="transparent_xxx">#40000000</color>
+    <color name="transparent_xxxx">#50000000</color>
+    <color name="transparent_xxxxx">#60000000</color>
+    <color name="transparent_xxxxxx">#70000000</color>
+    <color name="transparent_xxxxxxx">#80000000</color>
     <color name="title_color">#3F51B5</color>
     <color name="default_gray">#C2C5CD</color>
     <color name="viewpager_tab_text_color_selected">#3F51B5</color>

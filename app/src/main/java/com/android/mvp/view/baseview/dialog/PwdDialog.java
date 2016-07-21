@@ -60,7 +60,7 @@ public class PwdDialog extends View implements TextWatcher, View.OnClickListener
         pwd_cancel_btn = (Button) root.findViewById(R.id.dialog_default_cancel_btn);
         pwd_cancel_btn.setOnClickListener(this);
         pwd_ok_btn.setEnabled(false);
-        alertDialog = new AlertDialog.Builder(getContext()).setView(new EditText(getContext())).create();
+        alertDialog = new AlertDialog.Builder(getContext(),R.style.dialog).setView(new EditText(getContext())).create();
         //alertDialog.setCancelable(false);
         alertDialog.setCanceledOnTouchOutside(false);
     }

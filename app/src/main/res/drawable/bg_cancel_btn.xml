@@ -13,7 +13,7 @@
     <item>
         <shape>
             <!-- 文本框里面的颜色 -->
-            <solid android:color="@color/transparent" />
+            <solid android:color="@android:color/white" />
             <corners android:bottomRightRadius="@dimen/default_dialog_fillet"/>
         </shape>
     </item>

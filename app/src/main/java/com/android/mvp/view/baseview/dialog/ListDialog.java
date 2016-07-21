@@ -41,7 +41,7 @@ public class ListDialog extends View implements View.OnClickListener {
         list_layout = (LinearLayout) root.findViewById(R.id.list_layout);
         list_exit_layout = (LinearLayout) root.findViewById(R.id.list_exit_layout);
         list_exit_layout.setOnClickListener(this);
-        alertDialog = new ProgressDialog(getContext());
+        alertDialog = new ProgressDialog(getContext(),R.style.dialog);
     }
 
     /**

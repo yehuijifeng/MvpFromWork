@@ -8,11 +8,11 @@ import android.text.format.Formatter;
 
 import com.android.mvp.constances.AppConstant;
 
-import org.apache.http.util.EncodingUtils;
-
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.InputStreamReader;
 
 /**
  * Created by Luhao on 2016/6/22.
@@ -153,14 +153,15 @@ public class FileUtils {
     public String readZhongduanFile(String filePath) {
         String res = "";
         try {
-            File file1 = new File(filePath);
-            if (!file1.exists()) return null;
-            FileInputStream fin1 = new FileInputStream(filePath);
-            int length1 = fin1.available();
-            byte[] buffer1 = new byte[length1];
-            fin1.read(buffer1);
-            res = EncodingUtils.getString(buffer1, "UTF-8");
-            fin1.close();
+            File file = new File(filePath);
+            if (!file.exists()) return null;
+            InputStreamReader inputStreamReader = new InputStreamReader(new FileInputStream(file), "UTF-8");
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+            String lineStr;
+            while ((lineStr = bufferedReader.readLine()) != null) {
+                res += lineStr;
+            }
+            inputStreamReader.close();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -35,7 +35,7 @@ public class PromptDialog extends View implements View.OnClickListener {
         dialog_default_cancel_btn = (Button) root.findViewById(R.id.dialog_default_cancel_btn);
         dialog_default_ok_btn.setOnClickListener(this);
         dialog_default_cancel_btn.setOnClickListener(this);
-        dialog = new ProgressDialog(getContext());
+        dialog = new ProgressDialog(getContext(),R.style.dialog);
         dialog.show();
         dialog.setContentView(root);
     }

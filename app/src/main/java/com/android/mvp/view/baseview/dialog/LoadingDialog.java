@@ -52,7 +52,7 @@ public class LoadingDialog extends View {
         animation.setRepeatCount(-1);//-1表示循环运行
         animation.setDuration(1000);
 
-        progressDialog=new ProgressDialog(getContext());
+        progressDialog=new ProgressDialog(getContext(),R.style.dialog);
         progressDialog.setCanceledOnTouchOutside(false);
 
     }

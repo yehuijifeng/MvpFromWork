@@ -13,8 +13,8 @@
     <item>
         <shape>
             <!-- 文本框里面的颜色 -->
-            <solid android:color="@color/transparent" />
-            <corners android:bottomRightRadius="@dimen/default_dialog_fillet"/>
+            <solid android:color="@android:color/white" />
+            <corners android:bottomLeftRadius="@dimen/default_dialog_fillet"/>
         </shape>
     </item>
 </selector>

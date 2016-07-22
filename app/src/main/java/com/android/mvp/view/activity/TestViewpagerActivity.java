@@ -27,19 +27,24 @@ public class TestViewpagerActivity extends BaseViewPagerActivity {
 
     @Override
     protected String setTitleText() {
-        return "viewpager";
+        return "分页显示栏";
     }
 
     @Override
     protected void initView() {
         super.initView();
-        mTitleView.setTitleMode(MyTitleView.TitleMode.NORMAL);
+        mTitleView.setTitleMode(MyTitleView.TitleMode.OPTIONS);
+        mTitleView.setImageButtonOnClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showLongToast("dddddddddddd");
+            }
+        });
         mViewList.add(new TestFragmentOne());
         mViewList.add(new TestFragmentOne());
         mViewList.add(new TestFragmentOne());
         mViewList.add(new TestFragmentOne());
-        mViewList.add(new TestFragmentOne());
-        setPageNumber(0);
+        setPageNumber(2);
         //showLoading();
     }
 
@@ -59,9 +64,6 @@ public class TestViewpagerActivity extends BaseViewPagerActivity {
                 break;
             case 3:
                 tabText.setText("瀑布流");
-                break;
-            case 4:
-                tabText.setText("多级列表");
                 break;
         }
         return view;

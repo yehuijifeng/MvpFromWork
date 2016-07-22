@@ -2,6 +2,7 @@ package com.android.mvp.view.activity.base;
 
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -10,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -75,15 +77,14 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
      * activity的title
      */
     protected MyTitleView mTitleView;
-    /**
-     * title的类型，枚举类型,初始化给默认标题类型
-     */
-    protected MyTitleView.TitleMode titleMode;
+
+    public static int titleBarHeight;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//禁止横竖屏
+        setPullWindow();//设置全屏
         setContentView(setContentView());
         //沉浸式title
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -93,6 +94,17 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         initialize();
         initView();
         initData();
+    }
+
+    /**
+     * 如果需要将某个activity设置成全屏，则在setContentView之前重写该方法
+     */
+    protected void setPullWindow() {
+//        //去除title
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        //去掉Activity上面的状态栏
+//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
     @Override
@@ -123,13 +135,6 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         }
     }
 
-    /**
-     * 去设置网络
-     */
-    public void toSetNetWork() {
-        Intent wifiSettingsIntent = new Intent(Settings.ACTION_SETTINGS);
-        startActivity(wifiSettingsIntent);
-    }
 
     /**
      * 在baseactivity内部的初始化工作
@@ -153,6 +158,51 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     }
 
     /**
+     * 当窗口焦点改变的时候，我们去计算titlebar的高度，以便于给自定义的titleview设置高度
+     *
+     * @param hasFocus
+     */
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            getWindowTop();
+            mTitleView.setTitleBarHeight(titleBarHeight);
+        }
+    }
+
+    /**
+     * 获得titlevar的高度
+     *
+     * @return
+     */
+    private int getWindowTop() {
+        if (titleBarHeight > 0) {
+            return titleBarHeight;
+        } else {
+            Rect frame = new Rect();
+            getWindow().getDecorView().getWindowVisibleDisplayFrame(frame);
+            int statusBarHeight = frame.top;
+            int contentTop = getWindow().findViewById(Window.ID_ANDROID_CONTENT).getTop();
+            //statusBarHeight是上面所求的状态栏的高度
+            titleBarHeight = contentTop - statusBarHeight;
+            return titleBarHeight;
+        }
+    }
+    /**
+     * 去设置网络
+     */
+    protected void toSetNetWork() {
+        Intent wifiSettingsIntent = new Intent(Settings.ACTION_SETTINGS);
+        startActivity(wifiSettingsIntent);
+    }
+    /**
+     * 刷新的事件，子类可以重写
+     */
+    protected void refresh() {
+
+    }
+    /**
      * loading遮罩层的加载
      */
     private void initLoadingView() {
@@ -168,8 +218,14 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         loadingView.showLoading(str);
     }
 
-    protected void showError(String str) {
+    protected void showErrorLoading(String str) {
         loadingView.showErrorPrompt(str);
+        loadingView.setErrorClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refresh();
+            }
+        });
     }
 
     protected void closeLoading() {

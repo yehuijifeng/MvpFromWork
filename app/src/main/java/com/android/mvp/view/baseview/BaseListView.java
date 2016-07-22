@@ -27,25 +27,25 @@ public class BaseListView extends LinearLayout {
     public FootView footView;//尾布局
     private OnScollListener onScollListener;//列表的滑动监听
 
-    public void setOnExecuteScoll(boolean isLoadMore){
+    public void setOnExecuteScoll(boolean isLoadMore) {
         onScollListener.setLoadSuccess(isLoadMore);
     }
+
     public void setRefresh(boolean refresh) {
         if (refresh) {
             ptrFrameLayout.addPtrUIHandler(headerView);
             headerView.setVisibility(VISIBLE);
         } else {
+            headerView.setVisibility(GONE);
+            ptrFrameLayout.getOffsetToRefresh();
             ptrFrameLayout.removePtrUIHandler(headerView);
-            ptrFrameLayout.getHeaderView().setVisibility(GONE);
-            ptrFrameLayout.getDurationToCloseHeader();
-            ptrFrameLayout.setRatioOfHeaderHeightToRefresh(0);
-            ptrFrameLayout.getDurationToClose();
         }
     }
 
     public void setLoadMore(boolean loadMore) {
         onScollListener.setLoadMore(loadMore);
-        listView.removeFooterView(footView);
+        if (!loadMore)
+            listView.removeFooterView(footView);
     }
 
     /**
@@ -95,7 +95,7 @@ public class BaseListView extends LinearLayout {
         listView.setOnScrollListener(onScollListener);
         ptrFrameLayout.setHeaderView(headerView);
         ptrFrameLayout.addPtrUIHandler(headerView);
-        ptrFrameLayout.setPullToRefresh(false);
+
         /**
          * 注意！
          * 该回调方法必须写！
@@ -109,6 +109,7 @@ public class BaseListView extends LinearLayout {
                 //ptrFrameLayout.autoRefresh();//自动刷新
             }
         });
+        ptrFrameLayout.setPullToRefresh(false);
 
     }
 

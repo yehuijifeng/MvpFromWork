@@ -10,18 +10,12 @@ import rx.Observable;
  * 网络请求的主要枚举
  */
 public enum RequestAction {
-//    GET_INDEX(new RequestParams()) {
-//        @Override
-//        public void getRequest() {
-//            observable = RetrofitManage.getInstance().getService().getIndex();
-//        }
-//    },
-//    GET_GOODS_LIST(new RequestParams()) {
-//        @Override
-//        public void getRequest() {
-//            observable = RetrofitManage.getInstance().getService().getGoodsList(params.getParams());
-//        }
-//    },
+    GET_GOODS_LIST(new RequestParams()) {
+        @Override
+        public void getRequest() {
+            observable = RetrofitManage.getInstance().getService().getGoodsList(params.getParams());
+        }
+    },
 
     GET_DOWN_FILE(new RequestParams()) {
         @Override

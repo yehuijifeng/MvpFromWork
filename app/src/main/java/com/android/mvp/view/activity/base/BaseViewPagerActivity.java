@@ -82,7 +82,6 @@ public abstract class BaseViewPagerActivity extends BaseActivity implements View
             currLayoutParams = (LinearLayout.LayoutParams) defaultItemImageView.getLayoutParams();
             tabMove(getPageNumber() == 0 ? 0 : getPageNumber() - 1, 0);
         }
-
     }
 
     /**
@@ -91,6 +90,7 @@ public abstract class BaseViewPagerActivity extends BaseActivity implements View
     private void initTabView() {
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(getWindowWidth() / mViewList.size(), RelativeLayout.LayoutParams.MATCH_PARENT);
         for (int i = 0; i < mViewList.size(); i++) {
+            //传入父view和当前游标id
             tabViewList.add(setTabView(defaultItemTabView, i));
             tabViewList.get(i).setLayoutParams(layoutParams);
             defaultItemTabView.addView(tabViewList.get(i));
@@ -162,7 +162,7 @@ public abstract class BaseViewPagerActivity extends BaseActivity implements View
 
     /**
      * 当页面滑动的时候会调用此方法
-     * <p>
+     * <p/>
      * arg0 :当前页面，及你点击滑动的页面
      * arg1:当前页面偏移的百分比
      * arg2:当前页面偏移的像素位置
@@ -189,7 +189,7 @@ public abstract class BaseViewPagerActivity extends BaseActivity implements View
 
     /**
      * 此方法是页面跳转完后得到调用
-     * <p>
+     * <p/>
      * arg0是你当前选中的页面的Position(位置编号)。
      */
     @Override
@@ -210,7 +210,7 @@ public abstract class BaseViewPagerActivity extends BaseActivity implements View
 
     /**
      * 此方法是在状态改变的时候调用
-     * <p>
+     * <p/>
      * 中arg0这个参数
      * 有三种状态(0，1，2)。state ==1的时辰默示正在滑动，arg0==2的时辰默示滑动完毕了，arg0==0的时辰默示什么都没做。
      */

@@ -16,7 +16,7 @@
 
     <ImageView
         android:id="@+id/viewpager_image_bar"
-        android:layout_width="100dp"
-        android:layout_height="10dp"
-        android:src="@color/colorAccent" />
+        android:layout_width="1dp"
+        android:layout_height="@dimen/viewpager_image_bar_height"
+        android:src="@color/viewpager_image_bar_color" />
 </LinearLayout>

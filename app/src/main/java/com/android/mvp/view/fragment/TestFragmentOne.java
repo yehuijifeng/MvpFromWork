@@ -63,7 +63,7 @@ public class TestFragmentOne extends BaseFragment<TestFragmentOnePresenter> impl
 
     @Override
     public void showPasswordDialog(String pwd) {
-
+        showShortToast(pwd);
     }
 
     @Override
@@ -127,7 +127,8 @@ public class TestFragmentOne extends BaseFragment<TestFragmentOnePresenter> impl
                 pwdDialog.showPwdDialog("请输入六位数的密码", new PwdDialog.PwdDialogListener() {
                     @Override
                     public void onDetermine(String password) {
-                        showShortToast(password);
+                        presenter.setPassword(password);
+
                     }
 
                     @Override

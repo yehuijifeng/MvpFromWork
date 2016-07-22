@@ -6,9 +6,9 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.mvp.R;
@@ -23,7 +23,7 @@ public class MyTitleView extends LinearLayout {
     private ImageView title_default_back, title_default_right_image, toolbar_color_img;
     private TextView title_default_text, title_default_right_text;
     private LinearLayout toolbar_ly;
-    private RelativeLayout toolbar_color_rl;
+    private LinearLayout toolbar_color_rl;
     private View root;
     //默认标题类型
     private TitleMode mTitleMode = TitleMode.NORMAL;
@@ -44,10 +44,10 @@ public class MyTitleView extends LinearLayout {
     }
 
     private void initView(Context context) {
-        root= LayoutInflater.from(context).inflate(R.layout.base_titleview, this);
+        root = LayoutInflater.from(context).inflate(R.layout.base_titleview, this);
         toolbar_ly = (LinearLayout) root.findViewById(R.id.toolbar_ly);
         title_default_right_image = (ImageView) root.findViewById(R.id.title_default_right_image);
-        toolbar_color_rl= (RelativeLayout) root.findViewById(R.id.toolbar_color_rl);
+        toolbar_color_rl = (LinearLayout) root.findViewById(R.id.toolbar_color_rl);
         title_default_back = (ImageView) root.findViewById(R.id.title_default_back);
         toolbar_color_img = (ImageView) root.findViewById(R.id.toolbar_color_img);
         title_default_text = (TextView) root.findViewById(R.id.title_default_text);
@@ -55,6 +55,17 @@ public class MyTitleView extends LinearLayout {
         title_default_back.setOnClickListener(toBack);
         setTitleMode(TitleMode.NORMAL);
 
+    }
+
+    /**
+     * 将title空出一个标题栏的高度
+     *
+     * @param barHeight
+     */
+    public void setTitleBarHeight(final int barHeight) {
+        ViewGroup.LayoutParams layoutParams = toolbar_color_img.getLayoutParams();
+        layoutParams.height = barHeight;
+        toolbar_color_img.setLayoutParams(layoutParams);
     }
 
     public void setTitleColor(int color) {

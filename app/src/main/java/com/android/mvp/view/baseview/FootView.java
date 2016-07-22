@@ -86,7 +86,6 @@ public class FootView extends LinearLayout {
     public void onFootViewComplete() {
         custom_footer_hint_text.setText(getContext().getResources().getString(R.string.foot_hinit_normal_over));
         custom_footer_bar.setVisibility(View.INVISIBLE);
-
     }
 
     /**

@@ -10,11 +10,6 @@ public class RequestUrls {
     public static final String ROOT_URL = IP + "";
 
     /**
-     * 商城首页
-     */
-    public static final String GET_INDEX_URL = "alsfoxShop/site/index/selectIndexContent.action";
-
-    /**
      * 商品列表
      * params.put("shopInfo.typeId", 0);
      * params.put("shopInfo.index", "pub");

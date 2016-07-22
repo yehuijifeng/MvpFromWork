@@ -1,6 +1,8 @@
 package com.android.mvp.http.interfaces;
 
 
+import com.android.mvp.bean.test.GoodsListBean;
+import com.android.mvp.http.HttpBean;
 import com.android.mvp.http.request.RequestUrls;
 
 import java.util.Map;
@@ -13,6 +15,7 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PartMap;
 import retrofit2.http.QueryMap;
+import rx.Observable;
 
 /**
  * Created by 浩 on 2016/6/22.
@@ -33,11 +36,9 @@ public interface ApiService {
     // http://gc.ditu.aliyun.com/geocoding?a=苏州市
     //那么key中的值也就是从注解path中得到的，它并要求和{}替换符中的字符一致
     //参数不能为null,且不能只有url的参数，还应该包括地址的字段；正确：geocoding?a=苏州市；错误：a=苏州市
-//    @GET(RequestUrls.GET_INDEX_URL)
-//    Observable<HttpBean<IndexBean>> getIndex();
 
-//    @POST(RequestUrls.GET_GOODS_LIST_URL)
-//    Observable<HttpBean<GoodsListBean>> getGoodsList(@QueryMap Map<String, Object> options);
+    @POST(RequestUrls.GET_GOODS_LIST_URL)
+    Observable<HttpBean<GoodsListBean>> getGoodsList(@QueryMap Map<String, Object> options);
 
     @GET(RequestUrls.GET_DOWN_FILE)
     Call<ResponseBody> getDownFile();

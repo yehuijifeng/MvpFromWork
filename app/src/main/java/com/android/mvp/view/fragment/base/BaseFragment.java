@@ -194,6 +194,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
 
     }
 
+    protected void refresh(){}
     /**
      * 提供给子类继承
      * 网路请求返回结果

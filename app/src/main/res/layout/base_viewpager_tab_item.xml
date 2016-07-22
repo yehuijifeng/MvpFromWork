@@ -14,12 +14,14 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:padding="@dimen/padding_and_margin"
-        android:text=""
+        android:text="dfdf"
         android:textColor="@color/bg_viewpager_tab_text"
-        android:textSize="@dimen/text_size" />
+        android:textSize="@dimen/text_size_xxx" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/viewpager_tab_img"
+        android:layout_width="@dimen/viewpager_tab_img_height"
+        android:layout_height="@dimen/viewpager_tab_img_height"
+        android:padding="@dimen/padding_and_margin"
         android:visibility="gone" />
 </LinearLayout>

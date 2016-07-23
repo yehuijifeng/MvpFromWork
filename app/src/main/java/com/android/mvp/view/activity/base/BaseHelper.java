@@ -9,6 +9,12 @@ import android.view.LayoutInflater;
 import android.widget.Toast;
 
 import com.android.mvp.appliaction.ActivityCollector;
+import com.android.mvp.function.RxBus;
+import com.android.mvp.http.StatusCode;
+import com.android.mvp.http.request.RequestAction;
+import com.android.mvp.http.response.ResponseAction;
+import com.android.mvp.http.response.ResponseFinalAction;
+import com.android.mvp.utils.NetWorkUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +44,26 @@ public class BaseHelper {
         inflater = activity.getLayoutInflater();
     }
 
+    /**
+     * 发送网络请求
+     *
+     * @param requesteAction
+     */
+    protected void sendRequest(RequestAction requesteAction) {
+        if (!NetWorkUtils.isConnected(activity)) {
+            //网络错误，服务器错误，等等
+            ResponseAction responseAction = new ResponseFinalAction();
+            responseAction.setRequestCode(StatusCode.NETWORK_ERROR);
+            responseAction.setRequestAction(requesteAction);
+            responseAction.setErrorMessage("网络不可用!");
+            RxBus.getDefault().post(responseAction);
+        } else if (activity.presenter != null) {
+            activity.presenter.sendRequest(requesteAction);
+        }
+    }
+
     public void startActivity(Class<?> cls) {
-        startActivity(cls,null);
+        startActivity(cls, null);
     }
 
     public void startActivity(Class<?> cls, Bundle bundle) {
@@ -227,7 +251,9 @@ public class BaseHelper {
     }
 
 
-    /** 防抖点击事件
+    /**
+     * 防抖点击事件
+     *
      * @param cla
      * @return
      */

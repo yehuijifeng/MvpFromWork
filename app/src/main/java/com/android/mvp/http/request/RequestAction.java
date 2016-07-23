@@ -10,6 +10,7 @@ import rx.Observable;
  * 网络请求的主要枚举
  */
 public enum RequestAction {
+
     GET_GOODS_LIST(new RequestParams()) {
         @Override
         public void getRequest() {

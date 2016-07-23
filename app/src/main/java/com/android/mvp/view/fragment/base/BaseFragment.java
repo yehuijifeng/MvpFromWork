@@ -13,11 +13,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.mvp.function.RxBus;
+import com.android.mvp.http.StatusCode;
+import com.android.mvp.http.request.RequestAction;
 import com.android.mvp.http.response.ResponseAction;
 import com.android.mvp.http.response.ResponseFinalAction;
 import com.android.mvp.http.response.ResponseSuccessAction;
 import com.android.mvp.presenter.BasePresenter;
+import com.android.mvp.utils.NetWorkUtils;
 import com.android.mvp.view.activity.base.BaseHelper;
+import com.android.mvp.view.baseview.LoadingView;
 import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -95,6 +100,11 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
     protected boolean isVisible;
 
     /**
+     * loading页
+     */
+    protected LoadingView loadingView;
+
+    /**
      * 创建视图
      *
      * @param inflater
@@ -131,47 +141,34 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
         //到显示状态为true，不可见为false
         isVisible = isVisibleToUser;
         super.setUserVisibleHint(isVisibleToUser);
-//        if (isVisibleToUser) {
-//            presenter.onResume();
-//            presenter.subscription = presenter.observable
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .subscribe(new Action1<ResponseAction>() {
-//                        @Override
-//                        public void call(ResponseAction responseAction) {
-//                            if (responseAction instanceof ResponseSuccessAction) {
-//                                onRequestSuccess((ResponseSuccessAction) responseAction);
-//                            } else if (responseAction instanceof ResponseFinalAction) {
-//                                onRequestFinal((ResponseFinalAction) responseAction);
-//                            }
-//                        }
-//                    });
-//        } else {
-//            presenter.onStop();
-//        }
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        presenter.onResume();
-        presenter.subscription = presenter.observable
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<ResponseAction>() {
-                    @Override
-                    public void call(ResponseAction responseAction) {
-                        if (responseAction instanceof ResponseSuccessAction) {
-                            onRequestSuccess((ResponseSuccessAction) responseAction);
-                        } else if (responseAction instanceof ResponseFinalAction) {
-                            onRequestFinal((ResponseFinalAction) responseAction);
+        if (presenter != null) {
+            presenter.onResume();
+            presenter.subscription = presenter.observable
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Action1<ResponseAction>() {
+                        @Override
+                        public void call(ResponseAction responseAction) {
+                            if (responseAction instanceof ResponseSuccessAction) {
+                                onRequestSuccess((ResponseSuccessAction) responseAction);
+                            } else if (responseAction instanceof ResponseFinalAction) {
+                                onRequestFinal((ResponseFinalAction) responseAction);
+                            }
                         }
-                    }
-                });
+                    });
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        presenter.onStop();
+        if (presenter != null)
+            presenter.onStop();
     }
 
     private void initProperties(View parentView) {
@@ -181,6 +178,37 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
         root = (ViewGroup) parentView;
         imageLoader = ImageLoader.getInstance();
         outMetrics = helper.outMetrics;
+        initLoadingView();
+    }
+
+    /**
+     * loading遮罩层的加载
+     */
+    private void initLoadingView() {
+        //loadingView = new LoadingView(parentActivity);
+        //root.addView(loadingView);
+    }
+
+    protected void showLoading() {
+        //loadingView.showLoading("正在加载中……");
+    }
+
+    protected void showLoading(String str) {
+        loadingView.showLoading(str);
+    }
+
+    protected void showErrorLoading(String str, String btnStr) {
+//        loadingView.showErrorPrompt(str);
+//        loadingView.setErrorClickListener(btnStr, new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                refresh();
+//            }
+//        });
+    }
+
+    protected void closeLoading() {
+        //loadingView.closeLoadingView();
     }
 
     /**
@@ -191,10 +219,30 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+    }
+
+    /**
+     * 发送网络请求
+     *
+     * @param requesteAction
+     */
+    protected void sendRequest(RequestAction requesteAction) {
+        if (!NetWorkUtils.isConnected(parentActivity)) {
+            //网络错误，服务器错误，等等
+            ResponseAction responseAction = new ResponseFinalAction();
+            responseAction.setRequestCode(StatusCode.NETWORK_ERROR);
+            responseAction.setRequestAction(requesteAction);
+            responseAction.setErrorMessage("网络不可用!");
+            RxBus.getDefault().post(responseAction);
+        } else if (presenter != null) {
+            presenter.sendRequest(requesteAction);
+        }
+    }
+
+    protected void refresh() {
 
     }
 
-    protected void refresh(){}
     /**
      * 提供给子类继承
      * 网路请求返回结果

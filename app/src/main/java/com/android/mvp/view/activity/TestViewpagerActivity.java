@@ -9,6 +9,7 @@ import com.android.mvp.presenter.BasePresenter;
 import com.android.mvp.view.activity.base.BaseViewPagerActivity;
 import com.android.mvp.view.baseview.MyTitleView;
 import com.android.mvp.view.fragment.TestFragmentOne;
+import com.android.mvp.view.fragment.TestListFragment;
 
 /**
  * Created by Luhao on 2016/7/21.
@@ -41,10 +42,10 @@ public class TestViewpagerActivity extends BaseViewPagerActivity {
             }
         });
         mViewList.add(new TestFragmentOne());
+        mViewList.add(new TestListFragment());
         mViewList.add(new TestFragmentOne());
         mViewList.add(new TestFragmentOne());
-        mViewList.add(new TestFragmentOne());
-        setPageNumber(2);
+        setPageNumber(0);
         //showLoading();
     }
 
@@ -54,7 +55,7 @@ public class TestViewpagerActivity extends BaseViewPagerActivity {
         TextView tabText = (TextView) view.findViewById(R.id.viewpager_tab_text);
         switch (position) {
             case 0:
-                tabText.setText("基础");
+                tabText.setText("遮罩框");
                 break;
             case 1:
                 tabText.setText("列表");

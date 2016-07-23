@@ -50,7 +50,7 @@ public class BaseListAdapter extends BaseCollectionAdapter {
             viewGroup.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
             return view;
         } else {
-            View view = View.inflate(baseListFragment.getActivity(), baseListFragment.getItemView(position, itemType), parent);
+            View view = baseListFragment.getActivity().getLayoutInflater().inflate(baseListFragment.getItemView(position, itemType), parent, false);
             ViewGroup viewGroup = (ViewGroup) view.getRootView();
             viewGroup.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
             return view;

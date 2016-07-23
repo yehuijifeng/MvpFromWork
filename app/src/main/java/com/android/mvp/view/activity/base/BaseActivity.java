@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import com.android.mvp.R;
 import com.android.mvp.appliaction.ActivityCollector;
+import com.android.mvp.http.StatusCode;
+import com.android.mvp.http.request.RequestAction;
 import com.android.mvp.http.response.ResponseAction;
 import com.android.mvp.http.response.ResponseFinalAction;
 import com.android.mvp.http.response.ResponseSuccessAction;
@@ -55,14 +57,17 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     protected T presenter;
 
     private BaseHelper baseHelper;
+
     /**
      * imageloader工具类的初始化
      */
-    protected ImageLoader imageLoader = ImageLoader.getInstance();
+    protected ImageLoader imageLoader;
+
     /**
      * 父布局填充
      */
     public LayoutInflater inflater;
+
     /**
      * 根布局
      */
@@ -155,6 +160,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
             }
         }
         initLoadingView();
+        imageLoader = ImageLoader.getInstance();
     }
 
     /**
@@ -189,6 +195,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
             return titleBarHeight;
         }
     }
+
     /**
      * 去设置网络
      */
@@ -196,12 +203,23 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         Intent wifiSettingsIntent = new Intent(Settings.ACTION_SETTINGS);
         startActivity(wifiSettingsIntent);
     }
+
+    /**
+     * 发送网络请求
+     *
+     * @param requesteAction
+     */
+    protected void sendRequest(RequestAction requesteAction) {
+        baseHelper.sendRequest(requesteAction);
+    }
+
     /**
      * 刷新的事件，子类可以重写
      */
     protected void refresh() {
 
     }
+
     /**
      * loading遮罩层的加载
      */
@@ -218,9 +236,9 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         loadingView.showLoading(str);
     }
 
-    protected void showErrorLoading(String str) {
+    protected void showErrorLoading(String str, String btnStr) {
         loadingView.showErrorPrompt(str);
-        loadingView.setErrorClickListener(new View.OnClickListener() {
+        loadingView.setErrorClickListener(btnStr, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 refresh();
@@ -385,10 +403,14 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
      * @param success
      */
     protected void onRequestSuccess(ResponseSuccessAction success) {
+
     }
 
     protected void onRequestFinal(ResponseFinalAction finals) {
-
+        if (finals.getRequestCode() == StatusCode.NETWORK_ERROR) {
+            //无网络链接
+            showErrorLoading(finals.getErrorMessage(), "请重试");
+        }
     }
 
     /**
@@ -415,5 +437,6 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         if (presenter != null) {
             presenter.onDestory();
         }
+        presenter = null;
     }
 }

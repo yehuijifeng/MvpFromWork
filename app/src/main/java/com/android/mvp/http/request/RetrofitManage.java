@@ -111,16 +111,7 @@ public class RetrofitManage {
      * @param requesteAction
      * @return
      */
-    public Subscription sendRequest(Context context, final RequestAction requesteAction) {
-        if (!NetWorkUtils.isConnected(context)) {
-            //网络错误，服务器错误，等等
-            ResponseAction responseAction = new ResponseFinalAction();
-            responseAction.setRequestCode(StatusCode.NETWORK_ERROR);
-            responseAction.setRequestAction(requesteAction);
-            responseAction.setErrorMessage("网络不可用!");
-            RxBus.getDefault().post(responseAction);
-            return null;
-        }
+    public Subscription sendRequest(final RequestAction requesteAction) {
         //预备发送请求，将参数生成Observable
         requesteAction.getRequest();
         return requesteAction.observable

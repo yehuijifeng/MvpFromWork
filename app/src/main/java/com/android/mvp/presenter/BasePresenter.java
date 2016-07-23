@@ -1,6 +1,8 @@
 package com.android.mvp.presenter;
 
 import com.android.mvp.function.RxBus;
+import com.android.mvp.http.request.RequestAction;
+import com.android.mvp.http.request.RetrofitManage;
 import com.android.mvp.http.response.ResponseAction;
 import com.android.mvp.view.interfaces.base.IBaseView;
 
@@ -25,12 +27,25 @@ public abstract class BasePresenter<T extends IBaseView> {
         this.mView = mView;
     }
 
+    /**
+     * 每个页面都会使用的网络请求事件
+     *
+     * @param requesteAction
+     */
+    public void sendRequest(RequestAction requesteAction) {
+        RetrofitManage.getInstance().sendRequest(requesteAction);
+    }
+
     public void onResume() {
         //注册用户信息事件
         observable = RxBus.getDefault().register(ResponseAction.class);
     }
 
     public void onStop() {
+        unsubscride();
+    }
+
+    public void unsubscride() {
         if (subscription != null && !subscription.isUnsubscribed())
             //如果订阅取消订阅
             subscription.unsubscribe();

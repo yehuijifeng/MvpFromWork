@@ -159,6 +159,11 @@ public class LoadingView extends LinearLayout implements View.OnTouchListener {
         if (error_btn != null) error_btn.setOnClickListener(onClickListener);
     }
 
+    public void setErrorClickListener(String str, OnClickListener onClickListener) {
+        if (error_btn != null && !TextUtils.isEmpty(str)) error_btn.setText(str);
+        setErrorClickListener(onClickListener);
+    }
+
     /**
      * 显示错误提示
      *

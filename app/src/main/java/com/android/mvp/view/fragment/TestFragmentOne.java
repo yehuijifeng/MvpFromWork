@@ -59,6 +59,13 @@ public class TestFragmentOne extends BaseFragment<TestFragmentOnePresenter> impl
         listDialog = new ListDialog(parentActivity);
         pwdDialog = new PwdDialog(parentActivity);
         customDialog = new CustomDialog(parentActivity);
+        showLoading();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                closeLoading();
+            }
+        }, 3000);
     }
 
     @Override

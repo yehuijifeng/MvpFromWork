@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center"
     android:padding="@dimen/padding_and_margin">
 
     <ImageView
@@ -10,7 +9,10 @@
         android:layout_width="@dimen/refresh_icon_height"
         android:layout_height="@dimen/refresh_icon_height"
         android:padding="@dimen/padding_and_margin_xx"
-        android:src="@drawable/ic_refresh_arrow" />
+        android:src="@drawable/ic_refresh_arrow"
+        android:layout_alignParentTop="true"
+        android:layout_toLeftOf="@+id/custom_header_linear_layout"
+        android:layout_toStartOf="@+id/custom_header_linear_layout" />
 
     <ProgressBar
         android:id="@+id/custom_header_bar"
@@ -22,8 +24,11 @@
         android:id="@+id/custom_header_linear_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true">
 
         <TextView
             android:id="@+id/custom_header_hint_text"
@@ -52,4 +57,4 @@
         </LinearLayout>
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

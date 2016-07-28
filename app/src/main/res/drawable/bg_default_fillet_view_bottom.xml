@@ -4,18 +4,27 @@
     <item android:state_pressed="false">
         <shape>
             <!-- 设置圆角矩形 -->
-            <corners android:radius="0dp" />
+            <corners
+                android:bottomLeftRadius="@dimen/default_dialog_list_item"
+                android:bottomRightRadius="@dimen/default_dialog_list_item"
+                android:topLeftRadius="0dp"
+                android:topRightRadius="0dp" />
             <!-- 边框的颜色 -->
             <stroke android:width="0dp" android:color="@android:color/white" />
             <!-- 文本框里面的颜色 -->
             <solid android:color="@android:color/white" />
         </shape>
     </item>
+
     <!--设置为false为显示状态-->
     <item android:state_pressed="true">
         <shape>
             <!-- 设置圆角矩形 -->
-            <corners android:radius="0dp" />
+            <corners
+                android:bottomLeftRadius="@dimen/default_dialog_list_item"
+                android:bottomRightRadius="@dimen/default_dialog_list_item"
+                android:topLeftRadius="0dp"
+                android:topRightRadius="0dp" />
             <!-- 边框的颜色 -->
             <stroke android:width="0dp" android:color="@android:color/white" />
             <!-- 文本框里面的颜色 -->

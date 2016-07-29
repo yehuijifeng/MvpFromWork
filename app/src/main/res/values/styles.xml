@@ -46,14 +46,14 @@
     <!--提示框确定按钮样式-->
     <style name="ok_button">
         <item name="android:textColor">@color/dialog_ok_color</item>
-        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:textSize">@dimen/text_size_xxx</item>
         <item name="android:background">@drawable/bg_ok_btn</item>
     </style>
 
     <!--提示框取消按钮样式-->
     <style name="cancel_button">
         <item name="android:textColor">@color/dialog_cancel_color</item>
-        <item name="android:textSize">@dimen/text_size</item>
+        <item name="android:textSize">@dimen/text_size_xxx</item>
         <item name="android:background">@drawable/bg_cancel_btn</item>
     </style>
 

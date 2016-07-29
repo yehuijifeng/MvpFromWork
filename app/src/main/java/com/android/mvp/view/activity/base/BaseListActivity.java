@@ -32,6 +32,8 @@ public abstract class BaseListActivity<T extends BasePresenter> extends BaseActi
     protected BaseListAdapter baseListAdapter;
     protected boolean isRefresh = true, isLoadMore = true;
 
+    private final int DEFAULT_ITEM = 0;
+
     /**
      * 每一行item的数据
      *
@@ -95,6 +97,36 @@ public abstract class BaseListActivity<T extends BasePresenter> extends BaseActi
             baseListView.footView.onFootViewAll();
         }
     }
+
+    /**
+     * 多当前listview有多样化item，则重写该方法
+     *
+     * @param position
+     * @param view
+     * @param parent
+     * @return
+     */
+    public View getView(int position, View view, ViewGroup parent) {
+        return null;
+    }
+
+    /**
+     * item类型的数量
+     * 默认值1；只有一种item类型
+     */
+    public int getTypeCount() {
+        return 1;
+    }
+
+    /**
+     * 每一个item的type
+     *
+     * @param position
+     */
+    public int getItemType(int position) {
+        return DEFAULT_ITEM;
+    }
+
 
     /**
      * 传入头view

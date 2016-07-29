@@ -78,7 +78,7 @@ public class TestListFragment extends BaseListFragment<TestListFragmentPresenter
 
     @Override
     protected void initData() {
-        //showLoading();
+        showLoading();
         getGoodsList();
     }
 
@@ -138,7 +138,7 @@ public class TestListFragment extends BaseListFragment<TestListFragmentPresenter
                 List<GoodsListBean> goodsListBeans = success.getHttpBean().getObjects();
                 addAll(goodsListBeans);
                 loadSuccess();
-                //closeLoading();
+                closeLoading();
                 break;
         }
     }

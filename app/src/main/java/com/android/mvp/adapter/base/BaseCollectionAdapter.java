@@ -34,6 +34,19 @@ public abstract class BaseCollectionAdapter<T> extends BaseAdapter {
     public abstract void getItemData(int position, BaseViewHolder baseViewHolder);
 
     /**
+     * 每一个item的type
+     *
+     * @param position
+     * @return
+     */
+    public abstract int getItemType(int position);
+
+    /**
+     * itemtype的数量
+     */
+    public abstract int getTypeCount();
+
+    /**
      * 当前适配器所显示的行数
      *
      * @return
@@ -84,4 +97,26 @@ public abstract class BaseCollectionAdapter<T> extends BaseAdapter {
         getItemData(position, baseViewHolder);
         return v;
     }
+
+    /**
+     * 每一个item的type
+     *
+     * @param position
+     * @return
+     */
+    @Override
+    public int getItemViewType(int position) {
+        return getItemType(position);
+    }
+
+    /**
+     * itemtype的数量
+     *
+     * @return
+     */
+    @Override
+    public int getViewTypeCount() {
+        return getTypeCount();
+    }
+
 }

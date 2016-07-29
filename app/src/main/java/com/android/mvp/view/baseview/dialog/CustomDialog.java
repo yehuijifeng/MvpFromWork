@@ -65,9 +65,6 @@ public class CustomDialog extends View implements View.OnClickListener {
             dialog_custom_layout.addView(customView);
     }
 
-    public ProgressDialog getDialog() {
-        return dialog;
-    }
 
     /**
      * 关闭dialog

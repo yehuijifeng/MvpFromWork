@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.Toast;
 
+import com.android.mvp.R;
 import com.android.mvp.appliaction.ActivityCollector;
 import com.android.mvp.function.RxBus;
 import com.android.mvp.http.StatusCode;
@@ -15,6 +17,7 @@ import com.android.mvp.http.request.RequestAction;
 import com.android.mvp.http.response.ResponseAction;
 import com.android.mvp.http.response.ResponseFinalAction;
 import com.android.mvp.utils.NetWorkUtils;
+import com.android.mvp.view.baseview.LoadingView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +30,7 @@ public class BaseHelper {
     private BaseActivity activity;
     private Class activityClass;//暂存需要跳转的activity，防抖动
     public DisplayMetrics outMetrics = new DisplayMetrics();//测量当前屏幕
+    private LoadingView loadingView;//view的遮罩层
     /**
      * 父布局
      */
@@ -60,6 +64,23 @@ public class BaseHelper {
         } else if (activity.presenter != null) {
             activity.presenter.sendRequest(requesteAction);
         }
+    }
+
+
+    public void showLoading() {
+        activity.showLoading(activity.getResources().getString(R.string.to_loading));
+    }
+
+    public void showLoading(String str) {
+        activity.showLoading(str);
+    }
+
+    public void showErrorLoading(String str, String btnStr, View.OnClickListener listener) {
+        activity.showErrorLoading(str, btnStr, listener);
+    }
+
+    public void closeLoading() {
+        activity.closeLoading();
     }
 
     public void startActivity(Class<?> cls) {

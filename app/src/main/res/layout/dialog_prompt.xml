@@ -26,6 +26,7 @@
                 style="@style/default_textview_style"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_xxx"
                 android:text="@string/on_prompt" />
 
             <TextView
@@ -35,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="left"
                 android:text="@string/on_content"
-                android:textSize="@dimen/text_size" />
+                android:textSize="@dimen/text_size_xx" />
         </LinearLayout>
 
         <include layout="@layout/dialog_default_button_view" />

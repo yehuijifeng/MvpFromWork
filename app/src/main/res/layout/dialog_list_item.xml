@@ -5,11 +5,15 @@
     android:layout_centerHorizontal="true"
     android:layout_centerVertical="true"
     android:layout_gravity="center"
-    android:layout_marginTop="@dimen/default_hour_height"
     android:layout_marginBottom="@dimen/padding_and_margin_x"
+    android:layout_marginTop="@dimen/default_hour_height"
     android:background="@drawable/bg_default_fillet_view"
     android:gravity="center"
     android:orientation="vertical">
+
+    <View
+        android:id="@+id/hour_view"
+        style="@style/default_hour_view" />
 
     <TextView
         android:id="@+id/list_item_text"

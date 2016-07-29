@@ -44,17 +44,15 @@ public class BaseListAdapter extends BaseCollectionAdapter {
 
     @Override
     public View getItemView(int position, ViewGroup parent) {
+        View view;
         if (listStatus == ACTIVITY_LIST) {
-            View view = baseListActivity.inflater.inflate(baseListActivity.getItemView(position, itemType), parent, false);
-            ViewGroup viewGroup = (ViewGroup) view.getRootView();
-            viewGroup.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-            return view;
+            view = baseListActivity.inflater.inflate(baseListActivity.getItemView(position, itemType), parent, false);
         } else {
-            View view = baseListFragment.getActivity().getLayoutInflater().inflate(baseListFragment.getItemView(position, itemType), parent, false);
-            ViewGroup viewGroup = (ViewGroup) view.getRootView();
-            viewGroup.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-            return view;
+            view = baseListFragment.getActivity().getLayoutInflater().inflate(baseListFragment.getItemView(position, itemType), parent, false);
         }
+        ViewGroup viewGroup = (ViewGroup) view.getRootView();
+        viewGroup.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+        return view;
     }
 
     @Override
@@ -65,6 +63,48 @@ public class BaseListAdapter extends BaseCollectionAdapter {
             baseListFragment.getItemData(position, baseViewHolder, itemType);
     }
 
+    @Override
+    public View getView(int position, View view, ViewGroup parent) {
+        View rootView;
+        if (listStatus == ACTIVITY_LIST) {
+            rootView = baseListActivity.getView(position, view, parent);
+        } else
+            rootView = baseListFragment.getView(position, view, parent);
+        if (rootView == null)
+            return super.getView(position, view, parent);
+        else
+            return rootView;
+    }
+
+    /**
+     * 每一个item的type
+     *
+     * @param position
+     */
+    @Override
+    public int getItemType(int position) {
+        if (listStatus == ACTIVITY_LIST)
+            return baseListActivity.getItemType(position);
+        else
+            return baseListFragment.getItemType(position);
+    }
+
+    /**
+     * item类型的数量
+     * 默认值1；只有一种item类型
+     */
+    @Override
+    public int getTypeCount() {
+        /**不明白原因，如果有不同的item，多少种类型都要再此基础上+1，不然abslistview报下标越界异常*/
+        if (listStatus == ACTIVITY_LIST)
+            return baseListActivity.getTypeCount()+1;
+        else
+            return baseListFragment.getTypeCount()+1;
+    }
+
+    /**
+     * 清楚adapter的内存
+     */
     public void closeAdapter() {
         data = null;
         baseListActivity = null;

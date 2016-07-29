@@ -4,9 +4,11 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.android.mvp.R;
@@ -32,10 +34,12 @@ public class HeaderView extends LinearLayout implements PtrUIHandler {
     private TextView custom_header_hint_text, custom_header_time;
     // 下拉图标
     private ImageView custom_header_image;
-    //正在加载的状态
-    private ProgressBar custom_header_bar;
 
-    private String past_time, current_time;
+    private String current_time;
+
+    private Animation animation;//旋转动画
+    private LinearInterpolator linearInterpolator;//线性插值器，根据时间百分比设置属性百分比
+
     private RefreshListener refreshListener;
 
     public RefreshListener getRefreshListener() {
@@ -72,12 +76,22 @@ public class HeaderView extends LinearLayout implements PtrUIHandler {
         initView();
     }
 
+    private void anim() {
+        //设置旋转动画
+        animation = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);//子心旋转
+        linearInterpolator = new LinearInterpolator();
+        //setInterpolator表示设置旋转速率。
+        animation.setInterpolator(linearInterpolator);
+        animation.setRepeatCount(-1);//-1表示循环运行
+        animation.setDuration(1000);
+    }
+
     /**
      * 初始化视图
      */
     private void initView() {
         inflater = LayoutInflater.from(getContext());//父容器
-        past_time = getContext().getResources().getString(R.string.past_time);
+        //past_time = getContext().getResources().getString(R.string.past_time);
         /**
          * 头部
          */
@@ -85,8 +99,9 @@ public class HeaderView extends LinearLayout implements PtrUIHandler {
         custom_header_hint_text = (TextView) headView.findViewById(R.id.custom_header_hint_text);
         custom_header_time = (TextView) headView.findViewById(R.id.custom_header_time);
         custom_header_image = (ImageView) headView.findViewById(R.id.custom_header_image);
-        custom_header_bar = (ProgressBar) headView.findViewById(R.id.custom_header_bar);
         custom_header_time.setText(DateUtil.getNow(DateUtil.getDatePattern()));
+        //加载动画
+        anim();
     }
 
 
@@ -95,10 +110,10 @@ public class HeaderView extends LinearLayout implements PtrUIHandler {
      */
     @Override
     public void onUIReset(PtrFrameLayout frame) {
-        custom_header_hint_text.setText("下拉刷新");
-        custom_header_bar.setVisibility(GONE);
-        custom_header_image.setVisibility(VISIBLE);
         custom_header_image.setRotation(0);//图片旋转
+        custom_header_hint_text.setText("下拉刷新");
+        custom_header_image.setVisibility(VISIBLE);
+        custom_header_image.setImageResource(R.drawable.ic_refresh_arrow);
     }
 
     /**
@@ -107,7 +122,7 @@ public class HeaderView extends LinearLayout implements PtrUIHandler {
     @Override
     public void onUIRefreshPrepare(PtrFrameLayout frame) {
         custom_header_hint_text.setText(getContext().getResources().getString(R.string.header_hint_normal));
-        custom_header_bar.setVisibility(GONE);
+        custom_header_image.setImageResource(R.drawable.ic_refresh_arrow);
         custom_header_image.setVisibility(VISIBLE);
         custom_header_image.setRotation(0);//图片旋转
         getRefreshListener().onRefreshPrepare(true, frame);
@@ -128,8 +143,8 @@ public class HeaderView extends LinearLayout implements PtrUIHandler {
     @Override
     public void onUIRefreshBegin(PtrFrameLayout frame) {
         custom_header_hint_text.setText(getContext().getResources().getString(R.string.header_hint_normal_ing));
-        custom_header_bar.setVisibility(VISIBLE);
-        custom_header_image.setVisibility(GONE);
+        custom_header_image.setImageResource(R.drawable.ice_default_loading);
+        custom_header_image.setAnimation(animation);
         getRefreshListener().onRefreshBegin(true, frame);
     }
 
@@ -139,8 +154,7 @@ public class HeaderView extends LinearLayout implements PtrUIHandler {
     @Override
     public void onUIRefreshComplete(PtrFrameLayout frame) {
         custom_header_hint_text.setText(getContext().getResources().getString(R.string.header_hint_normal_over));
-        custom_header_bar.setVisibility(GONE);
-        custom_header_image.setVisibility(VISIBLE);
+        custom_header_image.clearAnimation();
         getRefreshListener().onRefreshComplete(true, frame);
         current_time = DateUtil.getNow(DateUtil.getDatePattern());
     }
@@ -152,15 +166,11 @@ public class HeaderView extends LinearLayout implements PtrUIHandler {
         if (currentPosition > mOffsetToRefresh && oldPosition <= mOffsetToRefresh) {
             if (isUnderTouch && status == PtrFrameLayout.PTR_STATUS_PREPARE) {
                 custom_header_hint_text.setText(getContext().getResources().getString(R.string.header_hint_ready));
-                custom_header_bar.setVisibility(GONE);
-                custom_header_image.setVisibility(VISIBLE);
                 custom_header_image.setRotation(180);//图片旋转
             }
         } else if (currentPosition < mOffsetToRefresh && oldPosition > mOffsetToRefresh) {
             if (isUnderTouch && status == PtrFrameLayout.PTR_STATUS_PREPARE) {
-                custom_header_hint_text.setText(getContext().getResources().getString(R.string.header_hint_normal_over));
-                custom_header_bar.setVisibility(GONE);
-                custom_header_image.setVisibility(VISIBLE);
+                custom_header_hint_text.setText(getContext().getResources().getString(R.string.header_hint_normal));
                 custom_header_image.setRotation(0);//图片旋转
             }
         }

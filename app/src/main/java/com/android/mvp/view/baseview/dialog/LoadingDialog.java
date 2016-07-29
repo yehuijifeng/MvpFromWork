@@ -26,36 +26,41 @@ public class LoadingDialog extends View {
     private TextView loading_text;
     private ProgressDialog progressDialog;
     private Animation animation;
+
     public LoadingDialog(Context context) {
         super(context);
     }
+
     private LinearInterpolator linearInterpolator;//线性插值器，根据时间百分比设置属性百分比
+
     /**
      * 关闭dialog
      */
     public void dismissLoadingDialog() {
-        if(loading_img!=null)
-        loading_img.clearAnimation();
-        if(progressDialog!=null)
-        progressDialog.dismiss();
+        if (loading_img != null)
+            loading_img.clearAnimation();
+        if (progressDialog != null)
+            progressDialog.dismiss();
+        progressDialog = null;
     }
 
-    private void initView(){
-        root =  View.inflate(getContext(), R.layout.dialog_loading, null);
+    private void initView() {
+        root = View.inflate(getContext(), R.layout.dialog_loading, null);
         loading_text = (TextView) root.findViewById(R.id.loading_text);
         loading_img = (ImageView) root.findViewById(R.id.loading_img);
 
-        animation= new RotateAnimation(0, 360,Animation.RELATIVE_TO_SELF,0.5f,Animation.RELATIVE_TO_SELF,0.5f);//子心旋转
-        linearInterpolator= new LinearInterpolator();
+        animation = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);//子心旋转
+        linearInterpolator = new LinearInterpolator();
         //setInterpolator表示设置旋转速率。
         animation.setInterpolator(linearInterpolator);
         animation.setRepeatCount(-1);//-1表示循环运行
         animation.setDuration(1000);
 
-        progressDialog=new ProgressDialog(getContext(),R.style.dialog);
+        progressDialog = new ProgressDialog(getContext(), R.style.dialog);
         progressDialog.setCanceledOnTouchOutside(false);
 
     }
+
     public void showLoadingDialog(String loadingStr, Drawable drawable) {
         initView();
         if (!TextUtils.isEmpty(loadingStr))

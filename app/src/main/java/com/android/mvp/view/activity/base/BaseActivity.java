@@ -229,7 +229,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     }
 
     protected void showLoading() {
-        loadingView.showLoading("正在加载中……");
+        loadingView.showLoading(getResources().getString(R.string.to_loading));
     }
 
     protected void showLoading(String str) {
@@ -244,6 +244,11 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
                 refresh();
             }
         });
+    }
+
+    protected void showErrorLoading(String str, String btnStr, View.OnClickListener listener) {
+        loadingView.showErrorPrompt(str);
+        loadingView.setErrorClickListener(btnStr, listener);
     }
 
     protected void closeLoading() {

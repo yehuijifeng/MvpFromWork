@@ -28,7 +28,7 @@ public class TestViewpagerActivity extends BaseViewPagerActivity {
 
     @Override
     protected String setTitleText() {
-        return "分页显示栏";
+        return getResources().getString(R.string.test_viewpager);
     }
 
     @Override

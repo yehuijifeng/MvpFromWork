@@ -41,12 +41,13 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     private Map<String, String> infos = new HashMap<>();
 
     //用于格式化日期,作为日志文件名的一部分
-    private DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
+    private DateFormat formatter;
 
     /**
      * 保证只有一个CrashHandler实例
      */
     private CrashHandler() {
+
     }
 
     public static CrashHandler getInstance() {
@@ -63,6 +64,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
      */
     public void init(Context context) {
         this.context = context;
+        formatter = new SimpleDateFormat(context.getResources().getString(R.string.default_time_type));
         //获取系统默认的UncaughtException处理器
         mDefaultHandler = Thread.getDefaultUncaughtExceptionHandler();
         //设置该CrashHandler为程序的默认处理器
@@ -144,7 +146,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
             }
             return fileName;
         } catch (Exception e) {
-            Log.e(AppConstant.TAG, "写文件时出错...", e);
+            Log.e(AppConstant.TAG, "insert file error!", e);
         }
         return null;
     }

@@ -14,7 +14,7 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:padding="@dimen/padding_and_margin"
-        android:text="dfdf"
+        android:text=""
         android:textColor="@color/bg_viewpager_tab_text"
         android:textSize="@dimen/text_size_xxx" />
 

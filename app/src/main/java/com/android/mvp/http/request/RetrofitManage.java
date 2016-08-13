@@ -1,6 +1,5 @@
 package com.android.mvp.http.request;
 
-import android.content.Context;
 import android.os.Environment;
 
 import com.android.mvp.function.RxBus;
@@ -12,7 +11,6 @@ import com.android.mvp.http.interfaces.ApiService;
 import com.android.mvp.http.response.ResponseAction;
 import com.android.mvp.http.response.ResponseFinalAction;
 import com.android.mvp.http.response.ResponseSuccessAction;
-import com.android.mvp.utils.NetWorkUtils;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -171,16 +169,8 @@ public class RetrofitManage {
     /**
      * 下载文件
      */
-    public void downloadFile(Context context, final RequestAction requestAction, OnProgressListener progressListener) {
-        if (!NetWorkUtils.isConnected(context)) {
-            //网络错误，服务器错误，等等
-            ResponseAction responseAction = new ResponseFinalAction();
-            responseAction.setRequestCode(StatusCode.NETWORK_ERROR);
-            responseAction.setRequestAction(requestAction);
-            responseAction.setErrorMessage("网络不可用!");
-            RxBus.getDefault().post(responseAction);
-            return;
-        }
+    public void downloadFile(final String filename,final RequestAction requestAction, OnProgressListener progressListener) {
+
         onProgressListener = progressListener;
         //预备发送请求，将参数生成Observable
         requestAction.getRequest();
@@ -191,7 +181,7 @@ public class RetrofitManage {
                 try {
                     if (response.isSuccessful()) {
                         InputStream is = response.body().byteStream();
-                        File file = new File(Environment.getExternalStorageDirectory(), "360MobileSafe_6.2.3.1060.apk");
+                        File file = new File(Environment.getExternalStorageDirectory(), filename);
                         FileOutputStream fos = new FileOutputStream(file);
                         BufferedInputStream bis = new BufferedInputStream(is);
                         byte[] buffer = new byte[1024];
@@ -237,16 +227,8 @@ public class RetrofitManage {
     }
 
 
-    public void uploadFile(Context context, final RequestAction requestAction, File[] files, OnProgressListener progressListener) {
-        if (!NetWorkUtils.isConnected(context)) {
-            //网络错误，服务器错误，等等
-            ResponseAction responseAction = new ResponseFinalAction();
-            responseAction.setRequestCode(StatusCode.NETWORK_ERROR);
-            responseAction.setRequestAction(requestAction);
-            responseAction.setErrorMessage("网络不可用!");
-            RxBus.getDefault().post(responseAction);
-            return;
-        }
+    public void uploadFile( final RequestAction requestAction, File[] files, OnProgressListener progressListener) {
+
         final Map<String, RequestBody> photos = new HashMap<>();
         for (File file : files) {
             RequestBody photo = RequestBody.create(MediaType.parse("image/jpg"), file);

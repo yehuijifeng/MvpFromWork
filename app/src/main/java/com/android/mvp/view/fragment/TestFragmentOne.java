@@ -104,7 +104,7 @@ public class TestFragmentOne extends BaseFragment<TestFragmentOnePresenter> impl
                 });
                 break;
             case R.id.list_btn:
-                listDialog.showListDialog(new String[]{"视频电话", "QQ电话"}, new ListDialog.ListOnClickListener() {
+                listDialog.showListDialog(new String[]{"aaa", "bbb", "ccc", "ddd", "eee"}, new ListDialog.ListOnClickListener() {
                     @Override
                     public void onCancel() {
                         showShortToast("取消");

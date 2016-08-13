@@ -39,7 +39,7 @@
             android:layout_weight="0.2"
             android:gravity="center"
             android:padding="@dimen/padding_and_margin_x"
-            android:text="标题"
+            android:text=""
             android:textColor="@android:color/white"
             android:textSize="@dimen/text_size_xxxx" />
 
@@ -69,11 +69,7 @@
             android:src="@drawable/ic_media_fullscreen" />
     </LinearLayout>
 
-    <View
-        style="@style/default_hour_view"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+    <View style="@style/default_hour_view" />
 
 </LinearLayout>
 

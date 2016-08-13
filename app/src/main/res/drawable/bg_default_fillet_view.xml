@@ -4,9 +4,9 @@
     <item android:state_pressed="false">
         <shape>
             <!-- 设置圆角矩形 -->
-            <corners android:radius="0dp" />
+            <corners android:radius="@dimen/default_dialog_fillet" />
             <!-- 边框的颜色 -->
-            <stroke android:width="0dp" android:color="@android:color/white" />
+            <stroke android:width="0dp" android:color="#ffffff" />
             <!-- 文本框里面的颜色 -->
             <solid android:color="@android:color/white" />
         </shape>
@@ -15,12 +15,11 @@
     <item android:state_pressed="true">
         <shape>
             <!-- 设置圆角矩形 -->
-            <corners android:radius="0dp" />
+            <corners android:radius="@dimen/default_dialog_fillet" />
             <!-- 边框的颜色 -->
-            <stroke android:width="0dp" android:color="@android:color/white" />
+            <stroke android:width="0dp" android:color="#ffffff" />
             <!-- 文本框里面的颜色 -->
             <solid android:color="@color/default_gray" />
         </shape>
     </item>
-
 </selector>

@@ -1,9 +1,7 @@
 package com.android.mvp.view.activity;
 
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,8 +23,6 @@ import java.util.List;
 public class TestListActivity extends BaseListActivity<TestListActivityPresenter> implements ITestListView {
 
     int pagNumber = 1;
-    private final int ITEM_TYPE_TEXT = 1;
-    private final int ITEM_TYPE_BTN = 2;
 
     @Override
     public boolean isRefresh() {
@@ -56,89 +52,21 @@ public class TestListActivity extends BaseListActivity<TestListActivityPresenter
     @Override
     public void getItemData(int position, BaseViewHolder baseViewHolder, int itemType) {
         GoodsListBean goodsListBean = (GoodsListBean) getData().get(position);
-        if (itemType == ITEM_TYPE_TEXT) {
-            ViewHolder viewHolder = (ViewHolder) baseViewHolder;
-            imageLoader.displayImage(goodsListBean.getShopIcon(), viewHolder.test_img, MvpAppliaction.getInstance().defaultOptions);
-            viewHolder.test_id_text.setText(goodsListBean.getShopId() + "");
-            viewHolder.test_text.setText(goodsListBean.getShopName());
-        } else if (itemType == ITEM_TYPE_BTN) {
-            ViewHolderTow viewHolderTow = (ViewHolderTow) baseViewHolder;
-            viewHolderTow.test_id_text_tow.setText(goodsListBean.getShopId() + "");
-            viewHolderTow.test_text_tow.setText(goodsListBean.getShopName());
-            viewHolderTow.test_img_tow.setText(goodsListBean.getShopImg());
-        }
-    }
-
-    @Override
-    public View getView(int position, View view, ViewGroup parent) {
-        View v = view;
-        BaseViewHolder baseViewHolder = null;
-        if (getItemType(position) == ITEM_TYPE_TEXT) {
-            if (view == null) {
-                // 说明当前这一行不是重用的
-                v = inflater.inflate(getItemView(position, getItemType(position)), parent, false);
-                // 加载行布局文件，产生具体的一行
-                baseViewHolder = getViewHolder(v, position, getItemType(position));
-                v.setTag(baseViewHolder);// 将vh存储到行的Tag中
-            } else {
-                v = view;
-                // 取出隐藏在行中的Tag--取出隐藏在这一行中的vh控件缓存对象
-                baseViewHolder = (BaseViewHolder) view.getTag();
-            }
-        } else if (getItemType(position) == ITEM_TYPE_BTN) {
-            if (view == null) {
-                // 说明当前这一行不是重用的
-                v = inflater.inflate(getItemView(position, getItemType(position)), parent, false);
-                // 加载行布局文件，产生具体的一行
-                baseViewHolder = getViewHolder(v, position, getItemType(position));
-                v.setTag(baseViewHolder);// 将vh存储到行的Tag中
-            } else {
-                v = view;
-                // 取出隐藏在行中的Tag--取出隐藏在这一行中的vh控件缓存对象
-                baseViewHolder = (BaseViewHolder) view.getTag();
-            }
-        }
-        getItemData(position, baseViewHolder, getItemType(position));
-        return v;
-    }
-
-    @Override
-    public int getTypeCount() {
-        return 2;
-    }
-
-    @Override
-    public int getItemType(int position) {
-        if (position % 2 == 0) return ITEM_TYPE_BTN;
-        return ITEM_TYPE_TEXT;
+        ViewHolder viewHolder = (ViewHolder) baseViewHolder;
+        imageLoader.displayImage(goodsListBean.getShopIcon(), viewHolder.test_img, MvpAppliaction.getInstance().defaultOptions);
+        viewHolder.test_id_text.setText(goodsListBean.getShopId() + "");
+        viewHolder.test_text.setText(goodsListBean.getShopName());
     }
 
     @Override
     public BaseViewHolder getViewHolder(View itemView, int postion, int itemType) {
-        switch (itemType) {
-            case ITEM_TYPE_BTN:
-                return new ViewHolderTow(itemView);
-            case ITEM_TYPE_TEXT:
-                return new ViewHolder(itemView);
-            default:
-                return new ViewHolder(itemView);
-        }
+        return new ViewHolder(itemView);
     }
 
     @Override
     public int getItemView(int position, int itemType) {
-        int id = R.layout.item_test;
-        switch (itemType) {
-            case ITEM_TYPE_BTN:
-                id = R.layout.item_test_tow;
-                break;
-            case ITEM_TYPE_TEXT:
-                id = R.layout.item_test;
-                break;
-        }
-        return id;
+        return R.layout.item_test;
     }
-
 
     @Override
     protected TestListActivityPresenter initPresenter() {
@@ -158,12 +86,12 @@ public class TestListActivity extends BaseListActivity<TestListActivityPresenter
 
     @Override
     protected String setTitleText() {
-        return "列表";
+        return getResources().getString(R.string.test_list);
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        showLongToast("点击了" + position + "行 id:" + id);
+        showLongToast(getResources().getString(R.string.test_laction) + position + "  id:" + id);
     }
 
     @Override
@@ -195,22 +123,6 @@ public class TestListActivity extends BaseListActivity<TestListActivityPresenter
         }
     }
 
-    class ViewHolderTow extends BaseViewHolder {
-        private Button test_id_text_tow, test_text_tow;
-        private TextView test_img_tow;
-
-        public ViewHolderTow(View itemView) {
-            super(itemView);
-        }
-
-        @Override
-        public void initItemView(View itemView) {
-            test_img_tow = (TextView) itemView.findViewById(R.id.test_img_tow);
-            test_id_text_tow = (Button) itemView.findViewById(R.id.test_id_text_tow);
-            test_text_tow = (Button) itemView.findViewById(R.id.test_text_tow);
-        }
-    }
-
     @Override
     protected void onRequestSuccess(ResponseSuccessAction success) {
         super.onRequestSuccess(success);
@@ -232,7 +144,7 @@ public class TestListActivity extends BaseListActivity<TestListActivityPresenter
         switch (finals.getRequestAction()) {
             case GET_GOODS_LIST:
                 loadFinal();
-                showErrorLoading(finals.getErrorMessage(), "刷新");
+                showErrorLoading(finals.getErrorMessage(), getResources().getString(R.string.refresh_btn));
                 break;
         }
     }

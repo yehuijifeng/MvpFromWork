@@ -113,7 +113,7 @@ public class PwdDialog extends View implements TextWatcher, View.OnClickListener
         initView();
         alertDialog.show();
         alertDialog.setContentView(root);
-        pwd_frame_content.setText(wpdStr + "");
+        pwd_frame_content.setText(wpdStr);
     }
 
     @Override

@@ -9,11 +9,16 @@
         android:layout_width="@dimen/refresh_icon_height"
         android:layout_height="@dimen/refresh_icon_height"
         android:padding="@dimen/padding_and_margin_xx"
-        android:scaleType="fitXY"
         android:src="@drawable/ic_refresh_arrow"
         android:layout_alignParentTop="true"
         android:layout_toLeftOf="@+id/custom_header_linear_layout"
         android:layout_toStartOf="@+id/custom_header_linear_layout" />
+
+    <ProgressBar
+        android:id="@+id/custom_header_bar"
+        android:layout_width="@dimen/refresh_icon_height"
+        android:layout_height="@dimen/refresh_icon_height"
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/custom_header_linear_layout"

@@ -11,25 +11,14 @@ import java.util.Date;
  */
 public final class DateUtil {
 	/**
-	 * 英文简写（默认）如：2010-12-01
-	 */
-	public static String FORMAT_SHORT = "yyyy-MM-dd";
-	/**
 	 * 英文全称 如：2010-12-01 23:15:06
 	 */
 	public static String FORMAT_LONG = "yyyy-MM-dd HH:mm:ss";
 	/**
-	 * 英文全称 如：23:15:06
-	 */
-	public static String FORMAT_TIME = "HH:mm:ss";
-	/**
 	 * 精确到毫秒的完整时间 如：yyyy-MM-dd HH:mm:ss.S
 	 */
 	public static String FORMAT_FULL = "yyyy-MM-dd HH:mm:ss.S";
-	/**
-	 * 中文简写 如：2010年12月01日
-	 */
-	public static String FORMAT_SHORT_CN = "yyyy年MM月dd";
+
 	/**
 	 * 中文全称 如：2010年12月01日 23时15分06秒
 	 */

@@ -49,5 +49,4 @@
     <dimen name="default_button_width">70dp</dimen>
     <dimen name="viewpager_image_bar_height">10dp</dimen>
     <dimen name="viewpager_tab_img_height">35dp</dimen>
-    <dimen name="default_dialog_list_item">5dp</dimen>
 </resources>

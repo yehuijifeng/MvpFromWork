@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.android.mvp.R;
 import com.android.mvp.function.RxBus;
 import com.android.mvp.http.StatusCode;
 import com.android.mvp.http.request.RequestAction;
@@ -22,6 +23,7 @@ import com.android.mvp.http.response.ResponseSuccessAction;
 import com.android.mvp.presenter.BasePresenter;
 import com.android.mvp.utils.NetWorkUtils;
 import com.android.mvp.view.activity.base.BaseHelper;
+import com.android.mvp.view.baseview.LoadingView;
 import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -94,10 +96,14 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
     protected ViewGroup root;
 
     /**
-     * 该fragment是否处于显示状态,视图是否加载完成,初始化工作是否已经做过
+     * 该fragment是否处于显示状态
      */
-    protected boolean isVisible, isPrepared = false, isLoaded = false;
+    protected boolean isVisible;
 
+    /**
+     * loading页
+     */
+    protected LoadingView loadingView;
 
     /**
      * 创建视图
@@ -123,8 +129,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         initProperties(view);
         initView(view);
-        isPrepared = true;
-        lazyLoad();
+        initData();
     }
 
     /**
@@ -137,32 +142,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
         //到显示状态为true，不可见为false
         isVisible = isVisibleToUser;
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            onVisible();
-        } else {
-            onInvisible();
-        }
-    }
 
-    /**
-     * 可见
-     */
-    protected void onVisible() {
-        lazyLoad();
-    }
-
-    /**
-     * 不可见
-     */
-    protected void onInvisible() {
-
-    }
-
-
-    private void lazyLoad() {
-        if (!isVisible || !isPrepared || isLoaded) return;
-        initData();
-        isLoaded = true;
     }
 
     @Override
@@ -199,27 +179,37 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
         root = (ViewGroup) parentView;
         imageLoader = ImageLoader.getInstance();
         outMetrics = helper.outMetrics;
+        initLoadingView();
+    }
+
+    /**
+     * loading遮罩层的加载
+     */
+    private void initLoadingView() {
+        //loadingView = new LoadingView(parentActivity);
+        //root.addView(loadingView);
     }
 
     protected void showLoading() {
-        helper.showLoading();
+        //loadingView.showLoading("正在加载中……");
     }
 
     protected void showLoading(String str) {
-        helper.showLoading(str);
+        loadingView.showLoading(str);
     }
 
     protected void showErrorLoading(String str, String btnStr) {
-        helper.showErrorLoading(str, btnStr, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                refresh();
-            }
-        });
+//        loadingView.showErrorPrompt(str);
+//        loadingView.setErrorClickListener(btnStr, new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                refresh();
+//            }
+//        });
     }
 
     protected void closeLoading() {
-        helper.closeLoading();
+        //loadingView.closeLoadingView();
     }
 
     /**
@@ -243,7 +233,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
             ResponseAction responseAction = new ResponseFinalAction();
             responseAction.setRequestCode(StatusCode.NETWORK_ERROR);
             responseAction.setRequestAction(requesteAction);
-            responseAction.setErrorMessage("网络不可用!");
+            responseAction.setErrorMessage(parentActivity.getResources().getString(R.string.network_error));
             RxBus.getDefault().post(responseAction);
         } else if (presenter != null) {
             presenter.sendRequest(requesteAction);

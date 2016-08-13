@@ -26,4 +26,6 @@ public class TestListActivityPresenter extends BasePresenter<ITestListView> {
         model.getGoodsList(context, number);
     }
 
+
+
 }

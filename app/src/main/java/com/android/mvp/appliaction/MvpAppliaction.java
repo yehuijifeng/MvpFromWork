@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.android.mvp.constances.AppConstant;
 import com.android.mvp.function.imageloader.ImageOptions;
+import com.android.mvp.utils.LanguageUtils;
 import com.android.mvp.utils.file.FileInitUtils;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
@@ -56,11 +57,7 @@ public class MvpAppliaction extends Application {
                 .create(new Observable.OnSubscribe<Object>() {
                     @Override
                     public void call(Subscriber<? super Object> subscriber) {
-                        /**
-                         * 全局捕获异常的代理类
-                         */
-//                        CrashHandler crashHandler = CrashHandler.getInstance();
-//                        crashHandler.init(getApplicationContext());
+
                         /**
                          *创建本地项目文件夹
                          */
@@ -81,7 +78,15 @@ public class MvpAppliaction extends Application {
                 .subscribe(new Action1<Object>() {
                     @Override
                     public void call(Object o) {
-
+                        /**
+                         * 全局捕获异常的代理类
+                         */
+                        CrashHandler.getInstance().init(getApplicationContext());
+                        /**
+                         * 适配语言
+                         * */
+                        LanguageUtils languageUtils = new LanguageUtils(MvpAppliaction.this);
+                        languageUtils.adapterLanguage();
                     }
                 });
 

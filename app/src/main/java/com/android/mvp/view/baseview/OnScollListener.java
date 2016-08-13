@@ -2,8 +2,6 @@ package com.android.mvp.view.baseview;
 
 import android.widget.AbsListView;
 
-import com.android.mvp.utils.LogUtils;
-
 
 /**
  * Created by Luhao on 2016/6/28.
@@ -51,9 +49,9 @@ public class OnScollListener implements AbsListView.OnScrollListener {
         if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE) {//滚动停止的时候
             //LogUtils.i("滑动后手指抬起");
             if (isLoadStatus) {
-                LogUtils.i("滑到最后了");
+                //LogUtils.i("滑到最后了");
                 if (isLoadSuccess()) {
-                    LogUtils.i("有效加载，没有重复");
+                   // LogUtils.i("有效加载，没有重复");
                     footView.onFootPrepare();//上拉加载更多
                     footView.onFootViewBegin();//正在加载
                     isLoadSuccess = false;
@@ -61,7 +59,7 @@ public class OnScollListener implements AbsListView.OnScrollListener {
             }
             if (isLoadComplete) {
                 footView.onFootViewAll();
-                LogUtils.i("没有更多数据");
+                //LogUtils.i("没有更多数据");
             }
         } else if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
             //LogUtils.i("滑动中");

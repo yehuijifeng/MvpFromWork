@@ -3,10 +3,12 @@ package com.android.mvp.view.baseview.dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.mvp.R;
+import com.android.mvp.utils.DisplayUtils;
 
 
 /**
@@ -21,10 +23,9 @@ public class ListDialog extends View implements View.OnClickListener {
     private LinearLayout list_layout;
     private ListOnClickListener listOnClickListener;
     private LinearLayout list_exit_layout;
-    //private LinearLayout.LayoutParams layoutParams;
+    private LinearLayout.LayoutParams layoutParams;
     View itemView;
     TextView textView;
-
     public ListDialog(Context context) {
         super(context);
     }
@@ -40,7 +41,7 @@ public class ListDialog extends View implements View.OnClickListener {
         list_layout = (LinearLayout) root.findViewById(R.id.list_layout);
         list_exit_layout = (LinearLayout) root.findViewById(R.id.list_exit_layout);
         list_exit_layout.setOnClickListener(this);
-        alertDialog = new ProgressDialog(getContext(), R.style.dialog);
+        alertDialog = new ProgressDialog(getContext(),R.style.dialog);
     }
 
     /**
@@ -48,7 +49,6 @@ public class ListDialog extends View implements View.OnClickListener {
      */
     public interface ListOnClickListener {
         void onCancel();
-
         void onItems(int item, String itemName);
     }
 
@@ -79,34 +79,15 @@ public class ListDialog extends View implements View.OnClickListener {
     public void showListDialog(String[] itemStr, ListOnClickListener listOnClickListener) {
         this.listOnClickListener = listOnClickListener;
         initView();
-        //layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        //layoutParams.bottomMargin = DisplayUtils.dip2px(getContext(), 0.5f);
-        if (itemStr == null || itemStr.length < 1) return;
-        if (itemStr.length == 1) {
-            itemView = View.inflate(getContext(), R.layout.dialog_list_item, null);
-            textView = (TextView) itemView.findViewById(R.id.list_item_text);
-            textView.setText(itemStr[0]);
-            View view = itemView.findViewById(R.id.hour_view);
-            view.setVisibility(GONE);
-            itemView.setBackgroundDrawable(getContext().getResources().getDrawable(R.drawable.bg_default_fillet_view_bottom_btn));
+        layoutParams=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        layoutParams.bottomMargin= DisplayUtils.dip2px(getContext(), 1);
+        for (int i = 0; i < itemStr.length; i++) {
+            itemView= View.inflate(getContext(), R.layout.dialog_list_item, null);
+            textView= (TextView) itemView.findViewById(R.id.list_item_text);
+            textView.setText(itemStr[i]);
+            itemView.setLayoutParams(layoutParams);
             list_layout.addView(itemView);
-            itemView.setOnClickListener(new onItemClick(0, itemStr[0]));
-        } else {
-            for (int i = 0; i < itemStr.length; i++) {
-                itemView = View.inflate(getContext(), R.layout.dialog_list_item, null);
-                textView = (TextView) itemView.findViewById(R.id.list_item_text);
-                textView.setText(itemStr[i]);
-                //itemView.setLayoutParams(layoutParams);
-                if (itemStr.length > 1 && i == 0) {//最顶部的选项
-                    View view = itemView.findViewById(R.id.hour_view);
-                    view.setVisibility(GONE);
-                    itemView.setBackgroundDrawable(getContext().getResources().getDrawable(R.drawable.bg_default_fillet_view_top));
-                } else if (itemStr.length > 1 && i == itemStr.length - 1) {//最底部的选项
-                    itemView.setBackgroundDrawable(getContext().getResources().getDrawable(R.drawable.bg_default_fillet_view_bottom));
-                }
-                list_layout.addView(itemView);
-                itemView.setOnClickListener(new onItemClick(i, itemStr[i]));
-            }
+            itemView.setOnClickListener(new onItemClick(i,itemStr[i]));
         }
         alertDialog.show();
         alertDialog.setContentView(root);
@@ -115,7 +96,6 @@ public class ListDialog extends View implements View.OnClickListener {
     /**
      * 关闭dialog
      */
-
     public void dismissListDialog() {
 
         if (alertDialog != null)

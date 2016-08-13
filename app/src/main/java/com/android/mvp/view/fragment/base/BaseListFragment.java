@@ -32,7 +32,6 @@ public abstract class BaseListFragment<T extends BasePresenter> extends BaseFrag
     protected BaseListAdapter baseListAdapter;
     protected boolean isRefresh = true, isLoadMore = true;
 
-    private final int DEFAULT_ITEM = 0;
     /**
      * 每一行item的数据
      *
@@ -72,7 +71,7 @@ public abstract class BaseListFragment<T extends BasePresenter> extends BaseFrag
                 listView.addHeaderView(view, null, getIsHeaderViewClick());
             }
         }
-        baseListAdapter = new BaseListAdapter(BaseListAdapter.FRAGMENT_LIST, this, data);
+        baseListAdapter = new BaseListAdapter(BaseListAdapter.FRAGMENT_LIST,this, data);
         listView.setAdapter(baseListAdapter);
         listView.setOnItemClickListener(this);
         listView.addFooterView(baseListView.footView, null, getIsFootViewClick());
@@ -95,35 +94,6 @@ public abstract class BaseListFragment<T extends BasePresenter> extends BaseFrag
         if (finals.getRequestCode() == StatusCode.NOT_MORE_DATA) {
             baseListView.footView.onFootViewAll();
         }
-    }
-
-    /**
-     * 多当前listview有多样化item，则重写该方法
-     *
-     * @param position
-     * @param view
-     * @param parent
-     * @return
-     */
-    public View getView(int position, View view, ViewGroup parent) {
-        return null;
-    }
-
-    /**
-     * item类型的数量
-     * 默认值1；只有一种item类型
-     */
-    public int getTypeCount() {
-        return 1;
-    }
-
-    /**
-     * 每一个item的type
-     *
-     * @param position
-     */
-    public int getItemType(int position) {
-        return DEFAULT_ITEM;
     }
 
     /**

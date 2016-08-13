@@ -78,7 +78,7 @@ public class TestListFragment extends BaseListFragment<TestListFragmentPresenter
 
     @Override
     protected void initData() {
-        showLoading();
+        //showLoading();
         getGoodsList();
     }
 
@@ -135,10 +135,10 @@ public class TestListFragment extends BaseListFragment<TestListFragmentPresenter
             case GET_GOODS_LIST:
                 if (pagNumber == 1)
                     clearAll();
-                 List<GoodsListBean> goodsListBeans = success.getHttpBean().getObjects();
+                List<GoodsListBean> goodsListBeans = success.getHttpBean().getObjects();
                 addAll(goodsListBeans);
                 loadSuccess();
-                closeLoading();
+                //closeLoading();
                 break;
         }
     }

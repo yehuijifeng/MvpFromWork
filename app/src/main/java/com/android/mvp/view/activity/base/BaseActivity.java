@@ -229,7 +229,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     }
 
     protected void showLoading() {
-        loadingView.showLoading(getResources().getString(R.string.to_loading));
+        loadingView.showLoading(getResources().getString(R.string.header_hint_loading));
     }
 
     protected void showLoading(String str) {
@@ -244,11 +244,6 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
                 refresh();
             }
         });
-    }
-
-    protected void showErrorLoading(String str, String btnStr, View.OnClickListener listener) {
-        loadingView.showErrorPrompt(str);
-        loadingView.setErrorClickListener(btnStr, listener);
     }
 
     protected void closeLoading() {
@@ -414,7 +409,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     protected void onRequestFinal(ResponseFinalAction finals) {
         if (finals.getRequestCode() == StatusCode.NETWORK_ERROR) {
             //无网络链接
-            showErrorLoading(finals.getErrorMessage(), "请重试");
+            showErrorLoading(finals.getErrorMessage(), getResources().getString(R.string.restart_btn));
         }
     }
 

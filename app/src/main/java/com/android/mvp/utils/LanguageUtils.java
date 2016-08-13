@@ -1,5 +1,6 @@
 package com.android.mvp.utils;
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -20,21 +21,26 @@ public class LanguageUtils {
 
     //保存app可适配的语言
     public static Map<String, Locale> localeMap = new HashMap<>();
+    private SharedPreferencesUtils sharedPreferences;
 
     static {
         localeMap.put(Locale.CHINA.getLanguage(), Locale.CHINA);
         localeMap.put(Locale.ENGLISH.getLanguage(), Locale.ENGLISH);
     }
 
+    public LanguageUtils(Context context) {
+        sharedPreferences = new SharedPreferencesUtils(context);
+    }
+
     /**
      * 适配本机语言
      */
     public void adapterLanguage() {
-        SharedPreferencesUtils sharedPreferences = new SharedPreferencesUtils(MvpAppliaction.getInstance());
-        if (TextUtils.isEmpty(sharedPreferences.getString(AppConstant.APP_LANGUAGE)))
+        String language = sharedPreferences.getString(AppConstant.APP_LANGUAGE);
+        if (TextUtils.isEmpty(language))
             setUserLanguage(getUserLanguage());
         else {
-            setUserLanguage(localeMap.get(sharedPreferences.getString(AppConstant.APP_LANGUAGE, AppConstant.DEFAULT_LANGUAGE)));
+            setUserLanguage(localeMap.get(language));
         }
     }
 
@@ -50,11 +56,14 @@ public class LanguageUtils {
      * 修改当前语言
      */
     public String setUserLanguage(Locale locale) {
+        if (locale == null)
+            locale = getUserLanguage();
         //选择语言
         Configuration config = MvpAppliaction.getInstance().getResources().getConfiguration();
         DisplayMetrics dm = MvpAppliaction.getInstance().getResources().getDisplayMetrics();
         config.locale = locale;
         MvpAppliaction.getInstance().getResources().updateConfiguration(config, dm);
+        sharedPreferences.saveString(AppConstant.DEFAULT_LANGUAGE, locale.getLanguage());
         return MvpAppliaction.getInstance().getResources().getConfiguration().locale.getCountry();
     }
 }

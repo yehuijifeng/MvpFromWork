@@ -46,7 +46,6 @@ public class TestViewpagerActivity extends BaseViewPagerActivity {
         mViewList.add(new TestFragmentOne());
         mViewList.add(new TestFragmentOne());
         setPageNumber(0);
-        //showLoading();
     }
 
     @Override

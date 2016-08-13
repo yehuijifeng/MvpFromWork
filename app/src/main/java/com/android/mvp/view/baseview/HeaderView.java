@@ -16,6 +16,7 @@ import java.text.ParseException;
 
 import in.srain.cube.views.ptr.PtrFrameLayout;
 import in.srain.cube.views.ptr.PtrUIHandler;
+import in.srain.cube.views.ptr.indicator.PtrIndicator;
 
 /**
  * Created by yehuijifeng
@@ -145,26 +146,26 @@ public class HeaderView extends LinearLayout implements PtrUIHandler {
         current_time = DateUtil.getNow(DateUtil.getDatePattern());
     }
 
-    @Override
-    public void onUIPositionChange(PtrFrameLayout frame, boolean isUnderTouch, byte status, int oldPosition, int currentPosition, float oldPercent, float currentPercent) {
-        int mOffsetToRefresh = frame.getOffsetToRefresh();
-        /**如果视图的达到下拉刷新高度大于当前位置，并且小于或等于原来的视图的高度则为下拉刷新未达到状态*/
-        if (currentPosition > mOffsetToRefresh && oldPosition <= mOffsetToRefresh) {
-            if (isUnderTouch && status == PtrFrameLayout.PTR_STATUS_PREPARE) {
-                custom_header_hint_text.setText(getContext().getResources().getString(R.string.header_hint_ready));
-                custom_header_bar.setVisibility(GONE);
-                custom_header_image.setVisibility(VISIBLE);
-                custom_header_image.setRotation(180);//图片旋转
-            }
-        } else if (currentPosition < mOffsetToRefresh && oldPosition > mOffsetToRefresh) {
-            if (isUnderTouch && status == PtrFrameLayout.PTR_STATUS_PREPARE) {
-                custom_header_hint_text.setText(getContext().getResources().getString(R.string.header_hint_normal_over));
-                custom_header_bar.setVisibility(GONE);
-                custom_header_image.setVisibility(VISIBLE);
-                custom_header_image.setRotation(0);//图片旋转
-            }
-        }
-    }
+//    @Override
+//    public void onUIPositionChange(PtrFrameLayout frame, boolean isUnderTouch, byte status, int oldPosition, int currentPosition, float oldPercent, float currentPercent) {
+//        int mOffsetToRefresh = frame.getOffsetToRefresh();
+//        /**如果视图的达到下拉刷新高度大于当前位置，并且小于或等于原来的视图的高度则为下拉刷新未达到状态*/
+//        if (currentPosition > mOffsetToRefresh && oldPosition <= mOffsetToRefresh) {
+//            if (isUnderTouch && status == PtrFrameLayout.PTR_STATUS_PREPARE) {
+//                custom_header_hint_text.setText(getContext().getResources().getString(R.string.header_hint_ready));
+//                custom_header_bar.setVisibility(GONE);
+//                custom_header_image.setVisibility(VISIBLE);
+//                custom_header_image.setRotation(180);//图片旋转
+//            }
+//        } else if (currentPosition < mOffsetToRefresh && oldPosition > mOffsetToRefresh) {
+//            if (isUnderTouch && status == PtrFrameLayout.PTR_STATUS_PREPARE) {
+//                custom_header_hint_text.setText(getContext().getResources().getString(R.string.header_hint_normal_over));
+//                custom_header_bar.setVisibility(GONE);
+//                custom_header_image.setVisibility(VISIBLE);
+//                custom_header_image.setRotation(0);//图片旋转
+//            }
+//        }
+//    }
 
     /**
      * 位置改变
@@ -178,25 +179,25 @@ public class HeaderView extends LinearLayout implements PtrUIHandler {
      *                     PTR_STATUS_COMPLETE = 4; 加载完成
      * @param ptrIndicator 指示器
      */
-//    @Override
-//    public void onUIPositionChange(PtrFrameLayout frame, boolean isUnderTouch, byte status, PtrIndicator ptrIndicator) {
-//        int mOffsetToRefresh = frame.getOffsetToRefresh();
-//        /**如果视图的达到下拉刷新高度大于当前位置，并且小于或等于原来的视图的高度则为下拉刷新未达到状态*/
-//
-//        if (ptrIndicator.getCurrentPosY() > mOffsetToRefresh && ptrIndicator.getLastPosY() <= mOffsetToRefresh) {
-//            if (isUnderTouch && status == PtrFrameLayout.PTR_STATUS_PREPARE) {
-//                custom_header_hint_text.setText(getContext().getResources().getString(R.string.header_hint_ready));
-//                custom_header_bar.setVisibility(GONE);
-//                custom_header_image.setVisibility(VISIBLE);
-//                custom_header_image.setRotation(180);//图片旋转
-//            }
-//        } else if (ptrIndicator.getCurrentPosY() < mOffsetToRefresh && ptrIndicator.getLastPosY() > mOffsetToRefresh) {
-//            if (isUnderTouch && status == PtrFrameLayout.PTR_STATUS_PREPARE) {
-//                custom_header_hint_text.setText(getContext().getResources().getString(R.string.header_hint_normal_over));
-//                custom_header_bar.setVisibility(GONE);
-//                custom_header_image.setVisibility(VISIBLE);
-//                custom_header_image.setRotation(0);//图片旋转
-//            }
-//        }
-//    }
+    @Override
+    public void onUIPositionChange(PtrFrameLayout frame, boolean isUnderTouch, byte status, PtrIndicator ptrIndicator) {
+        int mOffsetToRefresh = frame.getOffsetToRefresh();
+        /**如果视图的达到下拉刷新高度大于当前位置，并且小于或等于原来的视图的高度则为下拉刷新未达到状态*/
+
+        if (ptrIndicator.getCurrentPosY() > mOffsetToRefresh && ptrIndicator.getLastPosY() <= mOffsetToRefresh) {
+            if (isUnderTouch && status == PtrFrameLayout.PTR_STATUS_PREPARE) {
+                custom_header_hint_text.setText(getContext().getResources().getString(R.string.header_hint_ready));
+                custom_header_bar.setVisibility(GONE);
+                custom_header_image.setVisibility(VISIBLE);
+                custom_header_image.setRotation(180);//图片旋转
+            }
+        } else if (ptrIndicator.getCurrentPosY() < mOffsetToRefresh && ptrIndicator.getLastPosY() > mOffsetToRefresh) {
+            if (isUnderTouch && status == PtrFrameLayout.PTR_STATUS_PREPARE) {
+                custom_header_hint_text.setText(getContext().getResources().getString(R.string.header_hint_normal_over));
+                custom_header_bar.setVisibility(GONE);
+                custom_header_image.setVisibility(VISIBLE);
+                custom_header_image.setRotation(0);//图片旋转
+            }
+        }
+    }
 }

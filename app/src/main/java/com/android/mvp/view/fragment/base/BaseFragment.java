@@ -101,12 +101,22 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
     protected boolean isVisible;
 
     /**
+     * 该fragment是否准备好了
+     */
+    protected boolean isPrepared;
+
+    /**
+     * 该fragment是否已经加载过了
+     */
+    protected boolean isLoaded;
+
+    /**
      * loading页
      */
     protected LoadingView loadingView;
 
     /**
-     * 创建视图
+     * 创建视图,传入根view
      *
      * @param inflater
      * @param container
@@ -120,7 +130,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
     }
 
     /**
-     * 视图创建
+     * 视图创建,当前视图被调用的时候，activity才会被传入进来
      *
      * @param view
      * @param savedInstanceState
@@ -129,7 +139,9 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         initProperties(view);
         initView(view);
-        initData();
+        lazyLoad();
+        isPrepared = true;//视图准备好了
+        onVisible();
     }
 
     /**
@@ -139,15 +151,18 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
      */
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
-        //到显示状态为true，不可见为false
-        isVisible = isVisibleToUser;
         super.setUserVisibleHint(isVisibleToUser);
+        isVisible = isVisibleToUser;
+        if (isVisibleToUser) {
 
+        } else {
+            onInvisible();
+        }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
+    //fragment 显示
+    protected void onVisible() {
+        if (!isVisible || !isPrepared) return;
         if (presenter != null) {
             presenter.onResume();
             presenter.subscription = presenter.observable
@@ -165,11 +180,17 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
         }
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
+    //fragment 隐藏
+    protected void onInvisible() {
         if (presenter != null)
             presenter.onStop();
+    }
+
+    //延迟加载,每一个fragment的延迟加载只会调用一次
+    protected void lazyLoad() {
+        if (!isVisible || !isPrepared || isLoaded) return;
+        initData();
+        isLoaded = true;
     }
 
     private void initProperties(View parentView) {

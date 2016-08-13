@@ -29,7 +29,7 @@ public class TestListFragment extends BaseListFragment<TestListFragmentPresenter
 
     @Override
     public boolean isRefresh() {
-        return true;
+        return false;
     }
 
     @Override
@@ -80,6 +80,7 @@ public class TestListFragment extends BaseListFragment<TestListFragmentPresenter
     protected void initData() {
         //showLoading();
         getGoodsList();
+        setRefresh(true);
     }
 
 
@@ -89,6 +90,7 @@ public class TestListFragment extends BaseListFragment<TestListFragmentPresenter
         RequestAction.GET_GOODS_LIST.params.getParams().put("pageNum", pagNumber);
         //发送请求,返回订阅
         Subscription subscription = RetrofitManage.getInstance().sendRequest(RequestAction.GET_GOODS_LIST);
+
 //        if (subscription != null && !subscription.isUnsubscribed())
 //            //如果订阅取消订阅
 //            subscription.unsubscribe();

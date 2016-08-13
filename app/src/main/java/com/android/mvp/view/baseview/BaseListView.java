@@ -31,17 +31,21 @@ public class BaseListView extends LinearLayout {
         onScollListener.setLoadSuccess(isLoadMore);
     }
 
+    /**
+     * 设置下拉刷新控件是否可以刷新
+     *
+     * @param refresh
+     */
     public void setRefresh(boolean refresh) {
-        if (refresh) {
-            ptrFrameLayout.addPtrUIHandler(headerView);
-            headerView.setVisibility(VISIBLE);
-        } else {
-            headerView.setVisibility(GONE);
-            ptrFrameLayout.getOffsetToRefresh();
-            ptrFrameLayout.removePtrUIHandler(headerView);
-        }
+        if (ptrFrameLayout != null)
+            ptrFrameLayout.setEnabled(refresh);
     }
 
+    /**
+     * 设置加载更多
+     *
+     * @param loadMore
+     */
     public void setLoadMore(boolean loadMore) {
         onScollListener.setLoadMore(loadMore);
         if (!loadMore)

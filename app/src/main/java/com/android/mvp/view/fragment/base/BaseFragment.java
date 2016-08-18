@@ -139,9 +139,9 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         initProperties(view);
         initView(view);
-        lazyLoad();
         isPrepared = true;//视图准备好了
         onVisible();
+
     }
 
     /**
@@ -154,11 +154,38 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
         super.setUserVisibleHint(isVisibleToUser);
         isVisible = isVisibleToUser;
         if (isVisibleToUser) {
-
+            onVisible();
         } else {
             onInvisible();
         }
     }
+
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        if (presenter != null) {
+//            presenter.onResume();
+//            presenter.subscription = presenter.observable
+//                    .observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe(new Action1<ResponseAction>() {
+//                        @Override
+//                        public void call(ResponseAction responseAction) {
+//                            if (responseAction instanceof ResponseSuccessAction) {
+//                                onRequestSuccess((ResponseSuccessAction) responseAction);
+//                            } else if (responseAction instanceof ResponseFinalAction) {
+//                                onRequestFinal((ResponseFinalAction) responseAction);
+//                            }
+//                        }
+//                    });
+//        }
+//    }
+//
+//    @Override
+//    public void onStop() {
+//        super.onStop();
+//        if (presenter != null)
+//            presenter.onStop();
+//    }
 
     //fragment 显示
     protected void onVisible() {
@@ -178,10 +205,12 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
                         }
                     });
         }
+        lazyLoad();
     }
 
     //fragment 隐藏
     protected void onInvisible() {
+        if (isVisible || !isPrepared) return;
         if (presenter != null)
             presenter.onStop();
     }

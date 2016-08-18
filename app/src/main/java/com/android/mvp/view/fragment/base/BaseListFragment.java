@@ -71,7 +71,7 @@ public abstract class BaseListFragment<T extends BasePresenter> extends BaseFrag
                 listView.addHeaderView(view, null, getIsHeaderViewClick());
             }
         }
-        baseListAdapter = new BaseListAdapter(BaseListAdapter.FRAGMENT_LIST,this, data);
+        baseListAdapter = new BaseListAdapter(BaseListAdapter.FRAGMENT_LIST, this, data);
         listView.setAdapter(baseListAdapter);
         listView.setOnItemClickListener(this);
         listView.addFooterView(baseListView.footView, null, getIsFootViewClick());
@@ -87,12 +87,17 @@ public abstract class BaseListFragment<T extends BasePresenter> extends BaseFrag
             baseListView.setOnExecuteScoll(true);
             baseListView.footView.onFootPrepare();
         }
+        if (isRefresh())
+            baseListView.closeRefreshView();
     }
 
     @Override
     protected void onRequestFinal(ResponseFinalAction finals) {
         if (finals.getRequestCode() == StatusCode.NOT_MORE_DATA) {
             baseListView.footView.onFootViewAll();
+        }
+        if (isRefresh()) {
+            baseListView.closeRefreshView();
         }
     }
 
@@ -249,9 +254,9 @@ public abstract class BaseListFragment<T extends BasePresenter> extends BaseFrag
     }
 
 
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        baseListAdapter.closeAdapter();
-//    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        baseListAdapter.closeAdapter();
+    }
 }

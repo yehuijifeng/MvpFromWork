@@ -44,7 +44,6 @@ public class TestFragmentOne extends BaseFragment<TestFragmentOnePresenter> impl
         zidingyi_btn = (Button) parentView.findViewById(R.id.zidingyi_btn);
         list_btn = (Button) parentView.findViewById(R.id.list_btn);
         pwd_btn = (Button) parentView.findViewById(R.id.pwd_btn);
-
         loading_btn.setOnClickListener(this);
         tishi_btn.setOnClickListener(this);
         zidingyi_btn.setOnClickListener(this);

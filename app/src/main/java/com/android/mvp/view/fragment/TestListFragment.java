@@ -18,6 +18,7 @@ import com.android.mvp.view.fragment.base.BaseListFragment;
 import com.android.mvp.view.interfaces.ITestListFragment;
 
 import java.util.List;
+import java.util.Map;
 
 import rx.Subscription;
 
@@ -27,10 +28,10 @@ import rx.Subscription;
 public class TestListFragment extends BaseListFragment<TestListFragmentPresenter> implements ITestListFragment {
     int pagNumber = 1;
 
-    @Override
-    public boolean isRefresh() {
-        return false;
-    }
+//    @Override
+//    public boolean isRefresh() {
+//        return false;
+//    }
 
     @Override
     public boolean isLoadMore() {
@@ -79,15 +80,18 @@ public class TestListFragment extends BaseListFragment<TestListFragmentPresenter
     @Override
     protected void initData() {
         //showLoading();
+        //setRefresh(false);
         getGoodsList();
         setRefresh(true);
     }
 
 
     private void getGoodsList() {
-        RequestAction.GET_GOODS_LIST.params.getParams().put("shopInfo.typeId", 0);
-        RequestAction.GET_GOODS_LIST.params.getParams().put("shopInfo.index", "pub");
-        RequestAction.GET_GOODS_LIST.params.getParams().put("pageNum", pagNumber);
+        Map<String, Object> params = RequestAction.GET_GOODS_LIST.params.getParams();
+        params.put("shopInfo.typeId", 0);
+        params.put("shopInfo.index", "pub");
+        params.put("pageNum", pagNumber);
+
         //发送请求,返回订阅
         Subscription subscription = RetrofitManage.getInstance().sendRequest(RequestAction.GET_GOODS_LIST);
 
@@ -150,6 +154,7 @@ public class TestListFragment extends BaseListFragment<TestListFragmentPresenter
         super.onRequestFinal(finals);
         switch (finals.getRequestAction()) {
             case GET_GOODS_LIST:
+                showLongToast(finals.getErrorMessage());
                 loadFinal();
                 showErrorLoading(finals.getErrorMessage(), "刷新");
                 break;

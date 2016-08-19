@@ -2,6 +2,7 @@ package com.android.mvp.view.baseview.dialog;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -19,7 +20,7 @@ public class CustomDialog extends View implements View.OnClickListener {
     private View root;
     private Button dialog_default_ok_btn, dialog_default_cancel_btn;
     private ProgressDialog dialog;
-    private CustomOnClickListener customOnClickListener;
+    private OnCustomClickListener customOnClickListener;
     private LinearLayout dialog_custom_layout;
 
     public CustomDialog(Context context) {
@@ -33,7 +34,7 @@ public class CustomDialog extends View implements View.OnClickListener {
         dialog_default_cancel_btn = (Button) root.findViewById(R.id.dialog_default_cancel_btn);
         dialog_default_ok_btn.setOnClickListener(this);
         dialog_default_cancel_btn.setOnClickListener(this);
-        dialog = new ProgressDialog(getContext(),R.style.dialog);
+        dialog = new ProgressDialog(getContext(), R.style.dialog);
         dialog.show();
         dialog.setContentView(root);
     }
@@ -52,17 +53,25 @@ public class CustomDialog extends View implements View.OnClickListener {
     /**
      * 确定和返回键的回调接口
      */
-    public interface CustomOnClickListener {
+    public interface OnCustomClickListener {
         void onDetermine();
 
         void onCancel();
     }
 
-    public void showCustomDialog(View customView, CustomOnClickListener customOnClickListener) {
+    public void showCustomDialog(View customView, OnCustomClickListener customOnClickListener) {
+        showCustomDialog(customView, null, null, customOnClickListener);
+    }
+
+    public void showCustomDialog(View customView, String btn1, String btn2, OnCustomClickListener customOnClickListener) {
         this.customOnClickListener = customOnClickListener;
         initView();
         if (customView != null)
             dialog_custom_layout.addView(customView);
+        if (!TextUtils.isEmpty(btn1))
+            dialog_default_ok_btn.setText(btn1);
+        if (!TextUtils.isEmpty(btn2))
+            dialog_default_cancel_btn.setText(btn2);
     }
 
     public ProgressDialog getDialog() {

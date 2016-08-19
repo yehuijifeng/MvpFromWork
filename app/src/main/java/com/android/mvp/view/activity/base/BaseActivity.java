@@ -23,7 +23,6 @@ import com.android.mvp.http.response.ResponseAction;
 import com.android.mvp.http.response.ResponseFinalAction;
 import com.android.mvp.http.response.ResponseSuccessAction;
 import com.android.mvp.presenter.BasePresenter;
-import com.android.mvp.view.baseview.LoadingView;
 import com.android.mvp.view.baseview.MyTitleView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -72,11 +71,6 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
      * 根布局
      */
     protected ViewGroup root, rootGroup;
-
-    /**
-     * loading页
-     */
-    protected LoadingView loadingView;
 
     /**
      * activity的title
@@ -148,9 +142,9 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         presenter = initPresenter();
         ActivityCollector.addActivity(this);
         baseHelper = new BaseHelper(this);
-        rootGroup = (ViewGroup) findViewById(android.R.id.content);
-        root = (ViewGroup) rootGroup.getChildAt(0);
-        inflater = this.getLayoutInflater();
+        rootGroup = baseHelper.getRootGroup();
+        root = baseHelper.getRoot();
+        inflater = baseHelper.getInflater();
         mTitleView = (MyTitleView) findViewById(R.id.default_title_view);
         if (mTitleView != null) {
             if (setCustomToolbar() != null) {
@@ -159,7 +153,6 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
                 mTitleView.setTitleText(setTitleText());
             }
         }
-        initLoadingView();
         imageLoader = ImageLoader.getInstance();
     }
 
@@ -220,25 +213,17 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
     }
 
-    /**
-     * loading遮罩层的加载
-     */
-    private void initLoadingView() {
-        loadingView = new LoadingView(this);
-        rootGroup.addView(loadingView);
-    }
 
     protected void showLoading() {
-        loadingView.showLoading(getResources().getString(R.string.header_hint_loading));
+        baseHelper.showLoading();
     }
 
     protected void showLoading(String str) {
-        loadingView.showLoading(str);
+        baseHelper.showLoading(str);
     }
 
     protected void showErrorLoading(String str, String btnStr) {
-        loadingView.showErrorPrompt(str);
-        loadingView.setErrorClickListener(btnStr, new View.OnClickListener() {
+        baseHelper.showErrorLoading(str, btnStr, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 refresh();
@@ -247,7 +232,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     }
 
     protected void closeLoading() {
-        loadingView.closeLoadingView();
+        baseHelper.closeLoading();
     }
 
     /**

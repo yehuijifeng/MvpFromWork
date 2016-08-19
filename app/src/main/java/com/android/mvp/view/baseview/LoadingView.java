@@ -123,6 +123,7 @@ public class LoadingView extends LinearLayout implements View.OnTouchListener {
      * @param loadingStr loading加载提示文字
      */
     public void showLoading(Drawable drawable, String loadingStr) {
+        //setVisibility(VISIBLE);
         initRootView();
         getDialogStyle();
         error_icon_img.setVisibility(GONE);

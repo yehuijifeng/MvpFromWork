@@ -3,6 +3,7 @@ package com.android.mvp.view.baseview.dialog;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
@@ -60,7 +61,7 @@ public class PwdDialog extends View implements TextWatcher, View.OnClickListener
         pwd_cancel_btn = (Button) root.findViewById(R.id.dialog_default_cancel_btn);
         pwd_cancel_btn.setOnClickListener(this);
         pwd_ok_btn.setEnabled(false);
-        alertDialog = new AlertDialog.Builder(getContext(),R.style.dialog).setView(new EditText(getContext())).create();
+        alertDialog = new AlertDialog.Builder(getContext(), R.style.dialog).setView(new EditText(getContext())).create();
         //alertDialog.setCancelable(false);
         alertDialog.setCanceledOnTouchOutside(false);
     }
@@ -83,6 +84,7 @@ public class PwdDialog extends View implements TextWatcher, View.OnClickListener
      */
     public interface PwdDialogListener {
         void onDetermine(String password);
+
         void onCancel();
     }
 
@@ -108,12 +110,20 @@ public class PwdDialog extends View implements TextWatcher, View.OnClickListener
      * @param wpdStr            提示框中的文字
      * @param pwdDialogListener 确定，返回键的回调函数
      */
-    public void showPwdDialog(final String wpdStr, final PwdDialogListener pwdDialogListener) {
+    public void showPwdDialog(String wpdStr, PwdDialogListener pwdDialogListener) {
+        showPwdDialog(wpdStr, null, null, pwdDialogListener);
+    }
+
+    public void showPwdDialog(String wpdStr, String btn1, String btn2, PwdDialogListener pwdDialogListener) {
         this.pwdDialogListener = pwdDialogListener;
         initView();
         alertDialog.show();
         alertDialog.setContentView(root);
         pwd_frame_content.setText(wpdStr);
+        if (!TextUtils.isEmpty(btn1))
+            pwd_ok_btn.setText(btn1);
+        if (!TextUtils.isEmpty(btn2))
+            pwd_cancel_btn.setText(btn2);
     }
 
     @Override

@@ -53,11 +53,11 @@ public class TestFragmentOne extends BaseFragment<TestFragmentOnePresenter> impl
 
     @Override
     protected void initData() {
-        loadingDialog = new LoadingDialog(parentActivity);
-        promptDialog = new PromptDialog(parentActivity);
-        listDialog = new ListDialog(parentActivity);
-        pwdDialog = new PwdDialog(parentActivity);
-        customDialog = new CustomDialog(parentActivity);
+        loadingDialog = new LoadingDialog(getActivity());
+        promptDialog = new PromptDialog(getActivity());
+        listDialog = new ListDialog(getActivity());
+        pwdDialog = new PwdDialog(getActivity());
+        customDialog = new CustomDialog(getActivity());
         showLoading();
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -65,6 +65,16 @@ public class TestFragmentOne extends BaseFragment<TestFragmentOnePresenter> impl
                 closeLoading();
             }
         }, 3000);
+    }
+
+    @Override
+    protected void onVisible() {
+        super.onVisible();
+    }
+
+    @Override
+    protected void onInvisible() {
+        super.onInvisible();
     }
 
     @Override
@@ -90,7 +100,7 @@ public class TestFragmentOne extends BaseFragment<TestFragmentOnePresenter> impl
                 }, 3000);
                 break;
             case R.id.tishi_btn:
-                promptDialog.showPromptDialog("友情提示", "这是一个提示框，用于展示信息", new PromptDialog.PromptOnClickListener() {
+                promptDialog.showPromptDialog("友情提示", "这是一个提示框，用于展示信息", new PromptDialog.OnPromptClickListener() {
                     @Override
                     public void onDetermine() {
                         showShortToast("确定");
@@ -103,7 +113,7 @@ public class TestFragmentOne extends BaseFragment<TestFragmentOnePresenter> impl
                 });
                 break;
             case R.id.list_btn:
-                listDialog.showListDialog(new String[]{"aaa", "bbb", "ccc", "ddd", "eee"}, new ListDialog.ListOnClickListener() {
+                listDialog.showListDialog(new String[]{"aaa", "bbb", "ccc", "ddd", "eee"}, new ListDialog.OnListItemClickListener() {
                     @Override
                     public void onCancel() {
                         showShortToast("取消");
@@ -116,8 +126,8 @@ public class TestFragmentOne extends BaseFragment<TestFragmentOnePresenter> impl
                 });
                 break;
             case R.id.zidingyi_btn:
-                View view = View.inflate(parentActivity, R.layout.fragment_test_one, null);
-                customDialog.showCustomDialog(view, new CustomDialog.CustomOnClickListener() {
+                View view = View.inflate(getActivity(), R.layout.fragment_test_one, null);
+                customDialog.showCustomDialog(view, new CustomDialog.OnCustomClickListener() {
                     @Override
                     public void onDetermine() {
                         showShortToast("确定");

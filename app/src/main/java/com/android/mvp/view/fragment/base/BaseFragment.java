@@ -7,7 +7,6 @@ import android.os.Parcelable;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,10 +64,6 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
      */
     protected T presenter;
 
-    /**
-     * 父类activity对象
-     */
-    protected FragmentActivity parentActivity;
 
     /**
      * activity和fragment的代理类
@@ -141,7 +136,6 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
         initView(view);
         isPrepared = true;//视图准备好了
         onVisible();
-
     }
 
     /**
@@ -159,33 +153,6 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
             onInvisible();
         }
     }
-
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        if (presenter != null) {
-//            presenter.onResume();
-//            presenter.subscription = presenter.observable
-//                    .observeOn(AndroidSchedulers.mainThread())
-//                    .subscribe(new Action1<ResponseAction>() {
-//                        @Override
-//                        public void call(ResponseAction responseAction) {
-//                            if (responseAction instanceof ResponseSuccessAction) {
-//                                onRequestSuccess((ResponseSuccessAction) responseAction);
-//                            } else if (responseAction instanceof ResponseFinalAction) {
-//                                onRequestFinal((ResponseFinalAction) responseAction);
-//                            }
-//                        }
-//                    });
-//        }
-//    }
-//
-//    @Override
-//    public void onStop() {
-//        super.onStop();
-//        if (presenter != null)
-//            presenter.onStop();
-//    }
 
     //fragment 显示
     protected void onVisible() {
@@ -223,7 +190,6 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
     }
 
     private void initProperties(View parentView) {
-        parentActivity = getActivity();
         presenter = initPresenter();
         helper = new BaseFragmentHelper(getActivity(), this);
         root = (ViewGroup) parentView;
@@ -236,31 +202,30 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
      * loading遮罩层的加载
      */
     private void initLoadingView() {
-        //loadingView = new LoadingView(parentActivity);
-        //root.addView(loadingView);
+
     }
 
     protected void showLoading() {
-        //loadingView.showLoading("正在加载中……");
+        helper.showLoading();
     }
 
     protected void showLoading(String str) {
-        loadingView.showLoading(str);
+        helper.showLoading(str);
     }
 
     protected void showErrorLoading(String str, String btnStr) {
-//        loadingView.showErrorPrompt(str);
-//        loadingView.setErrorClickListener(btnStr, new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                refresh();
-//            }
-//        });
+        helper.showErrorLoading(str, btnStr, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refresh();
+            }
+        });
     }
 
     protected void closeLoading() {
-        //loadingView.closeLoadingView();
+        helper.closeLoading();
     }
+
 
     /**
      * 此方法以后才能获取activity
@@ -278,18 +243,21 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
      * @param requesteAction
      */
     protected void sendRequest(RequestAction requesteAction) {
-        if (!NetWorkUtils.isConnected(parentActivity)) {
+        if (!NetWorkUtils.isConnected(getActivity())) {
             //网络错误，服务器错误，等等
             ResponseAction responseAction = new ResponseFinalAction();
             responseAction.setRequestCode(StatusCode.NETWORK_ERROR);
             responseAction.setRequestAction(requesteAction);
-            responseAction.setErrorMessage(parentActivity.getResources().getString(R.string.network_error));
+            responseAction.setErrorMessage(getActivity().getResources().getString(R.string.network_error));
             RxBus.getDefault().post(responseAction);
         } else if (presenter != null) {
             presenter.sendRequest(requesteAction);
         }
     }
 
+    /**
+     * 提供给子类重写的刷新方法
+     */
     protected void refresh() {
 
     }
@@ -304,6 +272,10 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
     }
 
     protected void onRequestFinal(ResponseFinalAction finals) {
+
+    }
+
+    protected void onRequestComplete(ResponseFinalAction complete) {
 
     }
 
@@ -414,7 +386,8 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
      * @param text
      */
     public void showShortToast(String text) {
-        helper.showShortToast(text);
+        if (helper != null)
+            helper.showShortToast(text);
     }
 
     /**
@@ -423,18 +396,10 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
      * @param text
      */
     public void showLongToast(String text) {
-        helper.showLongToast(text);
+        if (helper != null)
+            helper.showLongToast(text);
     }
 
-
-    /**
-     * 防止eventbus报错
-     *
-     * @param obj
-     */
-    public void onEventMainThread(Object obj) {
-
-    }
 
     @Override
     public void onDestroy() {

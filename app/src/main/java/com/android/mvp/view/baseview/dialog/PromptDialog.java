@@ -21,7 +21,7 @@ public class PromptDialog extends View implements View.OnClickListener {
     private TextView prompt_title_text, prompt_content_text;
     private Button dialog_default_ok_btn, dialog_default_cancel_btn;
     private ProgressDialog dialog;
-    private PromptOnClickListener promptOnClickListener;
+    private OnPromptClickListener onPromptClickListener;
 
     public PromptDialog(Context context) {
         super(context);
@@ -35,7 +35,7 @@ public class PromptDialog extends View implements View.OnClickListener {
         dialog_default_cancel_btn = (Button) root.findViewById(R.id.dialog_default_cancel_btn);
         dialog_default_ok_btn.setOnClickListener(this);
         dialog_default_cancel_btn.setOnClickListener(this);
-        dialog = new ProgressDialog(getContext(),R.style.dialog);
+        dialog = new ProgressDialog(getContext(), R.style.dialog);
         dialog.show();
         dialog.setContentView(root);
     }
@@ -44,37 +44,42 @@ public class PromptDialog extends View implements View.OnClickListener {
     public void onClick(View v) {
         if (v.getId() == R.id.dialog_default_ok_btn) {
             dismissPromptDialog();
-            promptOnClickListener.onDetermine();
+            onPromptClickListener.onDetermine();
         } else {
             dismissPromptDialog();
-            promptOnClickListener.onCancel();
+            onPromptClickListener.onCancel();
         }
     }
 
     /**
      * 确定和返回键的回调接口
      */
-    public interface PromptOnClickListener {
+    public interface OnPromptClickListener {
         void onDetermine();
 
         void onCancel();
     }
 
-    public void showPromptDialog(PromptOnClickListener promptOnClickListener) {
-        showPromptDialog(null, null, promptOnClickListener);
+    public void showPromptDialog(String contentStr, OnPromptClickListener onPromptClickListener) {
+        showPromptDialog(null, contentStr, null, null, onPromptClickListener);
     }
 
-    public void showPromptDialog(String contentStr, PromptOnClickListener promptOnClickListener) {
-        showPromptDialog(null,contentStr, promptOnClickListener);
+    public void showPromptDialog(String titleStr, String contentStr, OnPromptClickListener onPromptClickListener) {
+        showPromptDialog(null, contentStr, null, null, onPromptClickListener);
     }
 
-    public void showPromptDialog(String titleStr, String contentStr, PromptOnClickListener promptOnClickListener) {
-        this.promptOnClickListener = promptOnClickListener;
+    public void showPromptDialog(String titleStr, String contentStr, String btn1, String btn2, OnPromptClickListener onPromptClickListener) {
+        this.onPromptClickListener = onPromptClickListener;
         initView();
         if (!TextUtils.isEmpty(titleStr))
             prompt_title_text.setText(titleStr);
         if (!TextUtils.isEmpty(contentStr))
             prompt_content_text.setText(contentStr);
+        if (!TextUtils.isEmpty(btn1))
+            dialog_default_ok_btn.setText(btn1);
+        if (!TextUtils.isEmpty(btn2))
+            dialog_default_cancel_btn.setText(btn2);
+
     }
 
     /**

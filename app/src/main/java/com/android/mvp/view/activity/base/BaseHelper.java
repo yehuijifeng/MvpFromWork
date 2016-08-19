@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.android.mvp.R;
@@ -16,6 +18,7 @@ import com.android.mvp.http.request.RequestAction;
 import com.android.mvp.http.response.ResponseAction;
 import com.android.mvp.http.response.ResponseFinalAction;
 import com.android.mvp.utils.NetWorkUtils;
+import com.android.mvp.view.baseview.LoadingView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +37,15 @@ public class BaseHelper {
     public LayoutInflater inflater;
 
     /**
+     * 根布局
+     */
+    protected ViewGroup root, rootGroup;
+
+    /**
+     * loading页
+     */
+    public LoadingView loadingView;
+    /**
      * toast弹出信息
      */
     public Toast toast;
@@ -43,6 +55,46 @@ public class BaseHelper {
         activityClass = activity.getClass();
         activity.getWindowManager().getDefaultDisplay().getMetrics(outMetrics);
         inflater = activity.getLayoutInflater();
+        rootGroup = (ViewGroup) activity.findViewById(android.R.id.content);
+        root = (ViewGroup) rootGroup.getChildAt(0);
+        initLoadingView();
+    }
+
+    public LayoutInflater getInflater() {
+        return inflater;
+    }
+
+    public ViewGroup getRoot() {
+        return root;
+    }
+
+    public ViewGroup getRootGroup() {
+        return rootGroup;
+    }
+
+    /**
+     * loading遮罩层的加载
+     */
+    private void initLoadingView() {
+        loadingView = new LoadingView(activity);
+        rootGroup.addView(loadingView);
+    }
+
+    public void showLoading() {
+        loadingView.showLoading(activity.getResources().getString(R.string.header_hint_loading));
+    }
+
+    public void showLoading(String str) {
+        loadingView.showLoading(str);
+    }
+
+    public void showErrorLoading(String str, String btnStr, View.OnClickListener onClickListener) {
+        loadingView.showErrorPrompt(str);
+        loadingView.setErrorClickListener(btnStr, onClickListener);
+    }
+
+    public void closeLoading() {
+        loadingView.closeLoadingView();
     }
 
     /**
@@ -213,7 +265,6 @@ public class BaseHelper {
         else
             toast.setDuration(Toast.LENGTH_SHORT);
         toast.setText(text);
-
         toast.show();
     }
 

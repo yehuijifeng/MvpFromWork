@@ -64,7 +64,7 @@ public abstract class BaseListFragment<T extends BasePresenter> extends BaseFrag
         baseListView = (BaseListView) parentView.findViewById(R.id.default_list_view);
         listView = baseListView.listView;
         if (getHeaderView() > 0) {
-            View view = View.inflate(parentActivity, getHeaderView(), null);
+            View view = View.inflate(getActivity(), getHeaderView(), null);
             if (view != null) {
                 ViewGroup viewGroup = (ViewGroup) view.getRootView();
                 viewGroup.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);

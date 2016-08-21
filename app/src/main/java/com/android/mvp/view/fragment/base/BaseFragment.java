@@ -213,8 +213,30 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
         helper.showLoading(str);
     }
 
-    protected void showErrorLoading(String str, String btnStr) {
-        helper.showErrorLoading(str, btnStr, new View.OnClickListener() {
+
+    protected void showErrorLoading(String str, View.OnClickListener onClickListener) {
+        helper.showErrorLoading(str, onClickListener);
+    }
+
+    protected void showErrorLoadingByNoClick(String str) {
+        showErrorLoading(str, null);
+    }
+
+    protected void showErrorLoadingByDefaultClick(String str) {
+        showErrorLoading(str, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refresh();
+            }
+        });
+    }
+
+    protected void showErrorBtnLoading(String str, String btnStr, View.OnClickListener onClickListener) {
+        helper.showErrorBtnLoading(str, btnStr, onClickListener);
+    }
+
+    protected void showErrorBtnLoadingByDefaultClick(String str, String btnStr) {
+        showErrorBtnLoading(str, btnStr, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 refresh();

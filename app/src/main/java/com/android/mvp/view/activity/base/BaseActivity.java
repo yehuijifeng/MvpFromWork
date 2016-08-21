@@ -222,8 +222,29 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         baseHelper.showLoading(str);
     }
 
-    protected void showErrorLoading(String str, String btnStr) {
-        baseHelper.showErrorLoading(str, btnStr, new View.OnClickListener() {
+    protected void showErrorLoading(String str, View.OnClickListener onClickListener) {
+        baseHelper.showErrorLoading(str, onClickListener);
+    }
+
+    protected void showErrorLoadingByNoClick(String str) {
+        showErrorLoading(str, null);
+    }
+
+    protected void showErrorLoadingByDefaultClick(String str) {
+        showErrorLoading(str, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refresh();
+            }
+        });
+    }
+
+    protected void showErrorBtnLoading(String str, String btnStr, View.OnClickListener onClickListener) {
+        baseHelper.showErrorBtnLoading(str, btnStr, onClickListener);
+    }
+
+    protected void showErrorBtnLoadingByDefaultClick(String str, String btnStr) {
+        showErrorBtnLoading(str, btnStr, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 refresh();
@@ -394,7 +415,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     protected void onRequestFinal(ResponseFinalAction finals) {
         if (finals.getRequestCode() == StatusCode.NETWORK_ERROR) {
             //无网络链接
-            showErrorLoading(finals.getErrorMessage(), getResources().getString(R.string.restart_btn));
+            showErrorBtnLoadingByDefaultClick(finals.getErrorMessage(), getResources().getString(R.string.restart_btn));
         }
     }
 

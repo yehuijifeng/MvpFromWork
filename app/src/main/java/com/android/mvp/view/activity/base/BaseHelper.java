@@ -88,9 +88,14 @@ public class BaseHelper {
         loadingView.showLoading(str);
     }
 
-    public void showErrorLoading(String str, String btnStr, View.OnClickListener onClickListener) {
+    public void showErrorLoading(String str, View.OnClickListener onClickListener) {
         loadingView.showErrorPrompt(str);
-        loadingView.setErrorClickListener(btnStr, onClickListener);
+        loadingView.setErrorClickListener(onClickListener);
+    }
+
+    public void showErrorBtnLoading(String str, String btnStr, View.OnClickListener onClickListener) {
+        loadingView.showErrorBtnPrompt(str);
+        loadingView.setErrorBtnClickListener(btnStr, onClickListener);
     }
 
     public void closeLoading() {

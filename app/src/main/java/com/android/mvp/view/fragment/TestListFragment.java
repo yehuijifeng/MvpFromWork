@@ -10,7 +10,6 @@ import com.android.mvp.adapter.base.BaseViewHolder;
 import com.android.mvp.appliaction.MvpAppliaction;
 import com.android.mvp.bean.test.GoodsListBean;
 import com.android.mvp.http.request.RequestAction;
-import com.android.mvp.http.request.RetrofitManage;
 import com.android.mvp.http.response.ResponseFinalAction;
 import com.android.mvp.http.response.ResponseSuccessAction;
 import com.android.mvp.presenter.TestListFragmentPresenter;
@@ -20,18 +19,11 @@ import com.android.mvp.view.interfaces.ITestListFragment;
 import java.util.List;
 import java.util.Map;
 
-import rx.Subscription;
-
 /**
  * Created by Luhao on 2016/7/23.
  */
 public class TestListFragment extends BaseListFragment<TestListFragmentPresenter> implements ITestListFragment {
     int pagNumber = 1;
-
-//    @Override
-//    public boolean isRefresh() {
-//        return false;
-//    }
 
     @Override
     public boolean isLoadMore() {
@@ -79,21 +71,21 @@ public class TestListFragment extends BaseListFragment<TestListFragmentPresenter
 
     @Override
     protected void initData() {
-        //showLoading();
-        //setRefresh(false);
+        showLoading();
+        setRefresh(false);
         getGoodsList();
-        setRefresh(true);
+        //setRefresh(true);
     }
 
 
     private void getGoodsList() {
         Map<String, Object> params = RequestAction.GET_GOODS_LIST.params.getParams();
-        params.put("shopInfo.typeId", 0);
+        params.put("shopInfo.typeId", 10000);
         params.put("shopInfo.index", "pub");
         params.put("pageNum", pagNumber);
-
+        sendRequest(RequestAction.GET_GOODS_LIST);
         //发送请求,返回订阅
-        Subscription subscription = RetrofitManage.getInstance().sendRequest(RequestAction.GET_GOODS_LIST);
+        //Subscription subscription = RetrofitManage.getInstance().sendRequest(RequestAction.GET_GOODS_LIST);
 
 //        if (subscription != null && !subscription.isUnsubscribed())
 //            //如果订阅取消订阅
@@ -144,7 +136,6 @@ public class TestListFragment extends BaseListFragment<TestListFragmentPresenter
                 List<GoodsListBean> goodsListBeans = success.getHttpBean().getObjects();
                 addAll(goodsListBeans);
                 loadSuccess();
-                //closeLoading();
                 break;
         }
     }
@@ -154,9 +145,8 @@ public class TestListFragment extends BaseListFragment<TestListFragmentPresenter
         super.onRequestFinal(finals);
         switch (finals.getRequestAction()) {
             case GET_GOODS_LIST:
-                showLongToast(finals.getErrorMessage());
-                loadFinal();
-                showErrorLoading(finals.getErrorMessage(), "刷新");
+                //showLongToast(finals.getErrorMessage());
+                loadTextFinal(finals.getErrorMessage() + "，点击重试");
                 break;
         }
     }

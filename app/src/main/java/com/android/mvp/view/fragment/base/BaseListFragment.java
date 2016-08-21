@@ -244,11 +244,31 @@ public abstract class BaseListFragment<T extends BasePresenter> extends BaseFrag
 
     protected void loadSuccess() {
         notifyDataChange();
+        closeLoading();
         if (isRefresh())
             baseListView.closeRefreshView();
     }
 
-    protected void loadFinal() {
+    protected void loadTextFinal(String errorStr) {
+        showErrorLoadingByDefaultClick(errorStr);
+        if (isRefresh())
+            baseListView.closeRefreshView();
+    }
+
+    protected void loadTextFinal(String errorStr, View.OnClickListener onClickListener) {
+        showErrorLoading(errorStr, onClickListener);
+        if (isRefresh())
+            baseListView.closeRefreshView();
+    }
+
+    protected void loadBtnFinal(String errorStr, String btnStr) {
+        showErrorBtnLoadingByDefaultClick(errorStr, btnStr);
+        if (isRefresh())
+            baseListView.closeRefreshView();
+    }
+
+    protected void loadBtnFinal(String errorStr, String btnStr, View.OnClickListener onClickListener) {
+        showErrorBtnLoading(errorStr, btnStr, onClickListener);
         if (isRefresh())
             baseListView.closeRefreshView();
     }

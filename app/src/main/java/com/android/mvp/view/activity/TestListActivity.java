@@ -144,7 +144,7 @@ public class TestListActivity extends BaseListActivity<TestListActivityPresenter
         switch (finals.getRequestAction()) {
             case GET_GOODS_LIST:
                 loadFinal();
-                showErrorLoading(finals.getErrorMessage(), getResources().getString(R.string.refresh_btn));
+                showErrorLoadingByNoClick(finals.getErrorMessage() + "," + getResources().getString(R.string.refresh_btn));
                 break;
         }
     }

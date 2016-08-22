@@ -19,17 +19,24 @@
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
-            <com.android.mvp.view.baseview.MyGridView
-                android:id="@+id/my_gridview"
+            <!--&lt;!&ndash;下拉刷新，上拉加载控件&ndash;&gt;-->
+            <in.srain.cube.views.ptr.PtrFrameLayout
+                android:id="@+id/base_refresh_view"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fadingEdge="none"
-                android:horizontalSpacing="@dimen/padding_and_margin"
-                android:listSelector="@color/transparent"
-                android:numColumns="2"
-                android:padding="@dimen/padding_and_margin"
-                android:scrollbars="none"
-                android:verticalSpacing="@dimen/padding_and_margin" />
+                android:layout_height="match_parent">
+
+                <com.android.mvp.view.baseview.MyGridView
+                    android:id="@+id/my_gridview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fadingEdge="none"
+                    android:horizontalSpacing="@dimen/padding_and_margin"
+                    android:listSelector="@color/transparent"
+                    android:numColumns="2"
+                    android:padding="@dimen/padding_and_margin"
+                    android:scrollbars="none"
+                    android:verticalSpacing="@dimen/padding_and_margin" />
+            </in.srain.cube.views.ptr.PtrFrameLayout>
 
             <com.android.mvp.view.baseview.FootView
                 android:id="@+id/base_footview"

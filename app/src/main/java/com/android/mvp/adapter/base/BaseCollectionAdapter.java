@@ -40,8 +40,7 @@ public abstract class BaseCollectionAdapter<T> extends BaseAdapter {
      */
     @Override
     public int getCount() {
-        int count = data.size();
-        return count;
+        return data.size();
     }
 
     /**

@@ -24,7 +24,7 @@ import com.android.mvp.R;
  */
 public class LoadingView extends LinearLayout implements View.OnTouchListener {
     private View root;//根view
-    private LinearLayout loading_ly;//根布局
+    private LinearLayout loading_ly, loading_click_ly;//根布局
     private LinearLayout dialog_ly;//dialog样式专用布局
     private LinearLayout loading_son_ly;//调整loading的方向
     private ImageView error_icon_img;//错误提示图片
@@ -48,11 +48,13 @@ public class LoadingView extends LinearLayout implements View.OnTouchListener {
     public LoadingView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView();
+
     }
 
     private void initView() {
         root = LayoutInflater.from(getContext()).inflate(R.layout.base_loadingview, this);
         loading_ly = (LinearLayout) root.findViewById(R.id.loading_ly);
+        loading_click_ly = (LinearLayout) root.findViewById(R.id.loading_click_ly);
         dialog_ly = (LinearLayout) root.findViewById(R.id.dialog_ly);
         loading_son_ly = (LinearLayout) root.findViewById(R.id.loading_son_ly);
         loading_ly.setOnTouchListener(this);
@@ -73,7 +75,9 @@ public class LoadingView extends LinearLayout implements View.OnTouchListener {
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        if (v.getId() == R.id.loading_ly) {//如果用户点击了loading层，则点击事件不往下传递
+        if (v.getId() == R.id.loading_ly) {
+            //如果用户点击了loading层，则点击事件不往下传递
+
             return true;
         }
         return false;
@@ -155,14 +159,19 @@ public class LoadingView extends LinearLayout implements View.OnTouchListener {
      *
      * @param onClickListener
      */
-    public void setErrorClickListener(OnClickListener onClickListener) {
+    public void setErrorBtnClickListener(OnClickListener onClickListener) {
         initRootView();
         if (error_btn != null) error_btn.setOnClickListener(onClickListener);
     }
 
-    public void setErrorClickListener(String str, OnClickListener onClickListener) {
+    public void setErrorBtnClickListener(String str, OnClickListener onClickListener) {
         if (error_btn != null && !TextUtils.isEmpty(str)) error_btn.setText(str);
-        setErrorClickListener(onClickListener);
+        setErrorBtnClickListener(onClickListener);
+    }
+
+    public void setErrorClickListener(OnClickListener onClickListener) {
+        if (loading_click_ly != null)
+            loading_click_ly.setOnClickListener(onClickListener);
     }
 
     /**

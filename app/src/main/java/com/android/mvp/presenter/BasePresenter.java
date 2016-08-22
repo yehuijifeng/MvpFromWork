@@ -33,7 +33,7 @@ public abstract class BasePresenter<T extends IBaseView> {
      * @param requesteAction
      */
     public void sendRequest(RequestAction requesteAction) {
-        RetrofitManage.getInstance().sendRequest(requesteAction);
+        subscription = RetrofitManage.getInstance().sendRequest(requesteAction);
     }
 
     public void onResume() {

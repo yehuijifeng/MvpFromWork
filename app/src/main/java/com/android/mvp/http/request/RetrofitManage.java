@@ -11,6 +11,7 @@ import com.android.mvp.http.interfaces.ApiService;
 import com.android.mvp.http.response.ResponseAction;
 import com.android.mvp.http.response.ResponseFinalAction;
 import com.android.mvp.http.response.ResponseSuccessAction;
+import com.android.mvp.utils.LogUtils;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -112,6 +113,11 @@ public class RetrofitManage {
     public Subscription sendRequest(final RequestAction requesteAction) {
         //预备发送请求，将参数生成Observable
         requesteAction.getRequest();
+        for (Map.Entry entry : requesteAction.params.getParams().entrySet()) {
+            String key = entry.getKey().toString();
+            String value = entry.getValue().toString();
+            LogUtils.i("key=" + key + " ==> value=" + value + "\n");
+        }
         return requesteAction.observable
                 .subscribeOn(Schedulers.newThread())//网络请求必须在子线程中进行
                 .observeOn(Schedulers.newThread())
@@ -169,7 +175,7 @@ public class RetrofitManage {
     /**
      * 下载文件
      */
-    public void downloadFile(final String filename,final RequestAction requestAction, OnProgressListener progressListener) {
+    public void downloadFile(final String filename, final RequestAction requestAction, OnProgressListener progressListener) {
 
         onProgressListener = progressListener;
         //预备发送请求，将参数生成Observable
@@ -227,7 +233,7 @@ public class RetrofitManage {
     }
 
 
-    public void uploadFile( final RequestAction requestAction, File[] files, OnProgressListener progressListener) {
+    public void uploadFile(final RequestAction requestAction, File[] files, OnProgressListener progressListener) {
 
         final Map<String, RequestBody> photos = new HashMap<>();
         for (File file : files) {

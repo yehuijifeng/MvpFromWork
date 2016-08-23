@@ -19,10 +19,10 @@ import com.android.mvp.http.request.RequestAction;
 import com.android.mvp.http.response.ResponseAction;
 import com.android.mvp.http.response.ResponseFinalAction;
 import com.android.mvp.http.response.ResponseSuccessAction;
-import com.android.mvp.presenter.BasePresenter;
+import com.android.mvp.presenter.base.BasePresenter;
 import com.android.mvp.utils.NetWorkUtils;
 import com.android.mvp.view.activity.base.BaseHelper;
-import com.android.mvp.view.baseview.LoadingView;
+import com.android.mvp.view.baseview.MyTitleView;
 import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -106,9 +106,9 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
     protected boolean isLoaded;
 
     /**
-     * loading页
+     * activity的title
      */
-    protected LoadingView loadingView;
+    protected MyTitleView mTitleView;
 
     /**
      * 创建视图,传入根view
@@ -153,6 +153,19 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
             onInvisible();
         }
     }
+//
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        onVisible();
+//
+//    }
+//
+//    @Override
+//    public void onStop() {
+//        super.onStop();
+//        onInvisible();
+//    }
 
     //fragment 显示
     protected void onVisible() {
@@ -182,6 +195,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
             presenter.onStop();
     }
 
+
     //延迟加载,每一个fragment的延迟加载只会调用一次
     protected void lazyLoad() {
         if (!isVisible || !isPrepared || isLoaded) return;
@@ -189,10 +203,37 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
         isLoaded = true;
     }
 
+    /**
+     * 供子类调用的title,自定义toolbar
+     */
+    protected View setCustomToolbar() {
+        return null;
+    }
+
+    /**
+     * @param view 创建自定义的toolbar
+     */
+    protected void onCreateCustomToolBar(View view) {
+        mTitleView.setNewView(view);
+    }
+
+    //初始化title的标题内容
+    protected String setTitleText() {
+        return "";
+    }
+
     private void initProperties(View parentView) {
         presenter = initPresenter();
         helper = new BaseFragmentHelper(getActivity(), this);
         root = (ViewGroup) parentView;
+        mTitleView = (MyTitleView) parentView.findViewById(R.id.default_title_view);
+        if (mTitleView != null) {
+            if (setCustomToolbar() != null) {
+                onCreateCustomToolBar(setCustomToolbar());
+            } else {
+                mTitleView.setTitleText(setTitleText());
+            }
+        }
         imageLoader = ImageLoader.getInstance();
         outMetrics = helper.outMetrics;
         initLoadingView();
@@ -222,13 +263,8 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
         showErrorLoading(str, null);
     }
 
-    protected void showErrorLoadingByDefaultClick(String str) {
-        showErrorLoading(str, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                refresh();
-            }
-        });
+    protected void showErrorLoadingByDefaultClick(String str, View.OnClickListener onClickListener) {
+        showErrorLoading(str, onClickListener);
     }
 
     protected void showErrorBtnLoading(String str, String btnStr, View.OnClickListener onClickListener) {

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.android.mvp.http.request.RequestAction;
 import com.android.mvp.http.request.RetrofitManage;
+import com.android.mvp.model.base.BaseModel;
 
 import rx.Subscription;
 

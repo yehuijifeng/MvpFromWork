@@ -57,6 +57,13 @@ public class BaseGridview extends LinearLayout {
     }
 
     /**
+     * 添加下拉刷新的监听
+     */
+    public void setRefreshListener(HeaderView.RefreshListener refreshListener) {
+        headerView.setRefreshListener(refreshListener);
+    }
+
+    /**
      * 添加上拉加载的监听
      */
     public void setLoadMoreListener(FootView.LoadMoreListener loadMoreListener) {

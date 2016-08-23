@@ -17,7 +17,7 @@ import com.android.mvp.view.interfaces.ITestFragmentOneView;
 /**
  * Created by Luhao on 2016/7/21.
  */
-public class TestFragmentOne extends BaseFragment<TestFragmentOnePresenter> implements ITestFragmentOneView, View.OnClickListener {
+public class TestFragmentDialog extends BaseFragment<TestFragmentOnePresenter> implements ITestFragmentOneView, View.OnClickListener {
 
     private Button loading_btn, tishi_btn, zidingyi_btn, list_btn, pwd_btn;
 
@@ -34,7 +34,7 @@ public class TestFragmentOne extends BaseFragment<TestFragmentOnePresenter> impl
 
     @Override
     protected int setFragmentViewContent() {
-        return R.layout.fragment_test_one;
+        return R.layout.test_dialog;
     }
 
     @Override
@@ -126,7 +126,7 @@ public class TestFragmentOne extends BaseFragment<TestFragmentOnePresenter> impl
                 });
                 break;
             case R.id.zidingyi_btn:
-                View view = View.inflate(getActivity(), R.layout.fragment_test_one, null);
+                View view = View.inflate(getActivity(), R.layout.test_dialog, null);
                 customDialog.showCustomDialog(view, new CustomDialog.OnCustomClickListener() {
                     @Override
                     public void onDetermine() {

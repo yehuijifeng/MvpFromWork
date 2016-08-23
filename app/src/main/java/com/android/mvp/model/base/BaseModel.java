@@ -1,4 +1,4 @@
-package com.android.mvp.model;
+package com.android.mvp.model.base;
 
 /**
  * Created by Luhao on 2016/6/23.

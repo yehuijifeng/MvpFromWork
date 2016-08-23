@@ -3,6 +3,7 @@ package com.android.mvp.presenter;
 import android.content.Context;
 
 import com.android.mvp.model.TestListModel;
+import com.android.mvp.presenter.base.BasePresenter;
 import com.android.mvp.view.interfaces.ITestListView;
 
 /**

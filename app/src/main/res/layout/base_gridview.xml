@@ -7,7 +7,7 @@
     <ScrollView
         android:id="@+id/grid_scrollview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:fadingEdge="none"
         android:fillViewport="true"
         android:scrollbars="none">
@@ -15,7 +15,7 @@
         <LinearLayout
             android:id="@+id/gridview_ly_linear"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:gravity="center_horizontal"
             android:orientation="vertical">
 
@@ -28,7 +28,7 @@
                 <com.android.mvp.view.baseview.MyGridView
                     android:id="@+id/my_gridview"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:fadingEdge="none"
                     android:horizontalSpacing="@dimen/padding_and_margin"
                     android:listSelector="@color/transparent"

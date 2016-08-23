@@ -22,7 +22,7 @@ import com.android.mvp.http.request.RequestAction;
 import com.android.mvp.http.response.ResponseAction;
 import com.android.mvp.http.response.ResponseFinalAction;
 import com.android.mvp.http.response.ResponseSuccessAction;
-import com.android.mvp.presenter.BasePresenter;
+import com.android.mvp.presenter.base.BasePresenter;
 import com.android.mvp.view.baseview.MyTitleView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 

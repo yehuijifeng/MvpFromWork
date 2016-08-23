@@ -75,7 +75,7 @@ public class TestListActivity extends BaseListActivity<TestListActivityPresenter
 
     @Override
     protected int setContentView() {
-        return R.layout.activity_test_list;
+        return R.layout.test_list;
     }
 
     @Override

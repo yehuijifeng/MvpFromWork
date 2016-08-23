@@ -1,4 +1,4 @@
-package com.android.mvp.presenter;
+package com.android.mvp.presenter.base;
 
 import com.android.mvp.function.RxBus;
 import com.android.mvp.http.request.RequestAction;

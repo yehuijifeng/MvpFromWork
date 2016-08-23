@@ -5,10 +5,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.android.mvp.R;
-import com.android.mvp.presenter.BasePresenter;
+import com.android.mvp.presenter.base.BasePresenter;
 import com.android.mvp.view.activity.base.BaseViewPagerActivity;
 import com.android.mvp.view.baseview.MyTitleView;
-import com.android.mvp.view.fragment.TestFragmentOne;
+import com.android.mvp.view.fragment.TestFragmentDialog;
+import com.android.mvp.view.fragment.TestGridFragment;
 import com.android.mvp.view.fragment.TestListFragment;
 
 /**
@@ -23,7 +24,7 @@ public class TestViewpagerActivity extends BaseViewPagerActivity {
 
     @Override
     protected int setContentView() {
-        return R.layout.activity_test_viewpager;
+        return R.layout.test_viewpager;
     }
 
     @Override
@@ -41,10 +42,9 @@ public class TestViewpagerActivity extends BaseViewPagerActivity {
                 showLongToast("dddddddddddd");
             }
         });
-        mViewList.add(new TestFragmentOne());
+        mViewList.add(new TestFragmentDialog());
         mViewList.add(new TestListFragment());
-        mViewList.add(new TestFragmentOne());
-        mViewList.add(new TestFragmentOne());
+        mViewList.add(new TestGridFragment());
         setPageNumber(0);
     }
 

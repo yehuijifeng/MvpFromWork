@@ -66,21 +66,20 @@ public class TestListFragment extends BaseListFragment<TestListFragmentPresenter
 
     @Override
     protected int setFragmentViewContent() {
-        return R.layout.activity_test_list;
+        return R.layout.test_list;
     }
 
     @Override
     protected void initData() {
         showLoading();
-        setRefresh(false);
+        //setRefresh(false);
         getGoodsList();
-        //setRefresh(true);
     }
 
 
     private void getGoodsList() {
         Map<String, Object> params = RequestAction.GET_GOODS_LIST.params.getParams();
-        params.put("shopInfo.typeId", 10000);
+        params.put("shopInfo.typeId", 1);
         params.put("shopInfo.index", "pub");
         params.put("pageNum", pagNumber);
         sendRequest(RequestAction.GET_GOODS_LIST);
@@ -146,7 +145,12 @@ public class TestListFragment extends BaseListFragment<TestListFragmentPresenter
         switch (finals.getRequestAction()) {
             case GET_GOODS_LIST:
                 //showLongToast(finals.getErrorMessage());
-                loadTextFinal(finals.getErrorMessage() + "，点击重试");
+                loadTextFinal(finals.getErrorMessage() + "，点击重试", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        refresh();
+                    }
+                });
                 break;
         }
     }

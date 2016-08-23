@@ -10,7 +10,7 @@ import com.android.mvp.adapter.base.BaseViewHolder;
 import com.android.mvp.http.StatusCode;
 import com.android.mvp.http.response.ResponseFinalAction;
 import com.android.mvp.http.response.ResponseSuccessAction;
-import com.android.mvp.presenter.BasePresenter;
+import com.android.mvp.presenter.base.BasePresenter;
 import com.android.mvp.view.baseview.BaseListView;
 import com.android.mvp.view.baseview.FootView;
 import com.android.mvp.view.baseview.HeaderView;
@@ -207,7 +207,8 @@ public abstract class BaseListFragment<T extends BasePresenter> extends BaseFrag
             @Override
             public void onRefreshBegin(boolean bl, PtrFrameLayout frame) {
                 //刷新中
-                refresh();
+                if (isRefresh())
+                    refresh();
             }
 
             @Override
@@ -218,7 +219,7 @@ public abstract class BaseListFragment<T extends BasePresenter> extends BaseFrag
     }
 
     /**
-     * 下拉加载监听
+     * 上拉加载监听
      */
     private void defaultLoadMore() {
         baseListView.setLoadMoreListener(new FootView.LoadMoreListener() {
@@ -250,7 +251,12 @@ public abstract class BaseListFragment<T extends BasePresenter> extends BaseFrag
     }
 
     protected void loadTextFinal(String errorStr) {
-        showErrorLoadingByDefaultClick(errorStr);
+        showErrorLoadingByDefaultClick(errorStr, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                refresh();
+            }
+        });
         if (isRefresh())
             baseListView.closeRefreshView();
     }

@@ -1,5 +1,6 @@
 package com.android.mvp.presenter;
 
+import com.android.mvp.presenter.base.BasePresenter;
 import com.android.mvp.view.interfaces.ITestListFragment;
 
 /**

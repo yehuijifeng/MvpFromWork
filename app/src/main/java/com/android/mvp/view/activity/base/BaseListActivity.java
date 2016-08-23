@@ -10,7 +10,7 @@ import com.android.mvp.adapter.base.BaseViewHolder;
 import com.android.mvp.http.StatusCode;
 import com.android.mvp.http.response.ResponseFinalAction;
 import com.android.mvp.http.response.ResponseSuccessAction;
-import com.android.mvp.presenter.BasePresenter;
+import com.android.mvp.presenter.base.BasePresenter;
 import com.android.mvp.view.baseview.BaseListView;
 import com.android.mvp.view.baseview.FootView;
 import com.android.mvp.view.baseview.HeaderView;
@@ -87,6 +87,8 @@ public abstract class BaseListActivity<T extends BasePresenter> extends BaseActi
             baseListView.setOnExecuteScoll(true);
             baseListView.footView.onFootPrepare();
         }
+        if (isRefresh())
+            baseListView.closeRefreshView();
     }
 
     @Override
@@ -94,6 +96,8 @@ public abstract class BaseListActivity<T extends BasePresenter> extends BaseActi
         if (finals.getRequestCode() == StatusCode.NOT_MORE_DATA) {
             baseListView.footView.onFootViewAll();
         }
+        if (isRefresh())
+            baseListView.closeRefreshView();
     }
 
     /**

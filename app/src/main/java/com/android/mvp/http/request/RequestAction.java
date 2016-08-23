@@ -17,7 +17,12 @@ public enum RequestAction {
             observable = RetrofitManage.getInstance().getService().getGoodsList(params.getParams());
         }
     },
-
+    GET_GOODS_GRID(new RequestParams()) {
+        @Override
+        public void getRequest() {
+            observable = RetrofitManage.getInstance().getService().getGoodsList(params.getParams());
+        }
+    },
     GET_DOWN_FILE(new RequestParams()) {
         @Override
         public void getRequest() {

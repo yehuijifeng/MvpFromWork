@@ -83,4 +83,16 @@ public abstract class BaseCollectionAdapter<T> extends BaseAdapter {
         getItemData(position, baseViewHolder);
         return v;
     }
+
+    //判断itemView类型,默认0
+    @Override
+    public int getItemViewType(int position) {
+        return 0;
+    }
+
+    // 种类+1。这里尤其要注意，必须+1.具体为什么我也不清楚
+    @Override
+    public int getViewTypeCount() {
+        return 1;
+    }
 }

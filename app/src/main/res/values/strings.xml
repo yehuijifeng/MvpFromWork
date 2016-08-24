@@ -28,6 +28,7 @@
     <string name="refresh_btn">刷新</string>
     <!--测试数据-->
     <string name="test_list">列表</string>
+    <string name="test_grid">表格</string>
     <string name="test_laction">位置</string>
     <string name="test_viewpager">分页显示栏</string>
 

@@ -59,6 +59,17 @@ public abstract class BaseListFragment<T extends BasePresenter> extends BaseFrag
      */
     public abstract int getItemView(int position, int itemType);
 
+
+    //判断itemView类型,默认0
+    public int getItemViewType(int position) {
+        return 0;
+    }
+
+    // 种类+1。这里尤其要注意，必须+1.具体为什么我也不清楚
+    public int getViewTypeCount() {
+        return 1;
+    }
+
     @Override
     protected void initView(View parentView) {
         baseListView = (BaseListView) parentView.findViewById(R.id.default_list_view);

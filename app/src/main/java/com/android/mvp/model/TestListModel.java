@@ -1,7 +1,5 @@
 package com.android.mvp.model;
 
-import android.content.Context;
-
 import com.android.mvp.http.request.RequestAction;
 import com.android.mvp.http.request.RetrofitManage;
 import com.android.mvp.model.base.BaseModel;
@@ -13,8 +11,8 @@ import rx.Subscription;
  */
 public class TestListModel extends BaseModel {
 
-    public Subscription getGoodsList(Context context, int number) {
-        RequestAction.GET_GOODS_LIST.params.getParams().put("shopInfo.typeId", 0);
+    public Subscription getGoodsList(int number,int shopId) {
+        RequestAction.GET_GOODS_LIST.params.getParams().put("shopInfo.typeId", shopId);
         RequestAction.GET_GOODS_LIST.params.getParams().put("shopInfo.index", "pub");
         RequestAction.GET_GOODS_LIST.params.getParams().put("pageNum", number);
         //发送请求

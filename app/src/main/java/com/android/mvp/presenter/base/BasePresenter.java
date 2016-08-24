@@ -33,7 +33,7 @@ public abstract class BasePresenter<T extends IBaseView> {
      * @param requesteAction
      */
     public void sendRequest(RequestAction requesteAction) {
-        subscription = RetrofitManage.getInstance().sendRequest(requesteAction);
+        RetrofitManage.getInstance().sendRequest(requesteAction);
     }
 
     public void onResume() {
@@ -41,7 +41,8 @@ public abstract class BasePresenter<T extends IBaseView> {
         observable = RxBus.getDefault().register(ResponseAction.class);
     }
 
-    public void onStop() {
+    //第一个activitry的暂停方法先被调用
+    public void onPause() {
         unsubscride();
     }
 

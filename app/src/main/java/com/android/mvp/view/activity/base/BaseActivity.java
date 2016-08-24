@@ -127,10 +127,10 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     }
 
     @Override
-    protected void onStop() {
-        super.onStop();
+    protected void onPause() {
+        super.onPause();
         if (presenter != null) {
-            presenter.onStop();
+            presenter.onPause();
         }
     }
 

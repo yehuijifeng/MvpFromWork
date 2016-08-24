@@ -1,7 +1,5 @@
 package com.android.mvp.presenter;
 
-import android.content.Context;
-
 import com.android.mvp.model.TestListModel;
 import com.android.mvp.presenter.base.BasePresenter;
 import com.android.mvp.view.interfaces.ITestListView;
@@ -23,8 +21,8 @@ public class TestListActivityPresenter extends BasePresenter<ITestListView> {
         model = new TestListModel();
     }
 
-    public void getGoodsList(Context context, int number) {
-        model.getGoodsList(context, number);
+    public void getGoodsList(int number,int shopId) {
+        model.getGoodsList(number,shopId);
     }
 
 

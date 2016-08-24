@@ -17,12 +17,6 @@ public enum RequestAction {
             observable = RetrofitManage.getInstance().getService().getGoodsList(params.getParams());
         }
     },
-    GET_GOODS_GRID(new RequestParams()) {
-        @Override
-        public void getRequest() {
-            observable = RetrofitManage.getInstance().getService().getGoodsList(params.getParams());
-        }
-    },
     GET_DOWN_FILE(new RequestParams()) {
         @Override
         public void getRequest() {
@@ -34,9 +28,7 @@ public enum RequestAction {
         public void getRequest() {
             //上传文件的提交在retrofitmanager中完成
         }
-    },
-
-    ;
+    },;
     public Call<ResponseBody> call;//下载文件专用，okhttp类型的回调
     public Observable observable;//普通网络请求使用，网络请求的操作实例
     public RequestParams params;//请求参数实例

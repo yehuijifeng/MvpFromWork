@@ -20,7 +20,6 @@ public class BaseGridAdapter extends BaseCollectionAdapter {
     private BaseGridFragment baseGridFragment;
     public final static int FRAGMENT_GRID = 2, ACTIVITY_GRID = 1;
     private int gridStatus;//1代表activity,2代表fragment
-    private int itemType = 1;
 
     public BaseGridAdapter(int gridStatus, BaseGridActivity baseGridActivity, List data) {
         super(data);
@@ -37,20 +36,20 @@ public class BaseGridAdapter extends BaseCollectionAdapter {
     @Override
     public BaseViewHolder getBaseViewHolder(View itemView, int position) {
         if (gridStatus == ACTIVITY_GRID)
-            return baseGridActivity.getViewHolder(itemView, position, itemType);
+            return baseGridActivity.getViewHolder(itemView, position, getItemViewType(position));
         else
-            return baseGridFragment.getViewHolder(itemView, position, itemType);
+            return baseGridFragment.getViewHolder(itemView, position, getItemViewType(position));
     }
 
     @Override
     public View getItemView(int position, ViewGroup parent) {
         if (gridStatus == ACTIVITY_GRID) {
-            View view = baseGridActivity.inflater.inflate(baseGridActivity.getItemView(position, itemType), parent, false);
+            View view = baseGridActivity.inflater.inflate(baseGridActivity.getItemView(position, getItemViewType(position)), parent, false);
             ViewGroup viewGroup = (ViewGroup) view.getRootView();
             viewGroup.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
             return view;
         } else {
-            View view = baseGridFragment.getActivity().getLayoutInflater().inflate(baseGridFragment.getItemView(position, itemType), parent, false);
+            View view = baseGridFragment.getActivity().getLayoutInflater().inflate(baseGridFragment.getItemView(position, getItemViewType(position)), parent, false);
             ViewGroup viewGroup = (ViewGroup) view.getRootView();
             viewGroup.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
             return view;
@@ -60,9 +59,27 @@ public class BaseGridAdapter extends BaseCollectionAdapter {
     @Override
     public void getItemData(int position, BaseViewHolder baseViewHolder) {
         if (gridStatus == ACTIVITY_GRID)
-            baseGridActivity.getItemData(position, baseViewHolder, itemType);
+            baseGridActivity.getItemData(position, baseViewHolder, getItemViewType(position));
         else
-            baseGridFragment.getItemData(position, baseViewHolder, itemType);
+            baseGridFragment.getItemData(position, baseViewHolder, getItemViewType(position));
+    }
+
+    //判断itemView类型,默认0
+    @Override
+    public int getItemViewType(int position) {
+        if (gridStatus == ACTIVITY_GRID)
+            return baseGridActivity.getItemViewType(position);
+        else
+            return baseGridFragment.getItemViewType(position);
+    }
+
+    // 种类+1。这里尤其要注意，必须+1
+    @Override
+    public int getViewTypeCount() {
+        if (gridStatus == ACTIVITY_GRID)
+            return baseGridActivity.getViewTypeCount() + 1;
+        else
+            return baseGridFragment.getViewTypeCount() + 1;
     }
 
     public void closeAdapter() {
@@ -70,4 +87,6 @@ public class BaseGridAdapter extends BaseCollectionAdapter {
         baseGridActivity = null;
         baseGridFragment = null;
     }
+
+
 }

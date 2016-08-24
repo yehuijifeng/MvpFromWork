@@ -101,6 +101,15 @@ public abstract class BaseGridFragment<T extends BasePresenter> extends BaseFrag
         return false;
     }
 
+    //判断itemView类型,默认0
+    public int getItemViewType(int position) {
+        return 0;
+    }
+
+    // 种类+1。这里尤其要注意，必须+1.具体为什么我也不清楚
+    public int getViewTypeCount() {
+        return 1;
+    }
 
     @Override
     protected void initView(View parentView) {

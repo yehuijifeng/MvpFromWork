@@ -167,8 +167,8 @@ public class RetrofitManage {
      * @param subscription
      */
     public void unsubscribe(Subscription subscription) {
-        subscription.isUnsubscribed();
-        subscription.unsubscribe();
+        if (subscription.isUnsubscribed())
+            subscription.unsubscribe();
     }
 
 

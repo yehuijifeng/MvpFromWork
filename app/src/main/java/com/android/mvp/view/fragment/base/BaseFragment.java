@@ -1,7 +1,9 @@
 package com.android.mvp.view.fragment.base;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.Settings;
@@ -130,6 +132,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
      * @param view
      * @param savedInstanceState
      */
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         initProperties(view);
@@ -153,7 +156,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
             onInvisible();
         }
     }
-//
+
 //    @Override
 //    public void onResume() {
 //        super.onResume();
@@ -170,6 +173,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
     //fragment 显示
     protected void onVisible() {
         if (!isVisible || !isPrepared) return;
+        presenter = initPresenter();
         if (presenter != null) {
             presenter.onResume();
             presenter.subscription = presenter.observable
@@ -192,7 +196,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
     protected void onInvisible() {
         if (isVisible || !isPrepared) return;
         if (presenter != null)
-            presenter.onStop();
+            presenter.onPause();
     }
 
 
@@ -223,7 +227,6 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
     }
 
     private void initProperties(View parentView) {
-        presenter = initPresenter();
         helper = new BaseFragmentHelper(getActivity(), this);
         root = (ViewGroup) parentView;
         mTitleView = (MyTitleView) parentView.findViewById(R.id.default_title_view);

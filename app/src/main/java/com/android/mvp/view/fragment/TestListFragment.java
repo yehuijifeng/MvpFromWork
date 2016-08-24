@@ -2,6 +2,7 @@ package com.android.mvp.view.fragment;
 
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -69,6 +70,34 @@ public class TestListFragment extends BaseListFragment<TestListFragmentPresenter
         return R.layout.test_list;
     }
 
+    private Button test_btn;
+
+    @Override
+    protected void initView(final View parentView) {
+        super.initView(parentView);
+        test_btn = (Button) parentView.findViewById(R.id.test_btn);
+        test_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showLongToast(parentView.getId() + "");
+            }
+        });
+    }
+
+    @Override
+    protected void onVisible() {
+        super.onVisible();
+        if (mTitleView != null)
+            mTitleView.setTitleText("显示");
+    }
+
+    @Override
+    protected void onInvisible() {
+        super.onInvisible();
+        if (mTitleView != null)
+            mTitleView.setTitleText("隐藏");
+    }
+
     @Override
     protected void initData() {
         showLoading();
@@ -101,7 +130,6 @@ public class TestListFragment extends BaseListFragment<TestListFragmentPresenter
         pagNumber = 1;
         getGoodsList();
     }
-
 
     @Override
     public void loadMore() {

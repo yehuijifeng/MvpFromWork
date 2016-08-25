@@ -64,7 +64,7 @@ public class TestFragmentDialog extends BaseFragment<TestFragmentOnePresenter> i
             public void run() {
                 closeLoading();
             }
-        }, 3000);
+        }, 1000);
     }
 
     @Override
@@ -113,7 +113,11 @@ public class TestFragmentDialog extends BaseFragment<TestFragmentOnePresenter> i
                 });
                 break;
             case R.id.list_btn:
-                listDialog.showListDialog(new String[]{"aaa", "bbb", "ccc", "ddd", "eee"}, new ListDialog.OnListItemClickListener() {
+                listDialog.showListDialog(new String[]{"asdfghhhhhjdfdfddfdfdfdfdfdfdfdf",
+                        "123234567765432345765432345456789",
+                        "我是一个粉刷的沙发上的士大夫大师傅似的发射点家",
+                        "！@#￥%……@#￥%……&*（&……%￥#￥*（……%￥#￥%&*",
+                        "12345654ssdfsfd$!@#$%^&*(%稍的沙发上的等"}, new ListDialog.OnListItemClickListener() {
                     @Override
                     public void onCancel() {
                         showShortToast("取消");

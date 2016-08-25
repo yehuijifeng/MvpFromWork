@@ -91,17 +91,70 @@ public class ListDialog extends View implements View.OnClickListener {
         layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutParams.bottomMargin = DisplayUtils.dip2px(getContext(), 1);
         for (int i = 0; i < itemStr.length; i++) {
-            itemView = View.inflate(getContext(), R.layout.dialog_list_item, null);
-            textView = (TextView) itemView.findViewById(R.id.list_item_text);
-            textView.setText(itemStr[i]);
-            itemView.setLayoutParams(layoutParams);
-            list_layout.addView(itemView);
-            itemView.setOnClickListener(new onItemClick(i, itemStr[i]));
+            if (itemStr.length == 1) {
+                itemAll(itemStr[i], i);
+            } else {
+                if (i == 0) {
+                    itemTop(itemStr[i], i);
+                } else if (i == itemStr.length - 1) {
+                    itemBottom(itemStr[i], i);
+                } else {
+                    itemDefault(itemStr[i], i);
+                }
+            }
         }
         if (!TextUtils.isEmpty(closeStr))
             list_exit_text.setText(closeStr);
         alertDialog.show();
         alertDialog.setContentView(root);
+    }
+
+    /**
+     * item 默认样式
+     *
+     * @param itemStr
+     * @param itemId
+     */
+    private void itemDefault(String itemStr, int itemId) {
+        itemView = View.inflate(getContext(), R.layout.dialog_list_item, null);
+        textView = (TextView) itemView.findViewById(R.id.list_item_text);
+        textView.setText(itemStr);
+        itemView.setLayoutParams(layoutParams);
+        list_layout.addView(itemView);
+        itemView.setOnClickListener(new onItemClick(itemId, itemStr));
+    }
+
+    /**
+     * item 底部圆角样式
+     *
+     * @param itemStr
+     * @param itemId
+     */
+    private void itemBottom(String itemStr, int itemId) {
+        itemDefault(itemStr, itemId);
+        itemView.setBackgroundResource(R.drawable.bg_default_fillet_view_bottom);
+    }
+
+    /**
+     * item 顶部圆角样式
+     *
+     * @param itemStr
+     * @param itemId
+     */
+    private void itemTop(String itemStr, int itemId) {
+        itemDefault(itemStr, itemId);
+        itemView.setBackgroundResource(R.drawable.bg_default_fillet_view_top);
+    }
+
+    /**
+     * item 顶部圆角样式
+     *
+     * @param itemStr
+     * @param itemId
+     */
+    private void itemAll(String itemStr, int itemId) {
+        itemDefault(itemStr, itemId);
+        itemView.setBackgroundResource(R.drawable.bg_default_fillet_view_all);
     }
 
     /**

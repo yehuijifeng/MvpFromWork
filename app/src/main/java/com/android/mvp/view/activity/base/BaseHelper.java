@@ -19,6 +19,7 @@ import com.android.mvp.http.response.ResponseAction;
 import com.android.mvp.http.response.ResponseFinalAction;
 import com.android.mvp.utils.NetWorkUtils;
 import com.android.mvp.view.baseview.LoadingView;
+import com.android.mvp.view.baseview.MyTitleView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +58,6 @@ public class BaseHelper {
         inflater = activity.getLayoutInflater();
         rootGroup = (ViewGroup) activity.findViewById(android.R.id.content);
         root = (ViewGroup) rootGroup.getChildAt(0);
-        initLoadingView();
     }
 
     public LayoutInflater getInflater() {
@@ -75,9 +75,10 @@ public class BaseHelper {
     /**
      * loading遮罩层的加载
      */
-    private void initLoadingView() {
-        loadingView = new LoadingView(activity);
-        rootGroup.addView(loadingView);
+    public void initLoadingView(MyTitleView myTitleView) {
+        loadingView = myTitleView.getLoadingView();
+        //loadingView = new LoadingView(activity);
+        //rootGroup.addView(loadingView);
     }
 
     public void showLoading() {

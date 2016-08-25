@@ -152,6 +152,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
             } else {
                 mTitleView.setTitleText(setTitleText());
             }
+            //baseHelper.initLoadingView(mTitleView);
         }
         imageLoader = ImageLoader.getInstance();
     }

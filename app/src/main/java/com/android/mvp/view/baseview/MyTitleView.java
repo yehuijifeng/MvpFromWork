@@ -25,6 +25,12 @@ public class MyTitleView extends LinearLayout {
     private LinearLayout toolbar_ly;
     private LinearLayout toolbar_color_rl;
     private View root;
+    private LoadingView loadingView;
+
+    public LoadingView getLoadingView() {
+        return loadingView;
+    }
+
     //默认标题类型
     private TitleMode mTitleMode = TitleMode.NORMAL;
 
@@ -54,6 +60,7 @@ public class MyTitleView extends LinearLayout {
         title_default_right_text = (TextView) root.findViewById(R.id.title_default_right_text);
         title_default_back.setOnClickListener(toBack);
         setTitleMode(TitleMode.NORMAL);
+        loadingView = (LoadingView) root.findViewById(R.id.default_loading_view);
 
     }
 

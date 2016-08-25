@@ -24,6 +24,7 @@ import com.android.mvp.http.response.ResponseSuccessAction;
 import com.android.mvp.presenter.base.BasePresenter;
 import com.android.mvp.utils.NetWorkUtils;
 import com.android.mvp.view.activity.base.BaseHelper;
+import com.android.mvp.view.baseview.LoadingView;
 import com.android.mvp.view.baseview.MyTitleView;
 import com.google.gson.Gson;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -176,6 +177,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
         if (presenter == null || presenter.mView.getClass() != this.getClass()) {
             presenter = initPresenter();
             getPresenterOnReame();
+            initLoadingView(mTitleView);
             lazyLoad();
         }
     }
@@ -243,30 +245,36 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
             } else {
                 mTitleView.setTitleText(setTitleText());
             }
+            //helper.initLoadingView(mTitleView);
         }
         imageLoader = ImageLoader.getInstance();
         outMetrics = helper.outMetrics;
-        initLoadingView();
     }
+
+    private LoadingView loadingView;
 
     /**
      * loading遮罩层的加载
      */
-    private void initLoadingView() {
-
+    private void initLoadingView(MyTitleView mTitleView) {
+        loadingView = mTitleView.getLoadingView();
     }
 
     protected void showLoading() {
-        helper.showLoading();
+        //helper.showLoading();
+        loadingView.showLoading(getResources().getString(R.string.header_hint_loading));
     }
 
     protected void showLoading(String str) {
-        helper.showLoading(str);
+        //helper.showLoading(str);
+        loadingView.showLoading(str);
     }
 
 
     protected void showErrorLoading(String str, View.OnClickListener onClickListener) {
-        helper.showErrorLoading(str, onClickListener);
+        //helper.showErrorLoading(str, onClickListener);
+        loadingView.showErrorPrompt(str);
+        loadingView.setErrorClickListener(onClickListener);
     }
 
     protected void showErrorLoadingByNoClick(String str) {
@@ -278,7 +286,9 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
     }
 
     protected void showErrorBtnLoading(String str, String btnStr, View.OnClickListener onClickListener) {
-        helper.showErrorBtnLoading(str, btnStr, onClickListener);
+        //helper.showErrorBtnLoading(str, btnStr, onClickListener);
+        loadingView.showErrorBtnPrompt(str);
+        loadingView.setErrorBtnClickListener(btnStr, onClickListener);
     }
 
     protected void showErrorBtnLoadingByDefaultClick(String str, String btnStr) {
@@ -291,7 +301,8 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
     }
 
     protected void closeLoading() {
-        helper.closeLoading();
+        //helper.closeLoading();
+        loadingView.closeLoadingView();
     }
 
 

@@ -173,23 +173,30 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
     //fragment 显示
     protected void onVisible() {
         if (!isVisible || !isPrepared) return;
-        presenter = initPresenter();
-        if (presenter != null) {
-            presenter.onResume();
-            presenter.subscription = presenter.observable
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Action1<ResponseAction>() {
-                        @Override
-                        public void call(ResponseAction responseAction) {
-                            if (responseAction instanceof ResponseSuccessAction) {
-                                onRequestSuccess((ResponseSuccessAction) responseAction);
-                            } else if (responseAction instanceof ResponseFinalAction) {
-                                onRequestFinal((ResponseFinalAction) responseAction);
-                            }
-                        }
-                    });
+        if (presenter == null || presenter.mView.getClass() != this.getClass()) {
+            presenter = initPresenter();
+            getPresenterOnReame();
+            lazyLoad();
         }
-        lazyLoad();
+    }
+
+    /**
+     * 注册presenter中的RxBus
+     */
+    private void getPresenterOnReame() {
+        presenter.onResume();
+        presenter.subscription = presenter.observable
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<ResponseAction>() {
+                    @Override
+                    public void call(ResponseAction responseAction) {
+                        if (responseAction instanceof ResponseSuccessAction) {
+                            onRequestSuccess((ResponseSuccessAction) responseAction);
+                        } else if (responseAction instanceof ResponseFinalAction) {
+                            onRequestFinal((ResponseFinalAction) responseAction);
+                        }
+                    }
+                });
     }
 
     //fragment 隐藏

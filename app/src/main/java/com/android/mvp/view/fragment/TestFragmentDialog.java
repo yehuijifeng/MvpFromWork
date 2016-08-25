@@ -15,6 +15,7 @@ import com.android.mvp.view.fragment.base.BaseFragment;
 import com.android.mvp.view.interfaces.ITestFragmentOneView;
 
 /**
+ * 测试
  * Created by Luhao on 2016/7/21.
  */
 public class TestFragmentDialog extends BaseFragment<TestFragmentOnePresenter> implements ITestFragmentOneView, View.OnClickListener {

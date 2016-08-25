@@ -4,6 +4,8 @@ import com.android.mvp.http.request.RequestAction;
 import com.android.mvp.http.request.RetrofitManage;
 import com.android.mvp.model.base.BaseModel;
 
+import java.util.Map;
+
 import rx.Subscription;
 
 /**
@@ -12,9 +14,10 @@ import rx.Subscription;
 public class TestListModel extends BaseModel {
 
     public Subscription getGoodsList(int number,int shopId) {
-        RequestAction.GET_GOODS_LIST.params.getParams().put("shopInfo.typeId", shopId);
-        RequestAction.GET_GOODS_LIST.params.getParams().put("shopInfo.index", "pub");
-        RequestAction.GET_GOODS_LIST.params.getParams().put("pageNum", number);
+        Map<String, Object> params = RequestAction.GET_GOODS_LIST.params.getParams();
+        params.put("shopInfo.typeId", shopId);
+        params.put("shopInfo.index", "pub");
+        params.put("pageNum", number);
         //发送请求
         return RetrofitManage.getInstance().sendRequest(RequestAction.GET_GOODS_LIST);
     }

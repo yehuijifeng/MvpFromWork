@@ -52,6 +52,7 @@ public class LoadingView extends LinearLayout implements View.OnTouchListener {
     }
 
     private void initView() {
+        if (root != null) root.setVisibility(GONE);
         root = LayoutInflater.from(getContext()).inflate(R.layout.base_loadingview, this);
         loading_ly = (LinearLayout) root.findViewById(R.id.loading_ly);
         loading_click_ly = (LinearLayout) root.findViewById(R.id.loading_click_ly);
@@ -127,9 +128,9 @@ public class LoadingView extends LinearLayout implements View.OnTouchListener {
      * @param loadingStr loading加载提示文字
      */
     public void showLoading(Drawable drawable, String loadingStr) {
-        //setVisibility(VISIBLE);
+        if (root.getVisibility() == View.VISIBLE) return;
         initRootView();
-        getDialogStyle();
+        getFullWindowStyle();
         error_icon_img.setVisibility(GONE);
         error_str_text.setVisibility(GONE);
         error_btn.setVisibility(GONE);
@@ -181,6 +182,7 @@ public class LoadingView extends LinearLayout implements View.OnTouchListener {
      * @param errorStr
      */
     public void showErrorPrompt(Drawable drawable, String errorStr) {
+        if (root.getVisibility() == View.VISIBLE) return;
         initRootView();
         getFullWindowStyle();
         loading_icon_img.setVisibility(GONE);
@@ -205,6 +207,7 @@ public class LoadingView extends LinearLayout implements View.OnTouchListener {
      * @param errorStr
      */
     public void showErrorBtnPrompt(Drawable btnDrawable, String errorStr) {
+        if (root.getVisibility() == View.VISIBLE) return;
         initRootView();
         getFullWindowStyle();
         loading_icon_img.setVisibility(GONE);

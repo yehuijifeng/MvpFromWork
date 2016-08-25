@@ -45,7 +45,7 @@ public class TestViewpagerActivity extends BaseViewPagerActivity {
         mViewList.add(new TestFragmentDialog());
         mViewList.add(new TestListFragment());
         mViewList.add(new TestGridFragment());
-        setPageNumber(0);
+        setPageNumber(1);
     }
 
     @Override

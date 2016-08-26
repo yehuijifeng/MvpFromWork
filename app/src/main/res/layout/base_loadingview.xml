@@ -8,11 +8,10 @@
         android:id="@+id/loading_ly"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/default_title_ly_height"
         android:background="@android:color/white"
         android:gravity="center"
         android:orientation="vertical">
-
+        <!-- android:layout_marginTop="@dimen/default_title_ly_height"-->
         <LinearLayout
             android:id="@+id/loading_click_ly"
             android:layout_width="match_parent"

@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/toolbar_color_rl"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/title_color"
     android:orientation="vertical">
 
     <ImageView
         android:id="@+id/toolbar_color_img"
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:clipToPadding="false"
-        android:fitsSystemWindows="true" />
+        android:layout_height="1dp" />
 
     <LinearLayout
         android:id="@+id/toolbar_ly"
         android:layout_width="match_parent"
         android:layout_height="@dimen/default_title_height"
-        android:gravity="center"
-        android:orientation="horizontal">
+        android:background="@color/title_color">
+        <!-- android:gravity="center"
+        android:orientation="horizontal"-->
 
         <ImageView
             android:id="@+id/title_default_back"
@@ -74,6 +72,8 @@
     <com.android.mvp.view.baseview.LoadingView
         android:id="@+id/default_loading_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toolbar_ly"
+        android:layout_centerHorizontal="true" />
+</RelativeLayout>
 

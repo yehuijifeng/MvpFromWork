@@ -3,6 +3,7 @@ package com.android.mvp.adapter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.List;
@@ -69,8 +70,15 @@ public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
      */
     @Override
     public void destroyItem(ViewGroup container, int position, Object object) {
-        super.destroyItem(container, position, object);
+        //super.destroyItem(container, position, object);
     }
+
+    @Override
+    public void destroyItem(View container, int position, Object object) {
+        //super.destroyItem(container, position, object);
+    }
+
+    //不让他们调用父类方法就不会销毁Fagment了
 
     /**
      * 返回实例化的某个view，取出list中的，传入position即可

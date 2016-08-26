@@ -73,4 +73,5 @@ public class MyViewPager extends ViewPager {
         this.scrollable = scrollable;
     }
 
+
 }

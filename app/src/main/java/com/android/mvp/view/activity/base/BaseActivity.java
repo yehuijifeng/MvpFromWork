@@ -3,7 +3,6 @@ package com.android.mvp.view.activity.base;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Rect;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.Settings;
@@ -12,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.android.mvp.R;
@@ -23,6 +21,7 @@ import com.android.mvp.http.response.ResponseAction;
 import com.android.mvp.http.response.ResponseFinalAction;
 import com.android.mvp.http.response.ResponseSuccessAction;
 import com.android.mvp.presenter.base.BasePresenter;
+import com.android.mvp.view.baseview.LoadingView;
 import com.android.mvp.view.baseview.MyTitleView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
@@ -77,6 +76,11 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
      */
     protected MyTitleView mTitleView;
 
+    /**
+     * activity的laodingview，该loadingview包含在titleview中
+     */
+    private LoadingView loadingView;
+
     public static int titleBarHeight;
 
     @Override
@@ -85,11 +89,11 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);//禁止横竖屏
         setPullWindow();//设置全屏
         setContentView(setContentView());
-        //沉浸式title
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
-        }
+//        //沉浸式title
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+//        }
         initialize();
         initView();
         initData();
@@ -147,12 +151,12 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         inflater = baseHelper.getInflater();
         mTitleView = (MyTitleView) findViewById(R.id.default_title_view);
         if (mTitleView != null) {
+            loadingView = mTitleView.getLoadingView();
             if (setCustomToolbar() != null) {
                 onCreateCustomToolBar(setCustomToolbar());
             } else {
                 mTitleView.setTitleText(setTitleText());
             }
-            //baseHelper.initLoadingView(mTitleView);
         }
         imageLoader = ImageLoader.getInstance();
     }
@@ -165,10 +169,10 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) {
-            getWindowTop();
-            mTitleView.setTitleBarHeight(titleBarHeight);
-        }
+//        if (hasFocus) {
+//            getWindowTop();
+//            mTitleView.setTitleBarHeight(titleBarHeight);
+//        }
     }
 
     /**
@@ -214,17 +218,31 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
     }
 
+    /**
+     * 隐藏标题
+     */
+    protected void goneTitleView() {
+        mTitleView.goneTitleView();
+    }
 
+    /**
+     * loading遮罩层的加载
+     */
     protected void showLoading() {
-        baseHelper.showLoading();
+        if (loadingView == null) return;
+        loadingView.showLoading(getResources().getString(R.string.header_hint_loading));
     }
 
     protected void showLoading(String str) {
-        baseHelper.showLoading(str);
+        if (loadingView == null) return;
+        loadingView.showLoading(str);
     }
 
+
     protected void showErrorLoading(String str, View.OnClickListener onClickListener) {
-        baseHelper.showErrorLoading(str, onClickListener);
+        if (loadingView == null) return;
+        loadingView.showErrorPrompt(str);
+        loadingView.setErrorClickListener(onClickListener);
     }
 
     protected void showErrorLoadingByNoClick(String str) {
@@ -241,7 +259,9 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     }
 
     protected void showErrorBtnLoading(String str, String btnStr, View.OnClickListener onClickListener) {
-        baseHelper.showErrorBtnLoading(str, btnStr, onClickListener);
+        if (loadingView == null) return;
+        loadingView.showErrorBtnPrompt(str);
+        loadingView.setErrorBtnClickListener(btnStr, onClickListener);
     }
 
     protected void showErrorBtnLoadingByDefaultClick(String str, String btnStr) {
@@ -254,7 +274,8 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     }
 
     protected void closeLoading() {
-        baseHelper.closeLoading();
+        if (loadingView == null) return;
+        loadingView.closeLoadingView();
     }
 
     /**

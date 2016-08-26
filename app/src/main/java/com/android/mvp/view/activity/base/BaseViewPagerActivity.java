@@ -70,6 +70,7 @@ public abstract class BaseViewPagerActivity extends BaseActivity implements View
 
     @Override
     protected void initData() {
+        //mViewPager.setOffscreenPageLimit(0);
         itemSize = mViewList.size();
         fragmentPagerAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager(), mViewList);
         mViewPager.setAdapter(fragmentPagerAdapter);

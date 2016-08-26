@@ -59,13 +59,13 @@ public class TestFragmentDialog extends BaseFragment<TestFragmentOnePresenter> i
         listDialog = new ListDialog(getActivity());
         pwdDialog = new PwdDialog(getActivity());
         customDialog = new CustomDialog(getActivity());
-        showLoading();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                closeLoading();
-            }
-        }, 1000);
+        //showLoading();
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                closeLoading();
+//            }
+//        }, 1000);
     }
 
     @Override

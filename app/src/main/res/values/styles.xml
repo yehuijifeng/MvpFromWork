@@ -20,7 +20,6 @@
     <!--首页继承这个style，目的是为了让第一次进入的画面为透明-->
     <style name="AppThemeForRedMain" parent="AppTheme">
         <item name="android:windowIsTranslucent">false</item>
-
         <item name="android:windowAnimationStyle">@style/AnimActivityTheme</item>
     </style>
 

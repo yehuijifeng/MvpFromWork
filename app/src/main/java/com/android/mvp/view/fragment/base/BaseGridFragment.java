@@ -35,6 +35,10 @@ public abstract class BaseGridFragment<T extends BasePresenter> extends BaseFrag
     protected boolean isRefresh = true, isLoadMore = true;
     protected int numColumns = 2;//默认gridview一行包含两个视图
 
+    public BaseGridFragment() {
+        super();
+    }
+
     public boolean isRefresh() {
         return isRefresh;
     }

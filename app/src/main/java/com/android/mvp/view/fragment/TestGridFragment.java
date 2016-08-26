@@ -2,7 +2,6 @@ package com.android.mvp.view.fragment;
 
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -10,37 +9,22 @@ import com.android.mvp.R;
 import com.android.mvp.adapter.base.BaseViewHolder;
 import com.android.mvp.appliaction.MvpAppliaction;
 import com.android.mvp.bean.test.GoodsListBean;
-import com.android.mvp.http.StatusCode;
 import com.android.mvp.http.request.RequestAction;
 import com.android.mvp.http.response.ResponseFinalAction;
 import com.android.mvp.http.response.ResponseSuccessAction;
-import com.android.mvp.presenter.TestListFragmentPresenter;
-import com.android.mvp.view.fragment.base.BaseListFragment;
-import com.android.mvp.view.interfaces.ITestListFragment;
+import com.android.mvp.presenter.TestGridFragmentPresenter;
+import com.android.mvp.view.fragment.base.BaseGridFragment;
+import com.android.mvp.view.interfaces.ITestGridView;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * Created by Luhao on 2016/7/23.
+ * Created by Luhao on 2016/8/23.
  */
-public class TestListFragment extends BaseListFragment<TestListFragmentPresenter> implements ITestListFragment {
-    int pagNumber = 1;
+public class TestGridFragment extends BaseGridFragment<TestGridFragmentPresenter> implements ITestGridView {
 
-    @Override
-    public boolean isLoadMore() {
-        return true;
-    }
-
-    @Override
-    protected boolean getIsFootViewClick() {
-        return false;
-    }
-
-    @Override
-    protected boolean getIsHeaderViewClick() {
-        return false;
-    }
+    private int pagNumber = 1;
 
     @Override
     public void getItemData(int position, BaseViewHolder baseViewHolder, int itemType) {
@@ -62,64 +46,36 @@ public class TestListFragment extends BaseListFragment<TestListFragmentPresenter
     }
 
     @Override
-    protected TestListFragmentPresenter initPresenter() {
-        return new TestListFragmentPresenter(this);
+    protected TestGridFragmentPresenter initPresenter() {
+        return new TestGridFragmentPresenter(this);
     }
 
     @Override
     protected int setFragmentViewContent() {
-        return R.layout.test_list;
+        return R.layout.test_grid;
     }
 
-    private Button test_btn;
-
     @Override
-    protected void initView(final View parentView) {
+    protected void initView(View parentView) {
         super.initView(parentView);
         goneTitleView();
-        test_btn = (Button) parentView.findViewById(R.id.test_btn);
-        test_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showLongToast(parentView.getId() + "");
-            }
-        });
-    }
-
-    @Override
-    protected void onVisible() {
-        super.onVisible();
-        if (mTitleView != null)
-            mTitleView.setTitleText("显示");
-    }
-
-    @Override
-    protected void onInvisible() {
-        super.onInvisible();
-        if (mTitleView != null)
-            mTitleView.setTitleText("隐藏");
+        setNumColumns(3);
     }
 
     @Override
     protected void initData() {
         showLoading();
-        //setRefresh(false);
-        getGoodsList();
+        setRefresh(true);
+        getGoodsGrid();
     }
 
 
-    private void getGoodsList() {
+    private void getGoodsGrid() {
         Map<String, Object> params = RequestAction.GET_GOODS_LIST.params.getParams();
         params.put("shopInfo.typeId", 2);
         params.put("shopInfo.index", "pub");
         params.put("pageNum", pagNumber);
         sendRequest(RequestAction.GET_GOODS_LIST);
-        //发送请求,返回订阅
-        //Subscription subscription = RetrofitManage.getInstance().sendRequest(RequestAction.GET_GOODS_LIST);
-
-//        if (subscription != null && !subscription.isUnsubscribed())
-//            //如果订阅取消订阅
-//            subscription.unsubscribe();
     }
 
     @Override
@@ -127,16 +83,18 @@ public class TestListFragment extends BaseListFragment<TestListFragmentPresenter
         showLongToast("点击了" + position + "行 id:" + id);
     }
 
+
     @Override
     protected void refresh() {
         pagNumber = 1;
-        getGoodsList();
+        getGoodsGrid();
     }
+
 
     @Override
     public void loadMore() {
         pagNumber++;
-        getGoodsList();
+        getGoodsGrid();
     }
 
     class ViewHolder extends BaseViewHolder {
@@ -154,6 +112,7 @@ public class TestListFragment extends BaseListFragment<TestListFragmentPresenter
             test_text = (TextView) itemView.findViewById(R.id.test_text);
         }
     }
+
 
     @Override
     protected void onRequestSuccess(ResponseSuccessAction success) {
@@ -174,20 +133,10 @@ public class TestListFragment extends BaseListFragment<TestListFragmentPresenter
         super.onRequestFinal(finals);
         switch (finals.getRequestAction()) {
             case GET_GOODS_LIST:
-                if (finals.getRequestCode() != StatusCode.NOT_MORE_DATA)
-                    //showLongToast(finals.getErrorMessage());
-                    loadTextFinal(finals.getErrorMessage() + "，点击重试", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            refresh();
-                        }
-                    });
+                loadTextFinal(finals.getErrorMessage() + "，点击重试");
                 break;
         }
     }
 
-    @Override
-    public void showDataSize(int size) {
 
-    }
 }

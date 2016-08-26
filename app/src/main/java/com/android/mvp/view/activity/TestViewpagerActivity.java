@@ -42,10 +42,12 @@ public class TestViewpagerActivity extends BaseViewPagerActivity {
                 showLongToast("dddddddddddd");
             }
         });
-        mViewList.add(new TestFragmentDialog());
         mViewList.add(new TestListFragment());
+        mViewList.add(new TestListFragment());
+        mViewList.add(new TestListFragment());
+        mViewList.add(new TestFragmentDialog());
         mViewList.add(new TestGridFragment());
-        setPageNumber(1);
+        setPageNumber(2);
     }
 
     @Override

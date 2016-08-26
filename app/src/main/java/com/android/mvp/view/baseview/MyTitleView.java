@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.mvp.R;
@@ -23,7 +24,7 @@ public class MyTitleView extends LinearLayout {
     private ImageView title_default_back, title_default_right_image, toolbar_color_img;
     private TextView title_default_text, title_default_right_text;
     private LinearLayout toolbar_ly;
-    private LinearLayout toolbar_color_rl;
+    private RelativeLayout toolbar_color_rl;
     private View root;
     private LoadingView loadingView;
 
@@ -53,7 +54,7 @@ public class MyTitleView extends LinearLayout {
         root = LayoutInflater.from(context).inflate(R.layout.base_titleview, this);
         toolbar_ly = (LinearLayout) root.findViewById(R.id.toolbar_ly);
         title_default_right_image = (ImageView) root.findViewById(R.id.title_default_right_image);
-        toolbar_color_rl = (LinearLayout) root.findViewById(R.id.toolbar_color_rl);
+        toolbar_color_rl = (RelativeLayout) root.findViewById(R.id.toolbar_color_rl);
         title_default_back = (ImageView) root.findViewById(R.id.title_default_back);
         toolbar_color_img = (ImageView) root.findViewById(R.id.toolbar_color_img);
         title_default_text = (TextView) root.findViewById(R.id.title_default_text);
@@ -166,6 +167,7 @@ public class MyTitleView extends LinearLayout {
         }
     }
 
+
     //返回键点击事件
     private OnClickListener toBack = new OnClickListener() {
         @Override
@@ -240,6 +242,7 @@ public class MyTitleView extends LinearLayout {
         this.mTitleMode = titleMode;
     }
 
+
     public enum TitleMode {
         /**
          * 普通型标题(只有返回按钮和标题)
@@ -267,6 +270,13 @@ public class MyTitleView extends LinearLayout {
          * 不带返回按钮但是带设置按钮的标题
          */
         NO_BACK_IMAGE
+    }
+
+
+    public void goneTitleView() {
+        if (toolbar_ly != null) {
+            toolbar_ly.setVisibility(GONE);
+        }
     }
 
 }

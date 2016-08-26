@@ -158,34 +158,21 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
         }
     }
 
-//    @Override
-//    public void onResume() {
-//        super.onResume();
-//        onVisible();
-//
-//    }
-//
-//    @Override
-//    public void onStop() {
-//        super.onStop();
-//        onInvisible();
-//    }
-
     //fragment 显示
     protected void onVisible() {
         if (!isVisible || !isPrepared) return;
-        if (presenter == null || presenter.mView.getClass() != this.getClass()) {
-            presenter = initPresenter();
+        if (presenter == null || presenter.mView.getClass() != this.getClass() || presenter.subscription == null || presenter.subscription.isUnsubscribed())
             getPresenterOnReame();
-            initLoadingView(mTitleView);
-            lazyLoad();
-        }
+        if (isLoaded) return;
+        initData();
+        isLoaded = true;
     }
 
     /**
      * 注册presenter中的RxBus
      */
     private void getPresenterOnReame() {
+        if (presenter == null) return;
         presenter.onResume();
         presenter.subscription = presenter.observable
                 .observeOn(AndroidSchedulers.mainThread())
@@ -206,14 +193,6 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
         if (isVisible || !isPrepared) return;
         if (presenter != null)
             presenter.onPause();
-    }
-
-
-    //延迟加载,每一个fragment的延迟加载只会调用一次
-    protected void lazyLoad() {
-        if (!isVisible || !isPrepared || isLoaded) return;
-        initData();
-        isLoaded = true;
     }
 
     /**
@@ -237,15 +216,16 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
 
     private void initProperties(View parentView) {
         helper = new BaseFragmentHelper(getActivity(), this);
+        presenter = initPresenter();
         root = (ViewGroup) parentView;
         mTitleView = (MyTitleView) parentView.findViewById(R.id.default_title_view);
         if (mTitleView != null) {
+            loadingView = mTitleView.getLoadingView();
             if (setCustomToolbar() != null) {
                 onCreateCustomToolBar(setCustomToolbar());
             } else {
                 mTitleView.setTitleText(setTitleText());
             }
-            //helper.initLoadingView(mTitleView);
         }
         imageLoader = ImageLoader.getInstance();
         outMetrics = helper.outMetrics;
@@ -253,26 +233,30 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
 
     private LoadingView loadingView;
 
+
+    /**
+     * 隐藏标题
+     */
+    protected void goneTitleView() {
+        mTitleView.goneTitleView();
+    }
+
     /**
      * loading遮罩层的加载
      */
-    private void initLoadingView(MyTitleView mTitleView) {
-        loadingView = mTitleView.getLoadingView();
-    }
-
     protected void showLoading() {
-        //helper.showLoading();
+        if (loadingView == null) return;
         loadingView.showLoading(getResources().getString(R.string.header_hint_loading));
     }
 
     protected void showLoading(String str) {
-        //helper.showLoading(str);
+        if (loadingView == null) return;
         loadingView.showLoading(str);
     }
 
 
     protected void showErrorLoading(String str, View.OnClickListener onClickListener) {
-        //helper.showErrorLoading(str, onClickListener);
+        if (loadingView == null) return;
         loadingView.showErrorPrompt(str);
         loadingView.setErrorClickListener(onClickListener);
     }
@@ -286,7 +270,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
     }
 
     protected void showErrorBtnLoading(String str, String btnStr, View.OnClickListener onClickListener) {
-        //helper.showErrorBtnLoading(str, btnStr, onClickListener);
+        if (loadingView == null) return;
         loadingView.showErrorBtnPrompt(str);
         loadingView.setErrorBtnClickListener(btnStr, onClickListener);
     }
@@ -301,7 +285,7 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
     }
 
     protected void closeLoading() {
-        //helper.closeLoading();
+        if (loadingView == null) return;
         loadingView.closeLoadingView();
     }
 

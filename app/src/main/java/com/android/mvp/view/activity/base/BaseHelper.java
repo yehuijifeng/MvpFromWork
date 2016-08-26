@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
@@ -19,7 +18,6 @@ import com.android.mvp.http.response.ResponseAction;
 import com.android.mvp.http.response.ResponseFinalAction;
 import com.android.mvp.utils.NetWorkUtils;
 import com.android.mvp.view.baseview.LoadingView;
-import com.android.mvp.view.baseview.MyTitleView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,37 +68,6 @@ public class BaseHelper {
 
     public ViewGroup getRootGroup() {
         return rootGroup;
-    }
-
-    /**
-     * loading遮罩层的加载
-     */
-    public void initLoadingView(MyTitleView myTitleView) {
-        loadingView = myTitleView.getLoadingView();
-        //loadingView = new LoadingView(activity);
-        //rootGroup.addView(loadingView);
-    }
-
-    public void showLoading() {
-        loadingView.showLoading(activity.getResources().getString(R.string.header_hint_loading));
-    }
-
-    public void showLoading(String str) {
-        loadingView.showLoading(str);
-    }
-
-    public void showErrorLoading(String str, View.OnClickListener onClickListener) {
-        loadingView.showErrorPrompt(str);
-        loadingView.setErrorClickListener(onClickListener);
-    }
-
-    public void showErrorBtnLoading(String str, String btnStr, View.OnClickListener onClickListener) {
-        loadingView.showErrorBtnPrompt(str);
-        loadingView.setErrorBtnClickListener(btnStr, onClickListener);
-    }
-
-    public void closeLoading() {
-        loadingView.closeLoadingView();
     }
 
     /**

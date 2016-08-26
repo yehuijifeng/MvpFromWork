@@ -5,7 +5,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.android.mvp.R;
-import com.android.mvp.adapter.BaseListAdapter;
+import com.android.mvp.adapter.base.BaseListAdapter;
 import com.android.mvp.adapter.base.BaseViewHolder;
 import com.android.mvp.http.StatusCode;
 import com.android.mvp.http.response.ResponseFinalAction;

@@ -5,7 +5,7 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 
 import com.android.mvp.R;
-import com.android.mvp.adapter.BaseGridAdapter;
+import com.android.mvp.adapter.base.BaseGridAdapter;
 import com.android.mvp.adapter.base.BaseViewHolder;
 import com.android.mvp.http.StatusCode;
 import com.android.mvp.http.response.ResponseFinalAction;

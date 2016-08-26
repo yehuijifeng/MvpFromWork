@@ -1,4 +1,4 @@
-package com.android.mvp.adapter;
+package com.android.mvp.adapter.base;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,17 +13,17 @@ import java.util.List;
  * on 2015/12/3.
  * viewpager的适配器
  */
-public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
+public class BaseFragmentViewPagerAdapter extends FragmentPagerAdapter {
 
     private List<Fragment> mViewList;
     protected List<Class<? extends Fragment>> fragmentList;
 
-    public MyFragmentPagerAdapter(FragmentManager fm) {
+    public BaseFragmentViewPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
 
-    public MyFragmentPagerAdapter(FragmentManager fm, List<Fragment> mViewList) {
+    public BaseFragmentViewPagerAdapter(FragmentManager fm, List<Fragment> mViewList) {
         super(fm);
         this.mViewList = mViewList;
     }

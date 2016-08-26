@@ -30,6 +30,7 @@ public class TestGridFragment extends BaseGridFragment<TestGridFragmentPresenter
     public void getItemData(int position, BaseViewHolder baseViewHolder, int itemType) {
         GoodsListBean goodsListBean = (GoodsListBean) getData().get(position);
         ViewHolder viewHolder = (ViewHolder) baseViewHolder;
+        if(viewHolder==null)return;
         imageLoader.displayImage(goodsListBean.getShopIcon(), viewHolder.test_img, MvpAppliaction.getInstance().defaultOptions);
         viewHolder.test_id_text.setText(goodsListBean.getShopId() + "");
         viewHolder.test_text.setText(goodsListBean.getShopName());

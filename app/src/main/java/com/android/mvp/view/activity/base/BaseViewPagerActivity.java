@@ -9,7 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.android.mvp.R;
-import com.android.mvp.adapter.MyFragmentPagerAdapter;
+import com.android.mvp.adapter.base.BaseFragmentViewPagerAdapter;
 import com.android.mvp.utils.DisplayUtils;
 import com.android.mvp.view.baseview.MyViewPager;
 
@@ -39,7 +39,7 @@ public abstract class BaseViewPagerActivity extends BaseActivity implements View
     /**
      * viewpager的适配器
      */
-    private MyFragmentPagerAdapter fragmentPagerAdapter;
+    private BaseFragmentViewPagerAdapter fragmentPagerAdapter;
 
     /**
      * 默认的tab
@@ -72,7 +72,7 @@ public abstract class BaseViewPagerActivity extends BaseActivity implements View
     protected void initData() {
         //mViewPager.setOffscreenPageLimit(0);
         itemSize = mViewList.size();
-        fragmentPagerAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager(), mViewList);
+        fragmentPagerAdapter = new BaseFragmentViewPagerAdapter(getSupportFragmentManager(), mViewList);
         mViewPager.setAdapter(fragmentPagerAdapter);
         mViewPager.setCurrentItem(getPageNumber());
         initTabView();

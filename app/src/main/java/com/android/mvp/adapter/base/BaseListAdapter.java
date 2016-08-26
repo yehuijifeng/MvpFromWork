@@ -1,4 +1,4 @@
-package com.android.mvp.adapter;
+package com.android.mvp.adapter.base;
 
 import android.view.View;
 import android.view.ViewGroup;

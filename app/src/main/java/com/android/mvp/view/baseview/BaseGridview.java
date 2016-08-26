@@ -26,6 +26,10 @@ public class BaseGridview extends LinearLayout {
     public FootView footView;//尾布局
     private OnScollListener onScollListener;//列表的滑动监听
 
+    public FootView getFootView() {
+        return footView;
+    }
+
     /**
      * 加载成功，初始化上拉加载，外界传入true，则初始化上拉加载
      *

@@ -48,8 +48,7 @@ public class BaseGridAdapter extends BaseCollectionAdapter {
 
     private int getDisplayWidth(Activity activity) {
         Display display = activity.getWindowManager().getDefaultDisplay();
-        int width = display.getWidth();
-        return width;
+        return display.getWidth();
     }
 
     @Override

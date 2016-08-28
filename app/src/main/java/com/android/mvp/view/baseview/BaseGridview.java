@@ -81,6 +81,16 @@ public class BaseGridview extends LinearLayout {
         onScollListener.setSidingStatusListener(sidingStatusListener);
     }
 
+    /**
+     * 判断当前数据是否占满一屏幕
+     *
+     * @return
+     */
+    public boolean isLoadComplete() {
+        if (onScollListener != null)
+            return onScollListener.isLoadComplete();
+        return false;
+    }
 
     public BaseGridview(Context context) {
         super(context);

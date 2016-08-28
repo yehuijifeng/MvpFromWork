@@ -43,7 +43,7 @@ public class FootView extends LinearLayout {
         initView();
     }
 
-    private void initView( ) {
+    private void initView() {
         root = LayoutInflater.from(getContext()).inflate(R.layout.base_footerview, this);
         custom_footer_hint_text = (TextView) root.findViewById(R.id.custom_footer_hint_text);
         custom_footer_hint_text.setText(getContext().getResources().getString(R.string.foot_hinit_normal));
@@ -65,8 +65,8 @@ public class FootView extends LinearLayout {
     /**
      * 准备加载
      */
-    public void onFootPrepare() {
-        custom_footer_hint_text.setText(getContext().getResources().getString(R.string.foot_hinit_normal));
+    public void onFootPrepare(boolean isLoadComplete) {
+        custom_footer_hint_text.setText(getContext().getResources().getString(isLoadComplete ? R.string.foot_hinit_normal_no_data : R.string.foot_hinit_normal));
         custom_footer_bar.setVisibility(View.INVISIBLE);
         if (loadMoreListener != null) loadMoreListener.onLoadMorePrepare(true);
     }

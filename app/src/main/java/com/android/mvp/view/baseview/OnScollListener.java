@@ -8,10 +8,17 @@ import android.widget.AbsListView;
  * listview和gridview的监听
  */
 public class OnScollListener implements AbsListView.OnScrollListener {
+
     private FootView footView;
     protected SidingStatusListener sidingStatusListener;
-    protected boolean isLoadMore = true, isLoadStatus, isLoadComplete;
+    protected boolean isLoadMore = true, isLoadStatus, isLoadComplete = true;
     private boolean isLoadSuccess = true;//该状态用于控制重复的加载，当第一次加载更多没有完成的时候，该状态一直是false
+    private int isLoadCompletes=1;//2:一屏幕没有显示完全；1：一屏幕显示完全了，说明数据不够一屏幕的显示，默认值
+
+    public boolean isLoadComplete() {
+        //LogUtils.i("检索是否显示完全：" + isLoadComplete);
+        return isLoadCompletes == 1;
+    }
 
     public boolean isLoadSuccess() {
         return isLoadSuccess;
@@ -51,27 +58,17 @@ public class OnScollListener implements AbsListView.OnScrollListener {
             if (isLoadStatus) {
                 //LogUtils.i("滑到最后了");
                 if (isLoadSuccess()) {
-                   // LogUtils.i("有效加载，没有重复");
-                    footView.onFootPrepare();//上拉加载更多
+                    // LogUtils.i("有效加载，没有重复");
+                    footView.onFootPrepare(isLoadComplete);//上拉加载更多
                     footView.onFootViewBegin();//正在加载
                     isLoadSuccess = false;
                 }
-            }
-            if (isLoadComplete) {
-                footView.onFootViewAll();
-                //LogUtils.i("没有更多数据");
             }
         } else if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
             //LogUtils.i("滑动中");
         } else if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_FLING) {
             //LogUtils.i("到底部或者头部了");
         }
-    }
-
-    private void initStatus() {
-        isLoadStatus = false;
-        isLoadComplete = false;
-        isLoadSuccess = true;
     }
 
     /**
@@ -83,8 +80,8 @@ public class OnScollListener implements AbsListView.OnScrollListener {
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         if (!isLoadMore()) return;
-        isLoadComplete = visibleItemCount > totalItemCount;
-        if (visibleItemCount < totalItemCount) {//如果当前数据一屏幕内就已经现实完，则表示没有更多数据
+        isLoadComplete = visibleItemCount >= totalItemCount;
+        if (!isLoadComplete) {//如果当前数据一屏幕内就已经现实完，则表示没有更多数据
             int lastItemIndex = firstVisibleItem + visibleItemCount;
 //            LogUtils.i("当前行：" + lastItemIndex);
 //            LogUtils.i("第一个：" + firstVisibleItem);
@@ -92,5 +89,8 @@ public class OnScollListener implements AbsListView.OnScrollListener {
 //            LogUtils.i("总数：" + totalItemCount);
             isLoadStatus = lastItemIndex == totalItemCount;
         }
+        if (isLoadComplete) isLoadCompletes = 1;
+        else isLoadCompletes = 2;
+        //LogUtils.i("是否显示完全：" + isLoadCompletes);
     }
 }

@@ -112,7 +112,7 @@ public class TestListFragment extends BaseListFragment<TestListFragmentPresenter
         Map<String, Object> params = RequestAction.GET_GOODS_LIST.params.getParams();
         params.put("shopInfo.typeId", 2);
         params.put("shopInfo.index", "pub");
-        params.put("pageNum", pagNumber);
+        params.put("pageNum", 6);
         sendRequest(RequestAction.GET_GOODS_LIST);
         //发送请求,返回订阅
         //Subscription subscription = RetrofitManage.getInstance().sendRequest(RequestAction.GET_GOODS_LIST);
@@ -174,7 +174,7 @@ public class TestListFragment extends BaseListFragment<TestListFragmentPresenter
         super.onRequestFinal(finals);
         switch (finals.getRequestAction()) {
             case GET_GOODS_LIST:
-                if (finals.getRequestCode() != StatusCode.NOT_MORE_DATA)
+                if (finals.getRequestCode() != StatusCode.NOT_MORE_DATA || (finals.getRequestCode() == StatusCode.NOT_MORE_DATA && pagNumber == 1))
                     //showLongToast(finals.getErrorMessage());
                     loadTextFinal(finals.getErrorMessage() + "，点击重试", new View.OnClickListener() {
                         @Override
@@ -182,6 +182,7 @@ public class TestListFragment extends BaseListFragment<TestListFragmentPresenter
                             refresh();
                         }
                     });
+                loadSuccess();
                 break;
         }
     }

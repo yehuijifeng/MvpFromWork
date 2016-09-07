@@ -95,7 +95,7 @@ public abstract class BaseListActivity<T extends BasePresenter> extends BaseActi
     @Override
     protected void onRequestSuccess(ResponseSuccessAction success) {
         if (success.getRequestCode() == StatusCode.REQUEST_SUCCESS) {
-            baseListView.setOnExecuteScoll(true);
+            baseListView.setOnExecuteScollSuccess();
             baseListView.footView.onFootPrepare(baseListView.isLoadComplete());
         }
         if (isRefresh())

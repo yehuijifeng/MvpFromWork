@@ -13,10 +13,14 @@ public class OnScollListener implements AbsListView.OnScrollListener {
     protected SidingStatusListener sidingStatusListener;
     protected boolean isLoadMore = true, isLoadStatus, isLoadComplete = true;
     private boolean isLoadSuccess = true;//该状态用于控制重复的加载，当第一次加载更多没有完成的时候，该状态一直是false
-    private int isLoadCompletes=1;//2:一屏幕没有显示完全；1：一屏幕显示完全了，说明数据不够一屏幕的显示，默认值
+    private int isLoadCompletes = 1;//2:一屏幕没有显示完全；1：一屏幕显示完全了，说明数据不够一屏幕的显示，默认值
 
+    /**
+     * 检索是否显示完全
+     *
+     * @return
+     */
     public boolean isLoadComplete() {
-        //LogUtils.i("检索是否显示完全：" + isLoadComplete);
         return isLoadCompletes == 1;
     }
 
@@ -24,8 +28,8 @@ public class OnScollListener implements AbsListView.OnScrollListener {
         return isLoadSuccess;
     }
 
-    public void setLoadSuccess(boolean loadSuccess) {
-        isLoadSuccess = loadSuccess;
+    public void setLoadSuccess() {
+        isLoadSuccess = true;
     }
 
     public boolean isLoadMore() {
@@ -81,6 +85,8 @@ public class OnScollListener implements AbsListView.OnScrollListener {
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         if (!isLoadMore()) return;
         isLoadComplete = visibleItemCount >= totalItemCount;
+        //LogUtils.i("是否显示完全：" + isLoadCompletes);
+        isLoadCompletes = isLoadComplete ? 1 : 2;
         if (!isLoadComplete) {//如果当前数据一屏幕内就已经现实完，则表示没有更多数据
             int lastItemIndex = firstVisibleItem + visibleItemCount;
 //            LogUtils.i("当前行：" + lastItemIndex);
@@ -89,8 +95,5 @@ public class OnScollListener implements AbsListView.OnScrollListener {
 //            LogUtils.i("总数：" + totalItemCount);
             isLoadStatus = lastItemIndex == totalItemCount;
         }
-        if (isLoadComplete) isLoadCompletes = 1;
-        else isLoadCompletes = 2;
-        //LogUtils.i("是否显示完全：" + isLoadCompletes);
     }
 }

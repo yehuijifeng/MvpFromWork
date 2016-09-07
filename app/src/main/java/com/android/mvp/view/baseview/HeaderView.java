@@ -136,7 +136,7 @@ public class HeaderView extends LinearLayout implements PtrUIHandler {
     @Override
     public void onUIRefreshBegin(PtrFrameLayout frame) {
         custom_header_hint_text.setText(getContext().getResources().getString(R.string.header_hint_normal_ing));
-        custom_header_image.setImageResource(R.drawable.ice_default_loading);
+        custom_header_image.setImageResource(R.drawable.ic_default_loading);
         custom_header_image.startAnimation(animation);
         getRefreshListener().onRefreshBegin(true, frame);
     }

@@ -157,7 +157,7 @@ public abstract class BaseGridFragment<T extends BasePresenter> extends BaseFrag
     @Override
     protected void onRequestSuccess(ResponseSuccessAction success) {
         if (success.getRequestCode() == StatusCode.REQUEST_SUCCESS) {
-            baseGridview.setOnExecuteScoll(true);
+            baseGridview.setOnExecuteScollSuccess();
             baseGridview.footView.onFootPrepare(baseGridview.isLoadComplete());
         }
         if (isRefresh())

@@ -32,11 +32,9 @@ public class BaseGridview extends LinearLayout {
 
     /**
      * 加载成功，初始化上拉加载，外界传入true，则初始化上拉加载
-     *
-     * @param isLoadMore
      */
-    public void setOnExecuteScoll(boolean isLoadMore) {
-        onScollListener.setLoadSuccess(isLoadMore);
+    public void setOnExecuteScollSuccess() {
+        onScollListener.setLoadSuccess();
     }
 
     /**

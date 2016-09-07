@@ -153,7 +153,7 @@ public abstract class BaseGridActivity<T extends BasePresenter> extends BaseActi
     @Override
     protected void onRequestSuccess(ResponseSuccessAction success) {
         if (success.getRequestCode() == StatusCode.REQUEST_SUCCESS) {
-            baseGridview.setOnExecuteScoll(true);
+            baseGridview.setOnExecuteScollSuccess();
             baseGridview.footView.onFootPrepare(baseGridview.isLoadComplete());
         }
         if (isRefresh())

@@ -2,6 +2,7 @@ package com.android.mvp.view.fragment.base;
 
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.android.mvp.R;
@@ -124,13 +125,11 @@ public abstract class BaseGridFragment<T extends BasePresenter> extends BaseFrag
             if (view != null) {
                 ViewGroup viewGroup = (ViewGroup) view.getRootView();
                 viewGroup.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-                //myGridView.addHeaderView(view, null, getIsHeaderViewClick());
             }
         }
-        baseGridAdapter = new BaseGridAdapter(BaseGridAdapter.FRAGMENT_GRID, this, data,baseGridview.footView);
+        baseGridAdapter = new BaseGridAdapter(BaseGridAdapter.FRAGMENT_GRID, this, data, baseGridview.footView);
         myGridView.setAdapter(baseGridAdapter);
         myGridView.setOnItemClickListener(this);
-        // myGridView.addFooterView(baseListView.footView, null, getIsFootViewClick());
         myGridView.setNumColumns(getNumColumns());
         baseGridview.setRefresh(isRefresh());
         baseGridview.setLoadMore(isLoadMore());
@@ -139,7 +138,7 @@ public abstract class BaseGridFragment<T extends BasePresenter> extends BaseFrag
 
     }
 
-    protected int getNumColumns() {
+    public int getNumColumns() {
         return numColumns;
     }
 
@@ -152,6 +151,31 @@ public abstract class BaseGridFragment<T extends BasePresenter> extends BaseFrag
         this.numColumns = numColumns;
         if (myGridView != null) myGridView.setNumColumns(numColumns);
         notifyDataChange();
+    }
+
+    /**
+     * 原来的点击事件做过处理
+     *
+     * @param parent
+     * @param view
+     * @param position
+     * @param id
+     */
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (position == data.size() && isLoadMore()) return;//如果是最后一个item，则表明这个item是最后一个加载更多，则无法点击
+        onGridViewItemClick(parent, view, position, id);
+    }
+
+    /**
+     * 提供给外界调用的item点击事件
+     *
+     * @param parent
+     * @param view
+     * @param position
+     * @param id
+     */
+    protected void onGridViewItemClick(AdapterView<?> parent, View view, int position, long id) {
     }
 
     @Override

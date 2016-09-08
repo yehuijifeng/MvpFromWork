@@ -31,18 +31,14 @@ public class TestGridActivity extends BaseGridActivity<TestListActivityPresenter
 
     @Override
     public boolean isLoadMore() {
-        return false;
+        return true;
     }
 
-    @Override
-    protected boolean getIsHeaderViewClick() {
-        return false;
-    }
 
-    @Override
-    protected int getHeaderView() {
-        return R.layout.item_test_tow;
-    }
+//    @Override
+//    protected int getHeaderView() {
+//        return R.layout.item_test_headler;
+//    }
 
     @Override
     public int getItemViewType(int position) {
@@ -56,6 +52,11 @@ public class TestGridActivity extends BaseGridActivity<TestListActivityPresenter
     @Override
     public int getViewTypeCount() {
         return 2;
+    }
+
+    @Override
+    public int getNumColumns() {
+        return 3;
     }
 
     @Override
@@ -105,7 +106,7 @@ public class TestGridActivity extends BaseGridActivity<TestListActivityPresenter
     @Override
     protected void initData() {
         showLoading();
-        presenter.getGoodsList(pagNumber,1);
+        presenter.getGoodsList(pagNumber, 1);
     }
 
     @Override
@@ -114,7 +115,7 @@ public class TestGridActivity extends BaseGridActivity<TestListActivityPresenter
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    public void onGridViewItemClick(AdapterView<?> parent, View view, int position, long id) {
         showLongToast(getResources().getString(R.string.test_laction) + position + "  id:" + id);
         startActivity(TestListActivity.class);
     }
@@ -173,7 +174,8 @@ public class TestGridActivity extends BaseGridActivity<TestListActivityPresenter
                 if (pagNumber == 1)
                     clearAll();
                 List<GoodsListBean> goodsListBeans = success.getHttpBean().getObjects();
-                goodsListBeans.subList(0,6);
+                goodsListBeans = goodsListBeans.subList(0, 3);
+                //goodsListBeans.clear();
                 addAll(goodsListBeans);
                 loadSuccess();
                 closeLoading();

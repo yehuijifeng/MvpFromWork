@@ -172,7 +172,6 @@ public abstract class BaseFragment<T extends BasePresenter> extends Fragment {
      * 注册presenter中的RxBus
      */
     private void getPresenterOnReame() {
-        if (presenter == null) return;
         presenter.onResume();
         presenter.subscription = presenter.observable
                 .observeOn(AndroidSchedulers.mainThread())

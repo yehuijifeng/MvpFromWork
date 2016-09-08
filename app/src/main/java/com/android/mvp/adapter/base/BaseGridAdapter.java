@@ -18,13 +18,15 @@ import java.util.List;
  */
 public class BaseGridAdapter extends BaseCollectionAdapter {
 
-    private BaseGridActivity baseGridActivity;
-    private BaseGridFragment baseGridFragment;
-    public final static int FRAGMENT_GRID = 2, ACTIVITY_GRID = 1;
+    private BaseGridActivity baseGridActivity;//基类activity
+    private BaseGridFragment baseGridFragment;//基类fragment
+    public final static int FRAGMENT_GRID = 2, ACTIVITY_GRID = 1;//当前实例
     private int gridStatus;//1代表activity,2代表fragment
     public FootView footView;//尾部
     private boolean isFooterViewEnable = true;//是否启用尾部视图
-    public final static int FOOT_VIEW = -1;
+    public final static int FOOT_VIEW = -1, HEANDLER_VIEW = -2;//当前尾部view和头部view的标识
+    private View headlerView;//头部
+    private int numColumns;
 
     public boolean isFooterViewEnable() {
         return isFooterViewEnable;
@@ -39,16 +41,20 @@ public class BaseGridAdapter extends BaseCollectionAdapter {
         int width = display.getWidth();
         GridView.LayoutParams pl = new GridView.LayoutParams(width,
                 GridView.LayoutParams.WRAP_CONTENT);
-        //footView.setLayoutParams(pl);
         return pl;
     }
 
+    public void setGridHeadlerView(View headlerView) {
+        this.headlerView = headlerView;
+        headlerView.setLayoutParams(getDisplayWidth(gridStatus == ACTIVITY_GRID ? baseGridActivity : baseGridFragment.getActivity()));
+    }
 
     public BaseGridAdapter(int gridStatus, BaseGridActivity baseGridActivity, List data, FootView footView) {
         super(data);
         this.footView = footView;
         this.gridStatus = gridStatus;
         this.baseGridActivity = baseGridActivity;
+        numColumns = baseGridActivity.getNumColumns();
     }
 
 
@@ -57,6 +63,7 @@ public class BaseGridAdapter extends BaseCollectionAdapter {
         this.footView = footView;
         this.gridStatus = gridStatus;
         this.baseGridFragment = baseListFragment;
+        numColumns = baseListFragment.getNumColumns();
     }
 
     @Override
@@ -93,8 +100,10 @@ public class BaseGridAdapter extends BaseCollectionAdapter {
     //判断itemView类型,默认0
     @Override
     public int getItemViewType(int position) {
-        if (position == data.size() && isFooterViewEnable())
+        if (position == getCount() - 1 && isFooterViewEnable() && footView != null)
             return FOOT_VIEW;
+//        else if (headlerView != null && position < numColumns)
+//            return HEANDLER_VIEW;
         else if (gridStatus == ACTIVITY_GRID)
             return baseGridActivity.getItemViewType(position);
         else
@@ -104,13 +113,20 @@ public class BaseGridAdapter extends BaseCollectionAdapter {
     // 种类+1。这里尤其要注意，必须+1
     @Override
     public int getViewTypeCount() {
-        int i = (data.size() > 0 && isFooterViewEnable()) ? 2 : 1;
+        int i = 1;
+        if (data.size() > 0) {
+            if (isFooterViewEnable()) i++;
+            //if (headlerView != null) i++;
+        }
         if (gridStatus == ACTIVITY_GRID)
             return baseGridActivity.getViewTypeCount() + i;
         else
             return baseGridFragment.getViewTypeCount() + i;
     }
 
+    /**
+     * 清理
+     */
     public void closeAdapter() {
         data = null;
         baseGridActivity = null;
@@ -125,17 +141,31 @@ public class BaseGridAdapter extends BaseCollectionAdapter {
      */
     @Override
     public int getCount() {
-        if (data.size() > 0 && isFooterViewEnable())
-            return data.size() + 1;
-        else
-            return data.size();
+        int i = 0;
+        if (data.size() > 0) {
+            if (isFooterViewEnable()) i++;
+            //if (headlerView != null) i += numColumns;
+        }
+        return data.size() + i;
     }
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
-        if (getItemViewType(position) == FOOT_VIEW && footView != null && isFooterViewEnable()) {
+        if (getItemViewType(position) == FOOT_VIEW) {
             return footView;
         }
+//        else if (getItemViewType(position) == HEANDLER_VIEW) {
+//            if (position == 0) {
+//                return headlerView;
+//            } else {
+//                View viewNull = new View(parent.getContext());
+//                ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//                viewNull.setLayoutParams(layoutParams);
+//                return viewNull;
+//            }
+//        }
+//        if (headlerView != null)
+//            position -= numColumns;
         View v;
         BaseViewHolder baseViewHolder;
         if (view == null) {

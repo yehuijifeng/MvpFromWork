@@ -2,6 +2,7 @@ package com.android.mvp.view.activity.base;
 
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import com.android.mvp.R;
@@ -90,16 +91,8 @@ public abstract class BaseGridActivity<T extends BasePresenter> extends BaseActi
     /**
      * 传入头view
      */
-    protected int getHeaderView() {
+    private int getHeaderView() {
         return 0;
-    }
-
-    /**
-     * listview的头view是否可点击
-     * 默认，false
-     */
-    protected boolean getIsHeaderViewClick() {
-        return false;
     }
 
     //判断itemView类型,默认0
@@ -116,18 +109,18 @@ public abstract class BaseGridActivity<T extends BasePresenter> extends BaseActi
     protected void initView() {
         baseGridview = (BaseGridview) findViewById(R.id.default_grid_view);
         myGridView = baseGridview.myGridView;
+        View view = null;
         if (getHeaderView() > 0) {
-            View view = View.inflate(this, getHeaderView(), null);
+            view = View.inflate(this, getHeaderView(), null);
             if (view != null) {
                 ViewGroup viewGroup = (ViewGroup) view.getRootView();
                 viewGroup.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-                //myGridView.addHeaderView(view, null, getIsHeaderViewClick());
             }
         }
         baseGridAdapter = new BaseGridAdapter(BaseGridAdapter.ACTIVITY_GRID, this, data, baseGridview.footView);
+        baseGridAdapter.setGridHeadlerView(view);
         myGridView.setAdapter(baseGridAdapter);
         myGridView.setOnItemClickListener(this);
-        // myGridView.addFooterView(baseListView.footView, null, getIsFootViewClick());
         myGridView.setNumColumns(getNumColumns());
         baseGridview.setRefresh(isRefresh());
         baseGridview.setLoadMore(isLoadMore());
@@ -136,7 +129,37 @@ public abstract class BaseGridActivity<T extends BasePresenter> extends BaseActi
         defaultLoadMore();
     }
 
-    protected int getNumColumns() {
+    /**
+     * 原来的点击事件做过处理
+     *
+     * @param parent
+     * @param view
+     * @param position
+     * @param id
+     */
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        if (position == data.size() && isLoadMore()) return;//如果是最后一个item，则表明这个item是最后一个加载更多，则无法点击
+        onGridViewItemClick(parent, view, position, id);
+    }
+
+    /**
+     * 提供给外界调用的item点击事件
+     *
+     * @param parent
+     * @param view
+     * @param position
+     * @param id
+     */
+    protected void onGridViewItemClick(AdapterView<?> parent, View view, int position, long id) {
+    }
+
+    /**
+     * gridview 一行占据的列数
+     *
+     * @return
+     */
+    public int getNumColumns() {
         return numColumns;
     }
 

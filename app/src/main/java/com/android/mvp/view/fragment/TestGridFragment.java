@@ -80,7 +80,7 @@ public class TestGridFragment extends BaseGridFragment<TestGridFragmentPresenter
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    protected void onGridViewItemClick(AdapterView<?> parent, View view, int position, long id) {
         showLongToast("点击了" + position + "行 id:" + id);
     }
 

@@ -127,7 +127,7 @@ public abstract class BaseGridFragment<T extends BasePresenter> extends BaseFrag
                 //myGridView.addHeaderView(view, null, getIsHeaderViewClick());
             }
         }
-        baseGridAdapter = new BaseGridAdapter(BaseGridAdapter.FRAGMENT_GRID, this, data);
+        baseGridAdapter = new BaseGridAdapter(BaseGridAdapter.FRAGMENT_GRID, this, data,baseGridview.footView);
         myGridView.setAdapter(baseGridAdapter);
         myGridView.setOnItemClickListener(this);
         // myGridView.addFooterView(baseListView.footView, null, getIsFootViewClick());

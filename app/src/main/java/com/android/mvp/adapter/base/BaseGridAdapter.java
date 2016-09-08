@@ -22,33 +22,41 @@ public class BaseGridAdapter extends BaseCollectionAdapter {
     private BaseGridFragment baseGridFragment;
     public final static int FRAGMENT_GRID = 2, ACTIVITY_GRID = 1;
     private int gridStatus;//1代表activity,2代表fragment
-    private FootView footView;//尾部
+    public FootView footView;//尾部
     private boolean isFooterViewEnable = true;//是否启用尾部视图
+    public final static int FOOT_VIEW = -1;
 
-    public BaseGridAdapter(int gridStatus, BaseGridActivity baseGridActivity, List data) {
+    public boolean isFooterViewEnable() {
+        return isFooterViewEnable;
+    }
+
+    public void setFooterViewEnable(boolean footerViewEnable) {
+        isFooterViewEnable = footerViewEnable;
+    }
+
+    private ViewGroup.LayoutParams getDisplayWidth(Activity activity) {
+        Display display = activity.getWindowManager().getDefaultDisplay();
+        int width = display.getWidth();
+        GridView.LayoutParams pl = new GridView.LayoutParams(width,
+                GridView.LayoutParams.WRAP_CONTENT);
+        //footView.setLayoutParams(pl);
+        return pl;
+    }
+
+
+    public BaseGridAdapter(int gridStatus, BaseGridActivity baseGridActivity, List data, FootView footView) {
         super(data);
-        this.footView = new FootView(baseGridActivity);
+        this.footView = footView;
         this.gridStatus = gridStatus;
         this.baseGridActivity = baseGridActivity;
-        GridView.LayoutParams pl = new GridView.LayoutParams(getDisplayWidth(baseGridActivity),
-                GridView.LayoutParams.WRAP_CONTENT);
-        footView.setLayoutParams(pl);
     }
 
 
-    public BaseGridAdapter(int gridStatus, BaseGridFragment baseListFragment, List data) {
+    public BaseGridAdapter(int gridStatus, BaseGridFragment baseListFragment, List data, FootView footView) {
         super(data);
-        this.footView = new FootView(baseListFragment.getActivity());
+        this.footView = footView;
         this.gridStatus = gridStatus;
         this.baseGridFragment = baseListFragment;
-        GridView.LayoutParams pl = new GridView.LayoutParams(getDisplayWidth(baseListFragment.getActivity()),
-                GridView.LayoutParams.WRAP_CONTENT);
-        footView.setLayoutParams(pl);
-    }
-
-    private int getDisplayWidth(Activity activity) {
-        Display display = activity.getWindowManager().getDefaultDisplay();
-        return display.getWidth();
     }
 
     @Override
@@ -85,7 +93,9 @@ public class BaseGridAdapter extends BaseCollectionAdapter {
     //判断itemView类型,默认0
     @Override
     public int getItemViewType(int position) {
-        if (gridStatus == ACTIVITY_GRID)
+        if (position == data.size() && isFooterViewEnable())
+            return FOOT_VIEW;
+        else if (gridStatus == ACTIVITY_GRID)
             return baseGridActivity.getItemViewType(position);
         else
             return baseGridFragment.getItemViewType(position);
@@ -94,22 +104,19 @@ public class BaseGridAdapter extends BaseCollectionAdapter {
     // 种类+1。这里尤其要注意，必须+1
     @Override
     public int getViewTypeCount() {
+        int i = (data.size() > 0 && isFooterViewEnable()) ? 2 : 1;
         if (gridStatus == ACTIVITY_GRID)
-            return baseGridActivity.getViewTypeCount() + 1;
+            return baseGridActivity.getViewTypeCount() + i;
         else
-            return baseGridFragment.getViewTypeCount() + 1;
+            return baseGridFragment.getViewTypeCount() + i;
     }
 
     public void closeAdapter() {
         data = null;
         baseGridActivity = null;
         baseGridFragment = null;
+        footView = null;
     }
-
-    /**
-     * gridview 适配器添加footview的操作
-     *
-     * */
 
     /**
      * 当前适配器所显示的行数，最后多添加一个提供给footview用
@@ -118,16 +125,17 @@ public class BaseGridAdapter extends BaseCollectionAdapter {
      */
     @Override
     public int getCount() {
-        return data.size() - 1;
+        if (data.size() > 0 && isFooterViewEnable())
+            return data.size() + 1;
+        else
+            return data.size();
     }
 
     @Override
     public View getView(int position, View view, ViewGroup parent) {
-        if (position == data.size() - 2 && isFooterViewEnable && footView != null) {
-            //setFooterViewStatus(FooterView.MORE);
+        if (getItemViewType(position) == FOOT_VIEW && footView != null && isFooterViewEnable()) {
             return footView;
         }
-
         View v;
         BaseViewHolder baseViewHolder;
         if (view == null) {

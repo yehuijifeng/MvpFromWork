@@ -54,8 +54,6 @@ public class BaseGridview extends LinearLayout {
      */
     public void setLoadMore(boolean loadMore) {
         onScollListener.setLoadMore(loadMore);
-        //if (!loadMore)
-        //myGridView.removeFooterView(footView);
     }
 
     /**

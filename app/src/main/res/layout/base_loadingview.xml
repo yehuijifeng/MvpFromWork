@@ -65,7 +65,7 @@
                         android:layout_margin="@dimen/padding_and_margin_x"
                         android:adjustViewBounds="true"
                         android:scaleType="fitXY"
-                        android:src="@drawable/ice_default_loading" />
+                        android:src="@drawable/ic_default_loading" />
 
                     <TextView
                         android:id="@+id/loading_str_text"

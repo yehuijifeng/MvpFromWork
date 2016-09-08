@@ -57,6 +57,7 @@ public abstract class BaseGridActivity<T extends BasePresenter> extends BaseActi
     public void setLoadMore(boolean loadMore) {
         isLoadMore = loadMore;
         if (baseGridview != null) baseGridview.setLoadMore(loadMore);
+        if (baseGridAdapter != null) baseGridAdapter.setFooterViewEnable(isLoadMore());
     }
 
     /**
@@ -123,13 +124,14 @@ public abstract class BaseGridActivity<T extends BasePresenter> extends BaseActi
                 //myGridView.addHeaderView(view, null, getIsHeaderViewClick());
             }
         }
-        baseGridAdapter = new BaseGridAdapter(BaseGridAdapter.ACTIVITY_GRID, this, data);
+        baseGridAdapter = new BaseGridAdapter(BaseGridAdapter.ACTIVITY_GRID, this, data, baseGridview.footView);
         myGridView.setAdapter(baseGridAdapter);
         myGridView.setOnItemClickListener(this);
         // myGridView.addFooterView(baseListView.footView, null, getIsFootViewClick());
         myGridView.setNumColumns(getNumColumns());
         baseGridview.setRefresh(isRefresh());
         baseGridview.setLoadMore(isLoadMore());
+        baseGridAdapter.setFooterViewEnable(isLoadMore());
         defaultRefresh();
         defaultLoadMore();
     }

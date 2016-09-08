@@ -31,10 +31,6 @@ public class TestGridActivity extends BaseGridActivity<TestListActivityPresenter
 
     @Override
     public boolean isLoadMore() {
-        return true;
-    }
-
-    protected boolean getIsFootViewClick() {
         return false;
     }
 
@@ -50,7 +46,7 @@ public class TestGridActivity extends BaseGridActivity<TestListActivityPresenter
 
     @Override
     public int getItemViewType(int position) {
-        if (position % 2 == 0) {
+        if (position % 3 == 0) {
             return 1;
         } else {
             return 2;
@@ -177,6 +173,7 @@ public class TestGridActivity extends BaseGridActivity<TestListActivityPresenter
                 if (pagNumber == 1)
                     clearAll();
                 List<GoodsListBean> goodsListBeans = success.getHttpBean().getObjects();
+                goodsListBeans.subList(0,6);
                 addAll(goodsListBeans);
                 loadSuccess();
                 closeLoading();

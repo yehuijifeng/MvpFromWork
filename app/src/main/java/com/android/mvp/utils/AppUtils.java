@@ -140,11 +140,10 @@ public class AppUtils {
     /**
      * 判断是否第一次进入应用
      *
-     * @param context
      * @return
      */
-    public static boolean isOneStart(Context context) {
-        SharedPreferencesUtils sharedPreferencesUtil = new SharedPreferencesUtils(context);
+    public static boolean isOneStart() {
+        SharedPreferencesUtils sharedPreferencesUtil = new SharedPreferencesUtils();
         Boolean isOneStart = sharedPreferencesUtil.getBoolean(AppConstant.IS_ONE_START, true);//获取这个值，如果没有这个值则去第二个参数，即取默认值
         if (isOneStart) {//第一次
             sharedPreferencesUtil.saveBoolean(AppConstant.IS_ONE_START, false);
@@ -156,6 +155,7 @@ public class AppUtils {
     /**
      * 判断该activity是否处于栈顶
      * android 5.0以后弃用，有时候判断不准确，慎用！
+     *
      * @param activty
      * @return
      */
@@ -173,14 +173,14 @@ public class AppUtils {
     /**
      * 重启app
      */
-    public static void reStartApp(final Context context, Class cla) {
+    public static void reStartApp( Class cla) {
         try {
-            Intent intent = new Intent(context, cla);
+            Intent intent = new Intent(MvpAppliaction.getInstance(), cla);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             PendingIntent restartIntent = PendingIntent.getActivity(
-                    context, 0, intent, 0);
+                    MvpAppliaction.getInstance(), 0, intent, 0);
             //退出程序
-            AlarmManager mgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            AlarmManager mgr = (AlarmManager) MvpAppliaction.getInstance().getSystemService(Context.ALARM_SERVICE);
             mgr.set(AlarmManager.RTC, System.currentTimeMillis() + 1000, restartIntent); // 1秒钟后重启应用
             Thread.sleep(1000);
             ActivityCollector.finishAll();

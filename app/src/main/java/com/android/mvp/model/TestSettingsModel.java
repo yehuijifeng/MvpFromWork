@@ -1,11 +1,10 @@
 package com.android.mvp.model;
 
-import android.content.Context;
 import android.os.Handler;
 
-import com.android.mvp.appliaction.MvpAppliaction;
 import com.android.mvp.model.base.BaseModel;
 import com.android.mvp.utils.AppUtils;
+import com.android.mvp.utils.LanguageUtils;
 
 import java.util.Locale;
 
@@ -17,31 +16,26 @@ public class TestSettingsModel extends BaseModel {
     /**
      * 设置本机语言
      *
-     * @param context 上下文
-     * @param locale  修改的语言
-     * @param cla     重启app后跳转的页面
+     * @param locale 修改的语言
+     * @param cla    重启app后跳转的页面
      */
-    public void settingLanguage(Context context, Locale locale, Class cla) {
-        if (MvpAppliaction.getInstance().languageUtils == null)
-            return;
-        else
-            MvpAppliaction.getInstance().languageUtils.setUserLanguage(locale);
-        reStartApp(context, cla);
+    public void settingLanguage(Locale locale, Class cla) {
+        new LanguageUtils().setUserLanguage(locale);
+        reStartApp(cla);//重启
     }
 
     /**
      * 重启app
      *
-     * @param context
      * @param cla
      */
-    public void reStartApp(final Context context, final Class cla) {
+    public void reStartApp(final Class cla) {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                AppUtils.reStartApp(context, cla);
+                AppUtils.reStartApp(cla);
             }
-        }, 3000);
+        }, 1000);
 
     }
 }

@@ -31,15 +31,10 @@ import rx.schedulers.Schedulers;
  */
 public class MvpAppliaction extends Application {
 
-    /**
-     * 将appliaction设置成单例
-     */
-    public static MvpAppliaction getInstance() {
-        return MvpAppliactions.mvpAppliaction;
-    }
+    private static MvpAppliaction instance;
 
-    private static class MvpAppliactions {
-        private static final MvpAppliaction mvpAppliaction = new MvpAppliaction();
+    public static MvpAppliaction getInstance() {
+        return instance;
     }
 
     //取得默认image的配置类
@@ -48,17 +43,15 @@ public class MvpAppliaction extends Application {
     //取得圆形image的配置类
     public DisplayImageOptions roundOptions = ImageOptions.roundOptions();
 
-    //设置语言
-    public LanguageUtils languageUtils;
-
     @Override
     public void onCreate() {
         super.onCreate();
-
+        instance = this;
         Observable
                 .create(new Observable.OnSubscribe<Object>() {
                     @Override
                     public void call(Subscriber<? super Object> subscriber) {
+                        //子线程
                         /**
                          *创建本地项目文件夹
                          */
@@ -72,6 +65,20 @@ public class MvpAppliaction extends Application {
                          * 初始化imageloader
                          */
                         initImageLoader(MvpAppliaction.this);
+
+                        /**
+                         * 全局捕获异常的代理类
+                         */
+                        CrashHandler.getInstance().init(getApplicationContext());
+
+                        /**
+                         * 适配语言
+                         */
+                        new LanguageUtils().adapterLanguage();
+
+                        //执行subscribe中的区域代码
+                        subscriber.onNext(null);
+
                     }
                 })
                 .subscribeOn(Schedulers.newThread())//使用subscribeOn()指定观察者代码运行的线程；它把以上的代码放在的非ui线程
@@ -79,17 +86,11 @@ public class MvpAppliaction extends Application {
                 .subscribe(new Action1<Object>() {
                     @Override
                     public void call(Object o) {
-                        /**
-                         * 全局捕获异常的代理类
-                         */
-                        CrashHandler.getInstance().init(getApplicationContext());
-                        /**
-                         * 适配语言
-                         * */
-                        languageUtils = new LanguageUtils(MvpAppliaction.this);
-                        languageUtils.adapterLanguage();
+                        //主线程
+
                     }
                 });
+
     }
 
     /**

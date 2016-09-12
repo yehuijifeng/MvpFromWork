@@ -1,7 +1,5 @@
 package com.android.mvp.presenter;
 
-import android.content.Context;
-
 import com.android.mvp.model.TestSettingsModel;
 import com.android.mvp.presenter.base.BasePresenter;
 import com.android.mvp.view.interfaces.ITestSettingsFragment;
@@ -24,16 +22,16 @@ public class TestSettingsPresenter extends BasePresenter<ITestSettingsFragment> 
         testSettingsModel = new TestSettingsModel();
     }
 
+
     /**
      * 设置本机语言
      *
-     * @param context 上下文
-     * @param locale  修改的语言
-     * @param cla     重启app后跳转的页面
+     * @param locale 修改的语言
+     * @param cla    重启app后跳转的页面
      */
-    public void settingLanguage(Context context, Locale locale, Class cla) {
+    public void settingLanguage(Locale locale, Class cla) {
         try {
-            testSettingsModel.settingLanguage(context, locale, cla);
+            testSettingsModel.settingLanguage(locale, cla);
             mView.settingLanguage(true);
         } catch (Exception e) {
             mView.settingLanguage(false);

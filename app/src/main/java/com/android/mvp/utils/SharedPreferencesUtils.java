@@ -3,6 +3,7 @@ package com.android.mvp.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.android.mvp.appliaction.MvpAppliaction;
 import com.android.mvp.constances.AppConstant;
 
 import java.util.Map;
@@ -14,15 +15,22 @@ import java.util.Map;
  */
 public class SharedPreferencesUtils {
 
-
     private SharedPreferences mSharedPreferences;
 
     private SharedPreferences.Editor mEditor;
 
-    public SharedPreferencesUtils(Context context) {
-        mSharedPreferences = context.getSharedPreferences(AppConstant.APP_SHARE, Context.MODE_PRIVATE);
+    public SharedPreferencesUtils() {
+        mSharedPreferences = MvpAppliaction.getInstance().getSharedPreferences(AppConstant.APP_SHARE, Context.MODE_PRIVATE);
         mEditor = mSharedPreferences.edit();
     }
+
+//    public SharedPreferencesUtils getInstance() {
+//        return SharedPreferencesUtilsClass.sharedPreferencesUtils;
+//    }
+//
+//    private static class SharedPreferencesUtilsClass {
+//        private final static SharedPreferencesUtils sharedPreferencesUtils = new SharedPreferencesUtils();
+//    }
 
     public void saveString(String key, String value) {
         mEditor.putString(key, value);

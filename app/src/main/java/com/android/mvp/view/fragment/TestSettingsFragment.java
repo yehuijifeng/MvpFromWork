@@ -44,7 +44,7 @@ public class TestSettingsFragment extends BaseFragment<TestSettingsPresenter> im
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.language_text://设置语言
-                presenter.settingLanguage(getActivity(), Locale.ENGLISH, TestViewpagerActivity.class);
+                presenter.settingLanguage(Locale.ENGLISH, TestViewpagerActivity.class);
                 break;
             case R.id.skin_text://设置皮肤
                 break;

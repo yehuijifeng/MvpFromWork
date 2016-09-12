@@ -34,7 +34,6 @@ public class MvpAppliaction extends Application {
     /**
      * 将appliaction设置成单例
      */
-
     public static MvpAppliaction getInstance() {
         return MvpAppliactions.mvpAppliaction;
     }
@@ -49,6 +48,9 @@ public class MvpAppliaction extends Application {
     //取得圆形image的配置类
     public DisplayImageOptions roundOptions = ImageOptions.roundOptions();
 
+    //设置语言
+    public LanguageUtils languageUtils;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -57,7 +59,6 @@ public class MvpAppliaction extends Application {
                 .create(new Observable.OnSubscribe<Object>() {
                     @Override
                     public void call(Subscriber<? super Object> subscriber) {
-
                         /**
                          *创建本地项目文件夹
                          */
@@ -85,12 +86,10 @@ public class MvpAppliaction extends Application {
                         /**
                          * 适配语言
                          * */
-                        LanguageUtils languageUtils = new LanguageUtils(MvpAppliaction.this);
+                        languageUtils = new LanguageUtils(MvpAppliaction.this);
                         languageUtils.adapterLanguage();
                     }
                 });
-
-
     }
 
     /**

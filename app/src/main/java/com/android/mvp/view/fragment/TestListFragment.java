@@ -112,11 +112,10 @@ public class TestListFragment extends BaseListFragment<TestListFragmentPresenter
         Map<String, Object> params = RequestAction.GET_GOODS_LIST.params.getParams();
         params.put("shopInfo.typeId", 2);
         params.put("shopInfo.index", "pub");
-        params.put("pageNum", 6);
+        params.put("pageNum", pagNumber);
         sendRequest(RequestAction.GET_GOODS_LIST);
         //发送请求,返回订阅
         //Subscription subscription = RetrofitManage.getInstance().sendRequest(RequestAction.GET_GOODS_LIST);
-
 //        if (subscription != null && !subscription.isUnsubscribed())
 //            //如果订阅取消订阅
 //            subscription.unsubscribe();

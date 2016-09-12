@@ -12,13 +12,13 @@ import com.android.mvp.view.baseview.dialog.LoadingDialog;
 import com.android.mvp.view.baseview.dialog.PromptDialog;
 import com.android.mvp.view.baseview.dialog.PwdDialog;
 import com.android.mvp.view.fragment.base.BaseFragment;
-import com.android.mvp.view.interfaces.ITestFragmentOneView;
+import com.android.mvp.view.interfaces.ITestFragmetDialogView;
 
 /**
  * 测试
  * Created by Luhao on 2016/7/21.
  */
-public class TestFragmentDialog extends BaseFragment<TestFragmentOnePresenter> implements ITestFragmentOneView, View.OnClickListener {
+public class TestFragmentDialog extends BaseFragment<TestFragmentOnePresenter> implements ITestFragmetDialogView, View.OnClickListener {
 
     private Button loading_btn, tishi_btn, zidingyi_btn, list_btn, pwd_btn;
 

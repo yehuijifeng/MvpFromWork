@@ -5,7 +5,6 @@ import android.content.res.Configuration;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 
-import com.android.mvp.appliaction.MvpAppliaction;
 import com.android.mvp.constances.AppConstant;
 
 import java.util.HashMap;
@@ -21,7 +20,10 @@ public class LanguageUtils {
 
     //保存app可适配的语言
     public static Map<String, Locale> localeMap = new HashMap<>();
+    //获取本地保存的语言设置
     private SharedPreferencesUtils sharedPreferences;
+    //上下文
+    private Context context;
 
     static {
         localeMap.put(Locale.CHINA.getLanguage(), Locale.CHINA);
@@ -29,6 +31,7 @@ public class LanguageUtils {
     }
 
     public LanguageUtils(Context context) {
+        this.context = context;
         sharedPreferences = new SharedPreferencesUtils(context);
     }
 
@@ -49,21 +52,23 @@ public class LanguageUtils {
      * 获取手机设置的语言
      */
     public Locale getUserLanguage() {
-        return MvpAppliaction.getInstance().getResources().getConfiguration().locale;
+        if (context == null) return null;
+        return context.getResources().getConfiguration().locale;
     }
 
     /**
      * 修改当前语言
      */
-    public String setUserLanguage(Locale locale) {
+    public void setUserLanguage(Locale locale) {
         if (locale == null)
             locale = getUserLanguage();
+        if (context == null) return;
         //选择语言
-        Configuration config = MvpAppliaction.getInstance().getResources().getConfiguration();
-        DisplayMetrics dm = MvpAppliaction.getInstance().getResources().getDisplayMetrics();
+        Configuration config = context.getResources().getConfiguration();
+        DisplayMetrics dm = context.getResources().getDisplayMetrics();
         config.locale = locale;
-        MvpAppliaction.getInstance().getResources().updateConfiguration(config, dm);
+        context.getResources().updateConfiguration(config, dm);
         sharedPreferences.saveString(AppConstant.DEFAULT_LANGUAGE, locale.getLanguage());
-        return MvpAppliaction.getInstance().getResources().getConfiguration().locale.getCountry();
+        String country = context.getResources().getConfiguration().locale.getCountry();//国家
     }
 }

@@ -70,6 +70,7 @@
         <item name="android:textSize">@dimen/text_size_x</item>
     </style>
 
+    <!--自定义dialog的style-->
     <style name="dialog" parent="android:style/Theme.Dialog">
         <!--边框-->
         <item name="android:windowFrame">@null</item>
@@ -82,4 +83,19 @@
         <!--是否模糊-->
         <item name="android:backgroundDimEnabled">true</item>
     </style>
+
+    <!--设置textview的style-->
+    <style name="setting_textview_style">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:layout_marginTop">@dimen/padding_and_margin_x</item>
+        <item name="android:padding">@dimen/padding_and_margin_x</item>
+        <item name="android:gravity">left</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/bg_default_click</item>
+        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textSize">@dimen/text_size_xxxx</item>
+    </style>
+
 </resources>

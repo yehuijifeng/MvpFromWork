@@ -1,4 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="app_name">MvpFromWork</string>
+    <string name="error_exit_app"> program exception, is about to exit...... </string>
+    <string name="to_loading"> being loaded...... </string>
+    <string name="header_hint_normal"> pull down to refresh </string>
+    <string name="header_hint_normal_ing"> is being refreshed...... </string>
+    <string name="header_hint_normal_over"> refresh complete </string>
+    <string name="header_hint_ready"> loosen refresh </string>
+    <string name="header_last_time"> the last update time: </string>
+    <string name="past_time"> just </string>
+    <string name="foot_hinit_normal"> loads more </string>
+    <string name="foot_hinit_normal_ing"> being loaded...... </string>
+    <string name="foot_hinit_normal_over"> Load completed </string>
+    <string name="foot_hinit_normal_no_data"> no more data! </string>
+    <string name="foot_hinit_normal_ready"> release load more </string>
+    <string name="on_open"> open </string>
+    <string name="on_close"> close </string>
+    <string name="on_ok"> determine </string>
+    <string name="on_exit"> exit </string>
+    <string name="on_cancel">cancels </string>
+    <string name="on_prompt"> hint </string>
+    <string name="on_content"> content </string>
+    <string name="header_hint_loading"> being loaded...... </string>
+    <string name="pwd_input"> please enter a six bit password </string>
+    <string name="default_time_type">yyyy-MM-dd-HH-mm-ss</string>
+    <string name="network_error"> network is not available! </string>
+    <string name="restart_btn"> please retry </string>
+    <string name="refresh_btn"> refresh </string>
+    <!-- test data -->
+    <string name="test_list"> list </string>
+    <string name="test_grid"> form </string>
+    <string name="test_laction"> location </string>
+    <string name="test_viewpager"> tab bar </string>
+    <string name="test_dialog"> mask box </string>
+    <string name="test_settings"> settings </string>
 </resources>

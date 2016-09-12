@@ -11,6 +11,7 @@ import com.android.mvp.view.baseview.MyTitleView;
 import com.android.mvp.view.fragment.TestFragmentDialog;
 import com.android.mvp.view.fragment.TestGridFragment;
 import com.android.mvp.view.fragment.TestListFragment;
+import com.android.mvp.view.fragment.TestSettingsFragment;
 
 /**
  * Created by Luhao on 2016/7/21.
@@ -29,7 +30,7 @@ public class TestViewpagerActivity extends BaseViewPagerActivity {
 
     @Override
     protected String setTitleText() {
-        return getResources().getString(R.string.test_viewpager);
+        return getResources().getString(R.string.app_name);
     }
 
     @Override
@@ -42,12 +43,11 @@ public class TestViewpagerActivity extends BaseViewPagerActivity {
                 showLongToast("dddddddddddd");
             }
         });
-        mViewList.add(new TestListFragment());
-        mViewList.add(new TestListFragment());
-        mViewList.add(new TestListFragment());
         mViewList.add(new TestFragmentDialog());
+        mViewList.add(new TestListFragment());
         mViewList.add(new TestGridFragment());
-        setPageNumber(2);
+        mViewList.add(new TestSettingsFragment());
+        setPageNumber(0);
     }
 
     @Override
@@ -56,16 +56,16 @@ public class TestViewpagerActivity extends BaseViewPagerActivity {
         TextView tabText = (TextView) view.findViewById(R.id.viewpager_tab_text);
         switch (position) {
             case 0:
-                tabText.setText("遮罩框");
+                tabText.setText(getResources().getString(R.string.test_dialog));
                 break;
             case 1:
-                tabText.setText("列表");
+                tabText.setText(getResources().getString(R.string.test_list));
                 break;
             case 2:
-                tabText.setText("表格");
+                tabText.setText(getResources().getString(R.string.test_grid));
                 break;
             case 3:
-                tabText.setText("瀑布流");
+                tabText.setText(getResources().getString(R.string.test_settings));
                 break;
         }
         return view;

@@ -8,4 +8,10 @@ import com.android.mvp.view.interfaces.base.IBaseView;
 public interface ITestSettingsFragment extends IBaseView {
 
     void settingLanguage(boolean bl);
+
+    void changeSkinStart();
+
+    void changeSkinComplete();
+
+    void changeSkinError(Exception e);
 }

@@ -7,6 +7,7 @@ import com.android.mvp.constances.AppConstant;
 import com.android.mvp.function.imageloader.ImageOptions;
 import com.android.mvp.utils.LanguageUtils;
 import com.android.mvp.utils.file.FileInitUtils;
+import com.android.skin.manager.SkinManager;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
@@ -47,6 +48,8 @@ public class MvpAppliaction extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        //初始化皮肤设置
+        SkinManager.getInstance().init(this);
         Observable
                 .create(new Observable.OnSubscribe<Object>() {
                     @Override

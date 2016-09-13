@@ -266,6 +266,7 @@ public class BaseHelper {
      */
     protected void releaseActivity() {
         activity = null;
+        activityClass = null;
     }
 
     /**

@@ -6,11 +6,11 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.provider.Settings;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.android.mvp.R;
@@ -23,6 +23,8 @@ import com.android.mvp.http.response.ResponseSuccessAction;
 import com.android.mvp.presenter.base.BasePresenter;
 import com.android.mvp.view.baseview.LoadingView;
 import com.android.mvp.view.baseview.MyTitleView;
+import com.android.skin.base.BaseSkinActivity;
+import com.android.skin.manager.SkinManager;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
 import java.util.ArrayList;
@@ -35,7 +37,7 @@ import rx.functions.Action1;
  * Created by Luhao on 2016/6/21.
  * 所有activity的基类
  */
-public abstract class BaseActivity<T extends BasePresenter> extends AppCompatActivity {
+public abstract class BaseActivity<T extends BasePresenter> extends BaseSkinActivity {
 
     //必须实例化presenter对象
     protected abstract T initPresenter();
@@ -81,7 +83,15 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
      */
     private LoadingView loadingView;
 
+    /**
+     * 获得titlebar的高度
+     */
     public static int titleBarHeight;
+
+    /**
+     * 是否全屏幕
+     */
+    private boolean isPullWindow;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -99,15 +109,24 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         initData();
     }
 
+    public boolean isPullWindow() {
+        return isPullWindow;
+    }
+
+    public void setPullWindow(boolean pullWindow) {
+        isPullWindow = pullWindow;
+    }
+
     /**
      * 如果需要将某个activity设置成全屏，则在setContentView之前重写该方法
      */
     protected void setPullWindow() {
-//        //去除title
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        //去掉Activity上面的状态栏
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-//                WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        if (!isPullWindow()) return;
+        //去除title
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //去掉Activity上面的状态栏
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 
     @Override
@@ -149,6 +168,9 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
         rootGroup = baseHelper.getRootGroup();
         root = baseHelper.getRoot();
         inflater = baseHelper.getInflater();
+        //在activity创建的时候添加换肤的监听
+        //目的就是为了当我们继承这个抽象类的时候，其他地方如果用到了ViewGroup的话，我们也不用再次获取了
+        SkinManager.getInstance().register(this, rootGroup);
         mTitleView = (MyTitleView) findViewById(R.id.default_title_view);
         if (mTitleView != null) {
             loadingView = mTitleView.getLoadingView();
@@ -460,11 +482,11 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
     protected void onDestroy() {
         super.onDestroy();
         ActivityCollector.removeActivity(this);
-        baseHelper.releaseActivity();
+        if (presenter != null)
+            baseHelper.releaseActivity();
         baseHelper = null;
-        if (presenter != null) {
+        if (presenter != null)
             presenter.onDestory();
-        }
         presenter = null;
     }
 }

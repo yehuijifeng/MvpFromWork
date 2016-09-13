@@ -14,9 +14,8 @@
         android:id="@+id/toolbar_ly"
         android:layout_width="match_parent"
         android:layout_height="@dimen/default_title_height"
-        android:background="@color/title_color">
-        <!-- android:gravity="center"
-        android:orientation="horizontal"-->
+        android:background="@color/title_color"
+        android:tag="skin:title_color:background">
 
         <ImageView
             android:id="@+id/title_default_back"

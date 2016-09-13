@@ -43,10 +43,11 @@ public class TestSettingsFragment extends BaseFragment<TestSettingsPresenter> im
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.language_text://设置语言
+            case R.id.language_text://设置语言,重启后目标activity
                 presenter.settingLanguage(Locale.ENGLISH, TestViewpagerActivity.class);
                 break;
             case R.id.skin_text://设置皮肤
+                presenter.changeInternalSkinByPostfix("red");
                 break;
         }
     }
@@ -54,5 +55,20 @@ public class TestSettingsFragment extends BaseFragment<TestSettingsPresenter> im
     @Override
     public void settingLanguage(boolean bl) {
         showShortToast("修改语言   " + (bl ? "成功" : "失败"));
+    }
+
+    @Override
+    public void changeSkinStart() {
+
+    }
+
+    @Override
+    public void changeSkinComplete() {
+
+    }
+
+    @Override
+    public void changeSkinError(Exception e) {
+
     }
 }

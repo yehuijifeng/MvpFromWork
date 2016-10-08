@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class TestListActivity extends BaseListActivity<TestListActivityPresenter> implements ITestListView {
 
-    int pagNumber = 1;
+    protected int pagNumber = 1;
 
     @Override
     public boolean isRefresh() {

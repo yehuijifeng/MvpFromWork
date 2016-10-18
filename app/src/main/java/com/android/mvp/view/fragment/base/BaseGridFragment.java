@@ -127,7 +127,7 @@ public abstract class BaseGridFragment<T extends BasePresenter> extends BaseFrag
                 viewGroup.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
             }
         }
-        baseGridAdapter = new BaseGridAdapter(BaseGridAdapter.FRAGMENT_GRID, this, data, baseGridview.footView);
+        baseGridAdapter = new BaseGridAdapter(data, baseGridview.footView,new OnAdapterStatus());
         myGridView.setAdapter(baseGridAdapter);
         myGridView.setOnItemClickListener(this);
         myGridView.setNumColumns(getNumColumns());
@@ -136,6 +136,34 @@ public abstract class BaseGridFragment<T extends BasePresenter> extends BaseFrag
         defaultRefresh();
         defaultLoadMore();
 
+    }
+
+    private class OnAdapterStatus implements BaseGridAdapter.OnAdapterStatus {
+
+        @Override
+        public BaseViewHolder getViewHolders(View itemView, int position, int type) {
+            return getViewHolder(itemView, position, type);
+        }
+
+        @Override
+        public View getItemViews(int position, int type, ViewGroup parent) {
+            return getActivity().getLayoutInflater().inflate(getItemView(position, type), parent);
+        }
+
+        @Override
+        public void getItemDatas(int position, BaseViewHolder baseViewHolder, int type) {
+            getItemDatas(position, baseViewHolder, type);
+        }
+
+        @Override
+        public int getItemViewTypes(int position) {
+            return getItemViewType(position);
+        }
+
+        @Override
+        public int getViewTypeCounts() {
+            return getViewTypeCount();
+        }
     }
 
     public int getNumColumns() {

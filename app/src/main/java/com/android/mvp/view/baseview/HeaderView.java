@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.mvp.R;
-import com.android.mvp.utils.DateUtil;
+import com.android.mvp.utils.DateUtils;
 
 import java.text.ParseException;
 
@@ -90,7 +90,7 @@ public class HeaderView extends LinearLayout implements PtrUIHandler {
         custom_header_time = (TextView) headView.findViewById(R.id.custom_header_time);
         custom_header_image = (ImageView) headView.findViewById(R.id.custom_header_image);
         //custom_header_bar = (ProgressBar) headView.findViewById(R.id.custom_header_bar);
-        custom_header_time.setText(DateUtil.getNow(DateUtil.getDatePattern()));
+        custom_header_time.setText(DateUtils.getNow(DateUtils.getDatePattern()));
         //设置旋转动画
         animation = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);//子心旋转
         linearInterpolator = new LinearInterpolator();
@@ -121,12 +121,12 @@ public class HeaderView extends LinearLayout implements PtrUIHandler {
         getRefreshListener().onRefreshPrepare(true, frame);
         try {
             if (current_time != null)
-                custom_header_time.setText(DateUtil.getTimeReduction(current_time));
+                custom_header_time.setText(DateUtils.getTimeReduction(current_time));
             else
-                custom_header_time.setText(DateUtil.getNow(DateUtil.getDatePattern()));
+                custom_header_time.setText(DateUtils.getNow(DateUtils.getDatePattern()));
         } catch (ParseException e) {
             e.printStackTrace();
-            custom_header_time.setText(DateUtil.getNow(DateUtil.getDatePattern()));
+            custom_header_time.setText(DateUtils.getNow(DateUtils.getDatePattern()));
         }
     }
 
@@ -150,7 +150,7 @@ public class HeaderView extends LinearLayout implements PtrUIHandler {
         custom_header_image.clearAnimation();
         custom_header_image.setImageResource(R.drawable.ic_refresh_arrow);
         getRefreshListener().onRefreshComplete(true, frame);
-        current_time = DateUtil.getNow(DateUtil.getDatePattern());
+        current_time = DateUtils.getNow(DateUtils.getDatePattern());
     }
 
     /**

@@ -9,7 +9,7 @@ import java.util.Date;
  * 日期工具类 默认使用 "yyyy-MM-dd HH:mm:ss" 格式化日期
  * 
  */
-public final class DateUtil {
+public final class DateUtils {
 	/**
 	 * 英文全称 如：2010-12-01 23:15:06
 	 */

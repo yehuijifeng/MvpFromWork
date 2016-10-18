@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 /**
  * Created by Luhao on 2016/6/23.
+ * 网络请求参数集合
  */
 public class RequestParams {
 

@@ -82,7 +82,7 @@ public abstract class BaseListActivity<T extends BasePresenter> extends BaseActi
                 listView.addHeaderView(view, null, getIsHeaderViewClick());
             }
         }
-        baseListAdapter = new BaseListAdapter(BaseListAdapter.ACTIVITY_LIST, this, data);
+        baseListAdapter = new BaseListAdapter(data, new OnAdapterStatus());
         listView.setAdapter(baseListAdapter);
         listView.setOnItemClickListener(this);
         listView.addFooterView(baseListView.footView, null, getIsFootViewClick());
@@ -90,6 +90,34 @@ public abstract class BaseListActivity<T extends BasePresenter> extends BaseActi
         baseListView.setLoadMore(isLoadMore());
         defaultRefresh();
         defaultLoadMore();
+    }
+
+    private class OnAdapterStatus implements BaseListAdapter.OnAdapterStatus {
+
+        @Override
+        public BaseViewHolder getViewHolders(View itemView, int position, int type) {
+            return getViewHolder(itemView, position, type);
+        }
+
+        @Override
+        public View getItemViews(int position, int type, ViewGroup parent) {
+            return inflater.inflate(getItemView(position, type), parent);
+        }
+
+        @Override
+        public void getItemDatas(int position, BaseViewHolder baseViewHolder, int type) {
+            getItemDatas(position, baseViewHolder, type);
+        }
+
+        @Override
+        public int getItemViewTypes(int position) {
+            return getItemViewType(position);
+        }
+
+        @Override
+        public int getViewTypeCounts() {
+            return getViewTypeCount();
+        }
     }
 
     @Override

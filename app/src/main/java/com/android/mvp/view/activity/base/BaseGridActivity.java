@@ -117,7 +117,7 @@ public abstract class BaseGridActivity<T extends BasePresenter> extends BaseActi
                 viewGroup.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
             }
         }
-        baseGridAdapter = new BaseGridAdapter(BaseGridAdapter.ACTIVITY_GRID, this, data, baseGridview.footView);
+        baseGridAdapter = new BaseGridAdapter(data, baseGridview.footView, new OnAdapterStatus());
         baseGridAdapter.setGridHeadlerView(view);
         myGridView.setAdapter(baseGridAdapter);
         myGridView.setOnItemClickListener(this);
@@ -127,6 +127,34 @@ public abstract class BaseGridActivity<T extends BasePresenter> extends BaseActi
         baseGridAdapter.setFooterViewEnable(isLoadMore());
         defaultRefresh();
         defaultLoadMore();
+    }
+
+    private class OnAdapterStatus implements BaseGridAdapter.OnAdapterStatus {
+
+        @Override
+        public BaseViewHolder getViewHolders(View itemView, int position, int type) {
+            return getViewHolder(itemView, position, type);
+        }
+
+        @Override
+        public View getItemViews(int position, int type, ViewGroup parent) {
+            return inflater.inflate(getItemView(position, type), parent);
+        }
+
+        @Override
+        public void getItemDatas(int position, BaseViewHolder baseViewHolder, int type) {
+            getItemDatas(position, baseViewHolder, type);
+        }
+
+        @Override
+        public int getItemViewTypes(int position) {
+            return getItemViewType(position);
+        }
+
+        @Override
+        public int getViewTypeCounts() {
+            return getViewTypeCount();
+        }
     }
 
     /**

@@ -1,32 +1,41 @@
 package com.android.mvp.adapter.base;
 
-import android.app.Activity;
-import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 
-import com.android.mvp.view.activity.base.BaseGridActivity;
 import com.android.mvp.view.baseview.FootView;
-import com.android.mvp.view.fragment.base.BaseGridFragment;
 
 import java.util.List;
 
 /**
  * Created by Luhao on 2016/6/28.
- * listview的基类适配器
+ * gridview的基类适配器
  */
 public class BaseGridAdapter extends BaseCollectionAdapter {
 
-    private BaseGridActivity baseGridActivity;//基类activity
-    private BaseGridFragment baseGridFragment;//基类fragment
-    public final static int FRAGMENT_GRID = 2, ACTIVITY_GRID = 1;//当前实例
-    private int gridStatus;//1代表activity,2代表fragment
     public FootView footView;//尾部
     private boolean isFooterViewEnable = true;//是否启用尾部视图
     public final static int FOOT_VIEW = -1, HEANDLER_VIEW = -2;//当前尾部view和头部view的标识
     private View headlerView;//头部
-    private int numColumns;
+    private OnAdapterStatus onAdapterStatus;
+
+    public OnAdapterStatus getOnAdapterStatus() {
+        return onAdapterStatus;
+    }
+
+    public interface OnAdapterStatus {
+
+        BaseViewHolder getViewHolders(View itemView, int position, int type);
+
+        View getItemViews(int position, int type, ViewGroup parent);
+
+        void getItemDatas(int position, BaseViewHolder baseViewHolder, int type);
+
+        int getItemViewTypes(int position);
+
+        int getViewTypeCounts();
+    }
+
 
     public boolean isFooterViewEnable() {
         return isFooterViewEnable;
@@ -36,65 +45,32 @@ public class BaseGridAdapter extends BaseCollectionAdapter {
         isFooterViewEnable = footerViewEnable;
     }
 
-    private ViewGroup.LayoutParams getDisplayWidth(Activity activity) {
-        Display display = activity.getWindowManager().getDefaultDisplay();
-        int width = display.getWidth();
-        GridView.LayoutParams pl = new GridView.LayoutParams(width,
-                GridView.LayoutParams.WRAP_CONTENT);
-        return pl;
-    }
-
     public void setGridHeadlerView(View headlerView) {
         this.headlerView = headlerView;
-        headlerView.setLayoutParams(getDisplayWidth(gridStatus == ACTIVITY_GRID ? baseGridActivity : baseGridFragment.getActivity()));
     }
 
-    public BaseGridAdapter(int gridStatus, BaseGridActivity baseGridActivity, List data, FootView footView) {
+    public BaseGridAdapter(List data, FootView footView, OnAdapterStatus onAdapterStatus) {
         super(data);
         this.footView = footView;
-        this.gridStatus = gridStatus;
-        this.baseGridActivity = baseGridActivity;
-        numColumns = baseGridActivity.getNumColumns();
-    }
-
-
-    public BaseGridAdapter(int gridStatus, BaseGridFragment baseListFragment, List data, FootView footView) {
-        super(data);
-        this.footView = footView;
-        this.gridStatus = gridStatus;
-        this.baseGridFragment = baseListFragment;
-        numColumns = baseListFragment.getNumColumns();
+        this.onAdapterStatus = onAdapterStatus;
     }
 
     @Override
     public BaseViewHolder getBaseViewHolder(View itemView, int position) {
-        if (gridStatus == ACTIVITY_GRID)
-            return baseGridActivity.getViewHolder(itemView, position, getItemViewType(position));
-        else
-            return baseGridFragment.getViewHolder(itemView, position, getItemViewType(position));
+        return getOnAdapterStatus().getViewHolders(itemView, position, getItemViewType(position));
     }
 
     @Override
     public View getItemView(int position, ViewGroup parent) {
-        if (gridStatus == ACTIVITY_GRID) {
-            View view = baseGridActivity.inflater.inflate(baseGridActivity.getItemView(position, getItemViewType(position)), parent, false);
-            ViewGroup viewGroup = (ViewGroup) view.getRootView();
-            viewGroup.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-            return view;
-        } else {
-            View view = baseGridFragment.getActivity().getLayoutInflater().inflate(baseGridFragment.getItemView(position, getItemViewType(position)), parent, false);
-            ViewGroup viewGroup = (ViewGroup) view.getRootView();
-            viewGroup.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-            return view;
-        }
+        View view = getOnAdapterStatus().getItemViews(position, getItemViewType(position), parent);
+        ViewGroup viewGroup = (ViewGroup) view.getRootView();
+        viewGroup.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+        return view;
     }
 
     @Override
     public void getItemData(int position, BaseViewHolder baseViewHolder) {
-        if (gridStatus == ACTIVITY_GRID)
-            baseGridActivity.getItemData(position, baseViewHolder, getItemViewType(position));
-        else
-            baseGridFragment.getItemData(position, baseViewHolder, getItemViewType(position));
+        getOnAdapterStatus().getItemDatas(position, baseViewHolder, getItemViewType(position));
     }
 
     //判断itemView类型,默认0
@@ -102,12 +78,7 @@ public class BaseGridAdapter extends BaseCollectionAdapter {
     public int getItemViewType(int position) {
         if (position == getCount() - 1 && isFooterViewEnable() && footView != null)
             return FOOT_VIEW;
-//        else if (headlerView != null && position < numColumns)
-//            return HEANDLER_VIEW;
-        else if (gridStatus == ACTIVITY_GRID)
-            return baseGridActivity.getItemViewType(position);
-        else
-            return baseGridFragment.getItemViewType(position);
+        return getOnAdapterStatus().getItemViewTypes(position);
     }
 
     // 种类+1。这里尤其要注意，必须+1
@@ -116,12 +87,8 @@ public class BaseGridAdapter extends BaseCollectionAdapter {
         int i = 1;
         if (data.size() > 0) {
             if (isFooterViewEnable()) i++;
-            //if (headlerView != null) i++;
         }
-        if (gridStatus == ACTIVITY_GRID)
-            return baseGridActivity.getViewTypeCount() + i;
-        else
-            return baseGridFragment.getViewTypeCount() + i;
+        return getOnAdapterStatus().getViewTypeCounts() + i;
     }
 
     /**
@@ -129,9 +96,8 @@ public class BaseGridAdapter extends BaseCollectionAdapter {
      */
     public void closeAdapter() {
         data = null;
-        baseGridActivity = null;
-        baseGridFragment = null;
         footView = null;
+        onAdapterStatus = null;
     }
 
     /**
@@ -144,7 +110,6 @@ public class BaseGridAdapter extends BaseCollectionAdapter {
         int i = 0;
         if (data.size() > 0) {
             if (isFooterViewEnable()) i++;
-            //if (headlerView != null) i += numColumns;
         }
         return data.size() + i;
     }
@@ -154,18 +119,6 @@ public class BaseGridAdapter extends BaseCollectionAdapter {
         if (getItemViewType(position) == FOOT_VIEW) {
             return footView;
         }
-//        else if (getItemViewType(position) == HEANDLER_VIEW) {
-//            if (position == 0) {
-//                return headlerView;
-//            } else {
-//                View viewNull = new View(parent.getContext());
-//                ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-//                viewNull.setLayoutParams(layoutParams);
-//                return viewNull;
-//            }
-//        }
-//        if (headlerView != null)
-//            position -= numColumns;
         View v;
         BaseViewHolder baseViewHolder;
         if (view == null) {
